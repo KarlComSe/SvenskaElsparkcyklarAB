@@ -1,0 +1,5 @@
+services:
+  container:
+    image: owsu23/vteam02:v0
+    container_name: container
+    restart: always
