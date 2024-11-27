@@ -9,3 +9,12 @@ This repository will be connected to a main vteam repo. This repository only con
 
 ## Docker Hub
 Image available at: owsu23/vteam02:v0
+
+# Initiate the repository
+
+Create a folder for the repo and initiate the git repository with the following commands:
+
+```bash
+git init
+git remote add origin https://github.com/KarlComSe/SvenskaElsparkcyklarAB.git
+```
