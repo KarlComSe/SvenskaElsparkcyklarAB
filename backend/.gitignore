@@ -1,0 +1,36 @@
+## Boilerplate .gitignore from Claude.ai
+# Dependencies
+node_modules/
+dist/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+*.env.docker
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build
+build/
+*.tsbuildinfo
