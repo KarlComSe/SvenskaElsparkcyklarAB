@@ -18,3 +18,5 @@ Create a folder for the repo and initiate the git repository with the following 
 git init
 git remote add origin https://github.com/KarlComSe/SvenskaElsparkcyklarAB.git
 ```
+
+making a change without a branch, is it working?
