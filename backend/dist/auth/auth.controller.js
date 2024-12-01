@@ -13,87 +13,57 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
-const swagger_1 = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
-const passport_1 = require("@nestjs/passport");
-const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
 const auth_service_1 = require("./auth.service");
+const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
+const token_exchange_dto_1 = require("./dto/token-exchange.dto/token-exchange.dto");
+const swagger_1 = require("@nestjs/swagger");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async githubLogin() {
+    async exchangeToken(tokenExchangeDto) {
+        return this.authService.exchangeGithubCode(tokenExchangeDto.code);
     }
-    async githubLoginCallback(req) {
-        const user = req.user;
-        const { access_token, user: authUser } = await this.authService.login(user);
-        console.log('Authentication successful for user:', authUser.username);
-        return { access_token, user: authUser };
-    }
-    async authStatus(req) {
-        console.log('Request received at /auth/status');
-        console.log('User:', req.user);
-        console.log('Headers:', req.headers);
-        return {
-            isAuthenticated: true,
-            user: req.user,
-            message: 'You are authenticated!',
-            timestamp: new Date().toISOString()
-        };
-    }
-    async me(req) {
-        console.log('Request received at /auth/me');
-        console.log('User:', req.user);
-        console.log('Headers:', req.headers);
+    async getMe(req) {
         return req.user;
     }
-    async verifyToken(auth) {
-        return this.authService.verifyToken(auth);
+    async getStatus(req) {
+        return this.authService.getStatus(req.user);
     }
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'GitHub OAuth login' }),
-    (0, swagger_1.ApiResponse)({ status: 302, description: 'Redirects to GitHub' }),
-    (0, common_1.Get)('github'),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('github')),
+    (0, common_1.Post)('token'),
+    (0, swagger_1.ApiOperation)({ summary: 'Exchange GitHub code for access token' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Token exchange successful' }),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [token_exchange_dto_1.TokenExchangeDto]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "githubLogin", null);
-__decorate([
-    (0, common_1.Get)('github/callback'),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('github')),
-    __param(0, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "githubLoginCallback", null);
-__decorate([
-    (0, common_1.Get)('status'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, swagger_1.ApiBearerAuth)(),
-    __param(0, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "authStatus", null);
+], AuthController.prototype, "exchangeToken", null);
 __decorate([
     (0, common_1.Get)('me'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Get current user information' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Returns user information' }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "me", null);
+], AuthController.prototype, "getMe", null);
 __decorate([
-    (0, common_1.Get)('verify'),
-    __param(0, (0, common_1.Headers)('authorization')),
+    (0, common_1.Get)('status'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Check authentication status' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Returns authentication status' }),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "verifyToken", null);
+], AuthController.prototype, "getStatus", null);
 exports.AuthController = AuthController = __decorate([
     (0, swagger_1.ApiTags)('auth'),
     (0, common_1.Controller)('auth'),

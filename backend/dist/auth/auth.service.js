@@ -8,56 +8,110 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
+const axios_1 = require("@nestjs/axios");
+const typeorm_1 = require("@nestjs/typeorm");
+const typeorm_2 = require("typeorm");
+const rxjs_1 = require("rxjs");
+const config_1 = require("@nestjs/config");
+const user_entity_1 = require("../users/entities/user.entity");
 let AuthService = class AuthService {
-    constructor(jwtService) {
+    constructor(userRepository, jwtService, httpService, configService) {
+        this.userRepository = userRepository;
         this.jwtService = jwtService;
-        console.log('AuthService constructor');
+        this.httpService = httpService;
+        this.configService = configService;
     }
-    async verifyToken(token) {
-        try {
-            const actualToken = token.replace('Bearer ', '');
-            const decoded = await this.jwtService.verifyAsync(actualToken);
-            console.log('Token verified successfully:', decoded);
-            return decoded;
-        }
-        catch (error) {
-            console.log('Token verification failed:', error);
-            throw error;
-        }
-    }
-    async login(user) {
-        const secret = process.env.JWT_SECRET;
-        console.log('Secret in AuthService:', secret);
-        const payload = {
-            sub: user.id,
-            username: user.username,
-            email: user.email
-        };
-        console.log('Generated JWT payload:', payload);
-        const access_token = this.jwtService.sign(payload);
-        console.log('Generated JWT token:', access_token);
+    async exchangeGithubCode(code) {
+        console.log('Attempting exchange with code:', code);
+        console.log('Using client ID:', this.configService.get('OAUTH_CLIENT_ID'));
+        const githubToken = await this.getGithubToken(code);
+        const githubUser = await this.getGithubUser(githubToken);
+        const user = await this.findOrCreateUser(githubUser);
+        const token = this.createToken(user);
         return {
-            access_token,
-            user: user
+            access_token: token,
+            user: {
+                githubId: user.githubId,
+                username: user.username,
+                email: user.email,
+                roles: user.roles,
+                hasAcceptedTerms: user.hasAcceptedTerms
+            }
         };
     }
-    async validateToken(token) {
-        try {
-            const payload = await this.jwtService.verifyAsync(token);
-            return payload;
+    async getGithubToken(code) {
+        const { data } = await (0, rxjs_1.firstValueFrom)(this.httpService.post('https://github.com/login/oauth/access_token', {
+            client_id: this.configService.get('OAUTH_CLIENT_ID'),
+            client_secret: this.configService.get('OAUTH_CLIENT_SECRET'),
+            code,
+        }, {
+            headers: { Accept: 'application/json' }
+        }));
+        return data.access_token;
+    }
+    async getGithubUser(token) {
+        const { data } = await (0, rxjs_1.firstValueFrom)(this.httpService.get('https://api.github.com/user', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/json'
+            }
+        }));
+        return data;
+    }
+    async findOrCreateUser(githubUser) {
+        let user = await this.userRepository.findOne({
+            where: { githubId: githubUser.id }
+        });
+        if (!user) {
+            user = await this.userRepository.save(new user_entity_1.User({
+                githubId: githubUser.id,
+                username: githubUser.login,
+                email: githubUser.email,
+                avatarUrl: githubUser.avatar_url,
+                roles: ['user']
+            }));
         }
-        catch {
-            return null;
-        }
+        return user;
+    }
+    createToken(user) {
+        const payload = {
+            sub: user.githubId,
+            username: user.username,
+            email: user.email,
+            roles: user.roles
+        };
+        return this.jwtService.sign(payload);
+    }
+    async validateUserById(githubId) {
+        return this.userRepository.findOne({ where: { githubId } });
+    }
+    async getStatus(user) {
+        return {
+            isAuthenticated: true,
+            user: {
+                githubId: user.githubId,
+                username: user.username,
+                email: user.email,
+                roles: user.roles,
+                hasAcceptedTerms: user.hasAcceptedTerms
+            }
+        };
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [jwt_1.JwtService])
+    __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        jwt_1.JwtService,
+        axios_1.HttpService,
+        config_1.ConfigService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

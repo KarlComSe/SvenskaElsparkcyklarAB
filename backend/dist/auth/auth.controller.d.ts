@@ -1,16 +1,27 @@
 import { AuthService } from './auth.service';
-import { AuthResponse } from './types/auth-response.interface';
+import { TokenExchangeDto } from './dto/token-exchange.dto/token-exchange.dto';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
-    githubLogin(): Promise<void>;
-    githubLoginCallback(req: any): Promise<AuthResponse>;
-    authStatus(req: any): Promise<{
-        isAuthenticated: boolean;
-        user: any;
-        message: string;
-        timestamp: string;
+    exchangeToken(tokenExchangeDto: TokenExchangeDto): Promise<{
+        access_token: string;
+        user: {
+            githubId: string;
+            username: string;
+            email: string;
+            roles: string[];
+            hasAcceptedTerms: boolean;
+        };
     }>;
-    me(req: any): Promise<any>;
-    verifyToken(auth: string): Promise<any>;
+    getMe(req: any): Promise<any>;
+    getStatus(req: any): Promise<{
+        isAuthenticated: boolean;
+        user: {
+            githubId: string;
+            username: string;
+            email: string;
+            roles: string[];
+            hasAcceptedTerms: boolean;
+        };
+    }>;
 }

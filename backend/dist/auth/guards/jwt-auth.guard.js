@@ -10,23 +10,6 @@ exports.JwtAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
-    canActivate(context) {
-        console.log('JwtAuthGuard canActivate called');
-        const request = context.switchToHttp().getRequest();
-        console.log('Token from request:', request.headers.authorization);
-        console.log('Current JWT_SECRET:', process.env.JWT_SECRET);
-        return super.canActivate(context);
-    }
-    handleRequest(err, user, info, context) {
-        const request = context.switchToHttp().getRequest();
-        console.log('JWT Secret during verification:', process.env.JWT_SECRET);
-        console.log('Token being verified:', request.headers.authorization);
-        if (err || !user) {
-            console.log('Authentication failed:', { err, info });
-            throw err || new common_1.UnauthorizedException('Authentication failed');
-        }
-        return user;
-    }
 };
 exports.JwtAuthGuard = JwtAuthGuard;
 exports.JwtAuthGuard = JwtAuthGuard = __decorate([

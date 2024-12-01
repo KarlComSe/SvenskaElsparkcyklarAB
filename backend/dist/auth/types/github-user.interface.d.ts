@@ -1,6 +1,7 @@
 export interface GithubUser {
     id: string;
-    username: string;
+    login: string;
     email: string;
-    accessToken: string;
+    name?: string;
+    avatar_url?: string;
 }
