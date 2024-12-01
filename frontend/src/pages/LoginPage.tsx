@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRole } from '../redux/authLogin';
-import { RootState, AppDispatch } from '../redux/store';
+import { setRole } from '../redux/slices/authLogin';
+import { RootState, AppDispatch } from '../redux/store/store';
 
 const LoginPage: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
