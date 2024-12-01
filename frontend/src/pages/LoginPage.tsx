@@ -1,15 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRole } from '../redux/slices/authLogin';
 import { RootState, AppDispatch } from '../redux/store/store';
+import { setLoggedInOut, setCurrentUser, setToken, setRole } from '../redux/slices/authLogin';
+
 
 const LoginPage: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
-    const role = useSelector((state: RootState) => state.auth.role);
+    const { role } = useSelector((state: RootState) =>  state.auth);
+    const [userMail, setUserMail] = useState("none");
 
     const handleSwitchRole = () => {
         const newRole = role === 'customer' ? 'admin' : 'customer';
         dispatch(setRole(newRole));
+    };
+
+    const loginUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        //SKA ÄNDRAS SEN NÄR VI FÅR IGÅNG BACKEND
+        console.log("Login here");
+        dispatch(setLoggedInOut(true));
+        dispatch(setCurrentUser(userMail));
+        dispatch(setToken(`${new Date().toISOString()}`));
     };
 
     return (
@@ -22,13 +33,14 @@ const LoginPage: React.FC = () => {
             type="text"
             placeholder="Användarnamn"
             className="border p-2 rounded w-full"
+            onChange={(e) => setUserMail(e.target.value)}
             />
             <input
             type="password"
             placeholder="Lösenord"
             className="border p-2 rounded w-full"
             />
-            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">
+            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded" onClick={(e) => loginUser(e)}>
             Logga in
             </button>
         </form>
