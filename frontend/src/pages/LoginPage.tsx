@@ -23,6 +23,21 @@ const LoginPage: React.FC = () => {
         dispatch(setToken(`${new Date().toISOString()}`));
     };
 
+    // const loginUser = (e: React.MouseEvent<HTMLButtonElement>) => {
+    //     e.preventDefault();
+
+    //     // GitHub OAuth URL with your client ID
+    //     const githubAuthUrl = 'https://github.com/login/oauth/authorize';
+    //     const clientId = 'Ov23liY1kaJ2acYLtBhq';
+    //     const redirectUri = 'http://localhost:5173/github/callback';
+    //     const scope = 'user:email';
+
+    //     const url = `${githubAuthUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+
+    //     // Redirect to GitHub
+    //     window.location.href = url;
+    // };
+
     return (
         <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-2xl font-bold mb-4 text-green-500">Logga in som {role}</h1>
