@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { BadRequestException, Controller } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Patch, Body, Req, UseGuards } from '@nestjs/common';
 import { UpdateTermsDto } from './dto/update-terms.dto/update-terms.dto';
@@ -17,6 +17,10 @@ export class UsersController {
         @Req() req,
         @Body() updateTermsDto: UpdateTermsDto
     ) {
+        if (typeof updateTermsDto.hasAcceptedTerms !== 'boolean') {
+            throw new BadRequestException('Invalid input');
+        }
+        console.log(req.user);
         return this.usersService.updateTerms(
             req.user.githubId, 
             updateTermsDto.hasAcceptedTerms
