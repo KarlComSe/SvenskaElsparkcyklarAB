@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import Spinner from '../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../redux/store/store';
-import { setLoggedInOut, setCurrentUser, setToken, setRole } from '../redux/slices/authLogin';
+import { setRole } from '../redux/slices/authLogin';
 import { GITHUB_URL } from '../helpers/config';
 
 
