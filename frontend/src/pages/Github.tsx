@@ -1,48 +1,52 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Spinner from '../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../redux/store/store';
 import { setLoggedInOut, setCurrentUser, setToken, setRole } from '../redux/slices/authLogin';
-import { GITHUB_URL } from '../helpers/config';
 
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { BACKEND_URL } from '../helpers/config';
+import axios from 'axios';
 
 const Github: React.FC = () => {
-    const dispatch: AppDispatch = useDispatch();
-    const { role } = useSelector((state: RootState) =>  state.auth);
-    const [userMail, setUserMail] = useState("none");
 
-    const handleSwitchRole = () => {
-        const newRole = role === 'customer' ? 'admin' : 'customer';
-        dispatch(setRole(newRole));
-    };
+    const [ code, setCode] = useSearchParams();
+    const [ loading, setLoading] = useState(true);
 
-    // const loginUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    //     e.preventDefault();
-    //     //SKA ÄNDRAS SEN NÄR VI FÅR IGÅNG BACKEND
-    //     console.log("Login here");
-    //     dispatch(setLoggedInOut(true));
-    //     dispatch(setCurrentUser(userMail));
-    //     dispatch(setToken(`${new Date().toISOString()}`));
-    // };
+    useEffect(() => {
+        // if(isLoggedIn) navigate('/login');
+        const backendAuth = async() => {
+            setLoading(true);
+        try {
 
-    const loginUser = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+                const response = await axios.post(`${BACKEND_URL}/auth/token`, code);
+                console.log(response);
+            }
+            catch(error)
+            {
+                console.log(error);
 
-        // Redirect to GitHub
-        window.location.href = GITHUB_URL;
-    };
+            }
+    }
+    backendAuth();
+    }, []);
+
+
+    if (loading) {
+        return (
+            <div className="flex flex-col items-center justify-center h-screen">
+            <Spinner spinnerColor='red'/>
+            Setting credentials 
+            {code.get('code')}
+        </div>
+        )
+    }
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
             <Spinner spinnerColor='red'/>
-                <h1 className="text-2xl font-bold mb-4 text-green-500">Logga in som {role}</h1>
-            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded" onClick={(e) => loginUser(e)}>
-            Logga in
-            </button>
-        {/* </form> */}
-        <button onClick={handleSwitchRole} className="mt-4 text-sm text-blue-500">
-            Växla till {role === 'customer' ? 'admin' : 'kund'}
-        </button>
+            Setting credentials 
+            {code.get('code')}
         </div>
     );
 };

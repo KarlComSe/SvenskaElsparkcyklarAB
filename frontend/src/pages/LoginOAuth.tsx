@@ -27,15 +27,11 @@ const LoginOAuth: React.FC = () => {
 
     const loginUser = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-
-        // Redirect to GitHub
         window.location.href = GITHUB_URL;
     };
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
-            <Spinner spinnerColor='red'/>
-
                 <h1 className="text-2xl font-bold mb-4 text-green-500">Logga in som {role}</h1>
             <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded" onClick={(e) => loginUser(e)}>
             Logga in
