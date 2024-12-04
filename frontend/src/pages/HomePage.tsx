@@ -26,13 +26,13 @@ const HomePage: React.FC = () => {
         ?
         (
         <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">You are logged in</h5>
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-800 dark:text-blue">You are logged in</h5>
           </div>
         )
         :
           (<>
             <h1 className="text-2xl font-bold mb-4 text-green-500">Logga in som {role}</h1>
-            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded" onClick={(e) => loginUser(e)}>
+            <button type="submit" className="px-4 py-2 bg-blue-500 text-blue dark:text-white rounded" onClick={(e) => loginUser(e)}>
             Logga in
             </button>
             <button onClick={handleSwitchRole} className="mt-4 text-sm text-blue-500">
