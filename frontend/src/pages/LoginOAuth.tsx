@@ -16,15 +16,6 @@ const LoginOAuth: React.FC = () => {
         dispatch(setRole(newRole));
     };
 
-    // const loginUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    //     e.preventDefault();
-    //     //SKA ÄNDRAS SEN NÄR VI FÅR IGÅNG BACKEND
-    //     console.log("Login here");
-    //     dispatch(setLoggedInOut(true));
-    //     dispatch(setCurrentUser(userMail));
-    //     dispatch(setToken(`${new Date().toISOString()}`));
-    // };
-
     const loginUser = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         window.location.href = GITHUB_URL;

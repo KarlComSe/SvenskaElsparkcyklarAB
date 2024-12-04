@@ -11,7 +11,6 @@ import axios from 'axios';
 const Github: React.FC = () => {
 
     const [ searchParams, setsearchParams] = useSearchParams();
-    const [ loading, setLoading] = useState(true);
     const [isLoggedIn, setisLoggedIn] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -19,7 +18,7 @@ const Github: React.FC = () => {
 
     useEffect(() => {
 
-        if (isLoggedIn) {
+        if (isLoggedIn) { // Only in component (not from localStorage)
             navigate('/');
             return;
         }
@@ -28,36 +27,24 @@ const Github: React.FC = () => {
         if (!code || attemptedRef.current) return;  // Skip if no code or already attempted
 
         const backendAuth = async() => {
-            setLoading(true);
-        try {
-                attemptedRef.current = true;  // Mark as attempted
-                const codeObject = Object.fromEntries(searchParams);
-                const response = await axios.post(`${API_URL}/auth/token`, codeObject);
-                console.log(response);
-                dispatch(setToken(response.data.access_token));
-                dispatch(setCurrentUser(response.data.user.username));
-                dispatch(setLoggedInOut(true));
-                setisLoggedIn(true);
-            }
+            try {
+                    attemptedRef.current = true;  // Mark as attempted
+                    const codeObject = Object.fromEntries(searchParams);
+                    const response = await axios.post(`${API_URL}/auth/token`, codeObject);
+                    console.log(response);
+                    dispatch(setToken(response.data.access_token));
+                    dispatch(setCurrentUser(response.data.user.username));
+                    dispatch(setLoggedInOut(true));
+                    setisLoggedIn(true);
+                }
             catch(error)
             {
                 console.log(error);
             }
-    }
+        }
         backendAuth();
 
-    }, [searchParams, isLoggedIn]);
-
-
-    if (loading) {
-        return (
-            <div className="flex flex-col items-center justify-center h-screen">
-            <Spinner spinnerColor='red'/>
-            Setting credentials 
-            {searchParams.get('searchParams')}
-        </div>
-        )
-    }
+    }, [searchParams, isLoggedIn]); 
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
