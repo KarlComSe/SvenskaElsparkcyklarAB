@@ -35,6 +35,8 @@ const Github: React.FC = () => {
                 const response = await axios.post(`${API_URL}/auth/token`, codeObject);
                 console.log(response);
                 dispatch(setToken(response.data.access_token));
+                dispatch(setCurrentUser(response.data.user.username));
+                dispatch(setLoggedInOut(true));
                 setisLoggedIn(true);
             }
             catch(error)
