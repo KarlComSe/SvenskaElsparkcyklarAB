@@ -1,0 +1,2 @@
+# Ignore node_modules (dependencies are installed in the container)
+node_modules

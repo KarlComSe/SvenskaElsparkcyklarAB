@@ -1,5 +1,22 @@
+version: '3.9'
+
 services:
-  container:
-    image: owsu23/vteam02:v0
-    container_name: container
-    restart: always
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3535:3535"
+    environment:
+      - PORT=3535
+    command: npm run start:prod
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: npm run dev -- --host
