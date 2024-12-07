@@ -10,12 +10,16 @@ import HomePage from './pages/HomePage.tsx';
 import Header from './components/Header.tsx';
 // import LoginOAuth from './pages/LoginOAuth.tsx';
 import Github from './pages/Github.tsx';
+import CustomerStartPage from './pages/CustomerStartPage.tsx';
+import AdminStartPage from './pages/AdminStartPage.tsx';
 
 const App: React.FC = () => {
   return (
     <Router>
       <Header/>
         <Routes>
+          <Route path="/customerstartpage" element={<CustomerStartPage />} />
+          <Route path="/adminstartpage" element={<AdminStartPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="github/callback" element={<Github/>} />
         </Routes>
