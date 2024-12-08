@@ -5,6 +5,7 @@ import { UpdateTermsDto } from './dto/update-terms.dto/update-terms.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto/update-user.dto';
+import { AdminGuard } from '../auth/guards/admin.guard';
 
 @Controller('users')
 export class UsersController {
@@ -29,20 +30,26 @@ export class UsersController {
     }
     // Fetch all customers
     @Get()
-    @ApiOperation({ summary: 'Get all customers' })
+    @UseGuards(JwtAuthGuard, AdminGuard)
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Get all customers (Only for admin)' })
     async getAllCustomers() {
         // return {userid: "hej1"};
         return await this.usersService.findAll();
     }
     // Fetch a customer by ID
     @Get(':githubId')
-    @ApiOperation({ summary: 'Get customer by id' })
+    @UseGuards(JwtAuthGuard, AdminGuard)
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Get customer by id (Only for admin)' })
     async getCustomerById(@Param('githubId') githubId: string) {
         return await this.usersService.findById(githubId);
     }
     // Update a customer by ID
     @Patch(':githubId')
-    @ApiOperation({ summary: 'Update customer by githubId' })
+    @UseGuards(JwtAuthGuard, AdminGuard)
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Update customer by githubId (Only for admin)' })
     async updateCustomer(
         @Param('githubId') githubId: string,
         @Body() updateUserDto: UpdateUserDto
