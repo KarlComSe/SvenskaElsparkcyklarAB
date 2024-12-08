@@ -40,13 +40,6 @@ export class UsersService {
     async update(githubId: string, updateUserDto: UpdateUserDto): Promise<User> {
         const user = await this.findById(githubId);
 
-        // Check if its allowed in user-dto
-        if (updateUserDto.email) user.email = updateUserDto.email;
-        if (updateUserDto.roles) user.roles = updateUserDto.roles;
-        if (updateUserDto.hasAcceptedTerms !== undefined) {
-            user.hasAcceptedTerms = updateUserDto.hasAcceptedTerms;
-        }
-
-        return this.userRepository.save(user);
+        return this.userRepository.save({ ...user, ...updateUserDto });
     }
 }
