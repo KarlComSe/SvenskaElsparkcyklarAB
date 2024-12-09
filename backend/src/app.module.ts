@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,6 +6,9 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { Type } from 'class-transformer';
+import InitialDataSeeder from './database/seeds/initial-data.seed';
+import { Module, OnModuleInit } from '@nestjs/common';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -27,4 +29,13 @@ import { Type } from 'class-transformer';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private dataSource: DataSource) {}
+
+  async onModuleInit() {
+    if (process.env.NODE_ENV === 'development') {
+      const seeder = new InitialDataSeeder();
+      await seeder.run(this.dataSource);
+    }
+  }
+}
