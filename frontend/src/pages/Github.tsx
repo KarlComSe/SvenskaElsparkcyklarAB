@@ -3,10 +3,12 @@ import Spinner from '../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../redux/store/store';
 import { setLoggedInOut, setCurrentUser, setToken, setRole } from '../redux/slices/authLogin';
+// import userRole from './HomePage';
 
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { API_URL } from '../helpers/config';
 import axios from 'axios';
+// import HomePage from './HomePage';
 
 const Github: React.FC = () => {
 
@@ -16,10 +18,19 @@ const Github: React.FC = () => {
     const navigate = useNavigate();
     const attemptedRef = useRef(false);  // Track if we've attempted auth
 
+    const userRole = useSelector((state: RootState) => state.auth.role);
+
     useEffect(() => {
 
         if (isLoggedIn) { // Only in component (not from localStorage)
-            navigate('/');
+            // navigate('/');
+            if (userRole === 'admin') {
+                navigate('/adminstartpage');
+            } else if (userRole === 'customer') {
+                navigate('/customerstartpage');
+            } else if (userRole) {
+                console.error('Unexpected role:', userRole);
+            }
             return;
         }
 
@@ -37,10 +48,12 @@ const Github: React.FC = () => {
                     dispatch(setLoggedInOut(true));
                     setisLoggedIn(true);
                 }
+                
             catch(error)
             {
                 console.log(error);
             }
+            
         }
         backendAuth();
 
