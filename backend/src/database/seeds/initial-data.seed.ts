@@ -10,28 +10,28 @@ export default class InitialDataSeeder {
             // Add example admin and test users
             await userRepo.save([
                 {
-                    githubId: 'Pbris',
+                    githubId: '149484382',
                     username: 'Pbris',
                     email: 'pbris@example.com',
                     roles: ['admin'],
                     hasAcceptedTerms: true
                 },
                 {
-                    githubId: 'airhelios',
+                    githubId: '149296874',
                     username: 'airhelios',
                     email: 'airhelios@example.com',
                     roles: ['admin'],
                     hasAcceptedTerms: true
                 },
                 {
-                    githubId: 'KarlComSe',
+                    githubId: '13668660',
                     username: 'KarlComSe',
                     email: 'karlcomse@example.com',
                     roles: ['admin'],
                     hasAcceptedTerms: true
                 },
                 {
-                    githubId: 'gumme1',
+                    githubId: '149683406',
                     username: 'gumme1',
                     email: 'gumme1@example.com',
                     roles: ['admin'],
