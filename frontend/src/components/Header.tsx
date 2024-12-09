@@ -4,17 +4,20 @@ import { setLoggedInOut, setCurrentUser, setToken, setRole } from '../redux/slic
 import { RootState } from '../redux/store/store';
 import axios from 'axios';
 import { API_URL, getHeader } from '../helpers/config';
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
 
     const {isLoggedIn, token, user, role} = useSelector((state: RootState) =>  state.auth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const logOutUser = async () => {
         dispatch(setLoggedInOut(false));
         dispatch(setCurrentUser(null));
         dispatch(setToken(''));
         dispatch(setRole('customer'));
+        navigate('/')
         console.log("Header here");
     }
 
