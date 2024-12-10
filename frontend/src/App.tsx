@@ -12,6 +12,8 @@ import Header from './components/Header.tsx';
 import Github from './pages/Github.tsx';
 import CustomerStartPage from './pages/CustomerStartPage.tsx';
 import AdminStartPage from './pages/AdminStartPage.tsx';
+import UserListPage from './pages/UserListPage.tsx';
+import UserInfoPage from './pages/UserInfoPage.tsx';
 
 const App: React.FC = () => {
   return (
@@ -20,6 +22,8 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/customerstartpage" element={<CustomerStartPage />} />
           <Route path="/adminstartpage" element={<AdminStartPage />} />
+          <Route path="/userlistpage" element={<UserListPage />} />
+          <Route path="/userinfopage" element={<UserInfoPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="github/callback" element={<Github/>} />
         </Routes>
