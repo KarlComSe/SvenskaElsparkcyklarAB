@@ -14,6 +14,7 @@ import CustomerStartPage from './pages/CustomerStartPage.tsx';
 import AdminStartPage from './pages/AdminStartPage.tsx';
 import UserListPage from './pages/UserListPage.tsx';
 import UserInfoPage from './pages/UserInfoPage.tsx';
+import ShowMap from './pages/ShowMap.tsx';
 
 const App: React.FC = () => {
   return (
@@ -26,6 +27,7 @@ const App: React.FC = () => {
           <Route path="/userinfopage" element={<UserInfoPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="github/callback" element={<Github/>} />
+          <Route path="/map" element={<ShowMap/>} />
         </Routes>
     </Router>
   );
