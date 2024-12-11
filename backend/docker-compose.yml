@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3535:3535"
+    environment:
+      - PORT=3535
+    command: npm run start:prod
