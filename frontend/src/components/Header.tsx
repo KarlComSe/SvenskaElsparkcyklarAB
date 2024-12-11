@@ -5,6 +5,7 @@ import { RootState } from '../redux/store/store';
 import axios from 'axios';
 import { API_URL, getHeader } from '../helpers/config';
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 export default function Header() {
 
@@ -34,6 +35,9 @@ export default function Header() {
     return (
         <div className='flex justify-center items-center min-h-screen'>
             <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+            <Link to="/map" className="px-4 py-2 bg-green-500 text-white rounded">
+                Karta
+                </Link>
                 <p className="font-normal text-gray-700 dark:text-gray-400">Logged In: <b>{isLoggedIn.toString()}</b></p>
                 <p className="font-normal text-gray-700 dark:text-gray-400">Token: <b>{token ? token : "Empty"}</b></p>
                 <p className="font-normal text-gray-700 dark:text-gray-400">Role: <b>{role}</b></p>
