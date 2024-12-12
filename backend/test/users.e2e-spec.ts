@@ -5,7 +5,7 @@ import * as request from 'supertest';
 describe('Users module (e2e)', () => {
     let app: INestApplication;
 
-    const { adminToken, userToken} = generateTestTokens();
+    const { adminToken, userToken } = generateTestTokens();
 
     beforeAll(async () => {
         app = await initTestApp();

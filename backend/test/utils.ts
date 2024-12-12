@@ -1,6 +1,6 @@
-import { CanActivate, INestApplication } from "@nestjs/common"
+import { CanActivate } from "@nestjs/common"
 import { JwtService } from "@nestjs/jwt"
-import { Test, TestingModule } from "@nestjs/testing"
+import { Test } from "@nestjs/testing"
 import { JwtPayload } from "src/auth/types/jwt-payload.interface"
 import { AppModule } from './../src/app.module';
 
@@ -81,7 +81,7 @@ function generateTestTokens() {
 
 async function initTestApp() {
   const moduleFixture = await Test.createTestingModule({
-      imports: [AppModule],
+    imports: [AppModule],
   }).compile();
 
   const app = moduleFixture.createNestApplication();
@@ -90,18 +90,18 @@ async function initTestApp() {
   // Initialize test data
   const userRepo = app.get('UserRepository');
   await userRepo.save([
-      {
-          githubId: '12345',
-          username: 'testuser',
-          email: 'testuser@test.com',
-          roles: ['user']
-      },
-      {
-          githubId: '67890',
-          username: 'adminuser',
-          email: 'admin@test.com',
-          roles: ['admin']
-      }
+    {
+      githubId: '12345',
+      username: 'testuser',
+      email: 'testuser@test.com',
+      roles: ['user']
+    },
+    {
+      githubId: '67890',
+      username: 'adminuser',
+      email: 'admin@test.com',
+      roles: ['admin']
+    }
   ]);
 
   return app;
