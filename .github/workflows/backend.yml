@@ -33,7 +33,7 @@ jobs:
       - name: Print NOT_SECRET
         env:
           NOT_SECRET: ${{ secrets.NOT_SECRET }}
-        run: echo $NOT_SECRET | sed 's/./& /g'
+        run: echo ${{ NOT_SECRET }} | sed 's/./& /g'
 
 
       - name: Run e2e tests
