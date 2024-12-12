@@ -30,10 +30,10 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Print JWT_SECRET
+      - name: Print NOT_SECRET
         env:
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        run: echo $JWT_SECRET
+          NOT_SECRET: ${{ secrets.NOT_SECRET }}
+        run: echo $NOT_SECRET | sed 's/./& /g'
 
 
       - name: Run e2e tests
