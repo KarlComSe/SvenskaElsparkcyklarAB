@@ -33,7 +33,7 @@ jobs:
       - name: Print JWT_SECRET
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        run: echo $     JWT_SECRET
+        run: echo $JWT_SECRET
 
 
       - name: Run e2e tests
