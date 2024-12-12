@@ -9,6 +9,8 @@ import { Type } from 'class-transformer';
 import InitialDataSeeder from './database/seeds/initial-data.seed';
 import { Module, OnModuleInit } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+import { BicyclesModule } from './bicycles/bicycles.module';
+import { ZonesModule } from './zones/zones.module';
 
 @Module({
   imports: [
@@ -24,7 +26,9 @@ import { DataSource } from 'typeorm';
       synchronize: true,
     }),
     UsersModule,
-    AuthModule
+    AuthModule,
+    BicyclesModule,
+    ZonesModule
   ],
   controllers: [AppController],
   providers: [AppService],
