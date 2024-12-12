@@ -20,8 +20,8 @@ export class AuthService {
     ) {}
 
     async exchangeGithubCode(code: string) {
-        console.log('Attempting exchange with code:', code);
-        console.log('Using client ID:', this.configService.get('OAUTH_CLIENT_ID'));
+        // console.log('Attempting exchange with code:', code);
+        // console.log('Using client ID:', this.configService.get('OAUTH_CLIENT_ID'));
         
         const githubToken = await this.getGithubToken(code);
         const githubUser = await this.getGithubUser(githubToken);

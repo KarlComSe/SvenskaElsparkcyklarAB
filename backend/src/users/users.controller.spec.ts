@@ -5,6 +5,7 @@ import { UpdateTermsDto } from './dto/update-terms.dto/update-terms.dto';
 import { User } from './entities/user.entity';
 import { BadRequestException, CanActivate, UnauthorizedException } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { isGuarded } from '../../test/utils';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -48,6 +49,11 @@ describe('UsersController', () => {
     usersService = module.get<UsersService>(UsersService);
   });
 
+  afterEach(async () => {
+    jest.clearAllMocks(); // Clear mock calls to ensure a fresh start for each test
+    jest.resetModules(); // Reset module registry to avoid cached modules
+  });
+
   describe('updateTerms', () => {
     it('should successfully update terms', async () => {
       const dto: UpdateTermsDto = { hasAcceptedTerms: true };
@@ -79,34 +85,18 @@ describe('UsersController', () => {
       await expect(controller.updateTerms(mockRequest, updateTermsDto)).rejects.toThrow(error);
     });
 
-    it('should throw UnauthorizedException when not authenticated', async () => {
-      const module: TestingModule = await Test.createTestingModule({
-        controllers: [UsersController],
-        providers: [
-          {
-            provide: UsersService,
-            useValue: { updateTerms: jest.fn() }
-          }
-        ],
-      })
-        .overrideGuard(JwtAuthGuard)
-        .useValue({ canActivate: () => false })
-        .compile();
+    it(`should be protected with JwtAuthGuard.`, async () => {
+      // this gives undefined
+      // const reflector = new Reflector();
+      // const guards = reflector.getAllAndOverride('guards', [
+      //   UsersController.prototype.updateTerms,
+      // ]);
 
-      const unauthorizedController = module.get<UsersController>(UsersController);
-
-      // This was tricky. We need to use try-catch to catch the error thrown by the guard.
-      try {
-        await unauthorizedController.updateTerms(mockRequest, updateTermsDto);
-      } catch (error) {
-        expect(error).toBeInstanceOf(UnauthorizedException);
-        expect(error.message).toBe('Unauthorized');
-      }
-    });
+      expect(isGuarded(UsersController.prototype.updateTerms, JwtAuthGuard)).toBe(true)
+    })
 
     it('should throw an error if updateTermsDto is invalid', async () => {
       const updateTermsDto: any = { hasAcceptedTerms: null };
-
       await expect(controller.updateTerms(mockRequest, updateTermsDto)).rejects.toThrow('Invalid input');
     });
   });

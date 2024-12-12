@@ -47,7 +47,7 @@ export class UsersController {
         if (typeof updateTermsDto.hasAcceptedTerms !== 'boolean') {
             throw new BadRequestException('Invalid input');
         }
-        console.log(req.user);
+        // console.log(req.user);
         return await this.usersService.updateTerms(
             req.user.githubId, 
             updateTermsDto.hasAcceptedTerms
