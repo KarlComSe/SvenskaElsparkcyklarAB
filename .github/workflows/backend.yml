@@ -12,8 +12,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: Integration
     env:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      NODE_ENV: test
     defaults:
       run:
         working-directory: ./backend
@@ -31,12 +33,6 @@ jobs:
 
       - name: Run tests
         run: npm test
-
-      - name: Print NOT_SECRET
-        env:
-          NOT_SECRET: ${{ secrets.NOT_SECRET }}
-        run: echo ${{ secrets.NOT_SECRET }} | sed 's/./& /g'
-
 
       - name: Run e2e tests
         run: npm run test:e2e
