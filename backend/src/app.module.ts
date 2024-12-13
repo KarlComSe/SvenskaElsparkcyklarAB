@@ -21,7 +21,7 @@ import { ZonesModule } from './zones/zones.module';
     ),
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'db.sqlite',
+      database: process.env.NODE_ENV === 'test' ? ':memory:' : 'db.sqlite',
       entities: [User],
       synchronize: true,
     }),

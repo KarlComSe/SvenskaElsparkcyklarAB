@@ -12,6 +12,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: Integration
+    env:
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      NODE_ENV: test
     defaults:
       run:
         working-directory: ./backend
