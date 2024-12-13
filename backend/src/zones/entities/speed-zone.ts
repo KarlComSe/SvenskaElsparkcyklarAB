@@ -9,6 +9,6 @@ export class SpeedZone {
     @OneToOne(() => Zone, (zone) => zone.speedZone)
     zone: Zone;
 
-    @Column({ type: 'decimal', precision: 5, scale: 2 })
+    @Column({ type: 'float' })
     speedLimit: number;
 }

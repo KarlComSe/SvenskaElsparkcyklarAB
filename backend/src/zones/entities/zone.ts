@@ -6,7 +6,7 @@ export class Zone {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column('simple-json')  // Change from 'json' to 'simple-json' for SQLite compatibility
+    @Column('simple-json')
     polygon: { lat: number; lng: number }[];
 
     @Column({ type: 'simple-enum', enum: ['parking', 'charging', 'speed'] })
@@ -15,7 +15,7 @@ export class Zone {
     @OneToOne(() => SpeedZone, (speedZone) => speedZone.zone, { 
         nullable: true, 
         cascade: true,
-        eager: true  // This will automatically load the speedZone
+        eager: true  // Automatically load the speedZone
     })
     @JoinColumn()
     speedZone?: SpeedZone;
