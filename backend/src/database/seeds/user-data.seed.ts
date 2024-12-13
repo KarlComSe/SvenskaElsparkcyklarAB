@@ -1,8 +1,7 @@
-// src/database/seeds/initial-data.seed.ts
 import { DataSource } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
-export default class InitialDataSeeder {
+export default class UserDataSeeder {
     async run(connection: DataSource): Promise<void> {
         if (process.env.NODE_ENV !== 'production') {
             const userRepo = connection.getRepository(User);

@@ -5,8 +5,9 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
-import { Type } from 'class-transformer';
-import InitialDataSeeder from './database/seeds/initial-data.seed';
+import { Bicycle } from './bicycles/entities/bicycle.entity';
+import UserDataSeeder from './database/seeds/user-data.seed';
+import BicycleSeeder from './database/seeds/bicycles-data.seed';
 import { Module, OnModuleInit } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { BicyclesModule } from './bicycles/bicycles.module';
@@ -22,7 +23,7 @@ import { ZonesModule } from './zones/zones.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: process.env.NODE_ENV === 'test' ? ':memory:' : 'db.sqlite',
-      entities: [User],
+      entities: [User, Bicycle],
       synchronize: true,
     }),
     UsersModule,
@@ -38,8 +39,10 @@ export class AppModule implements OnModuleInit {
 
   async onModuleInit() {
     if (process.env.NODE_ENV === 'development') {
-      const seeder = new InitialDataSeeder();
-      await seeder.run(this.dataSource);
+      const userSeeder = new UserDataSeeder();
+      await userSeeder.run(this.dataSource);
+      const bicycleSeeder = new BicycleSeeder();
+      await bicycleSeeder.run(this.dataSource);
     }
   }
 }

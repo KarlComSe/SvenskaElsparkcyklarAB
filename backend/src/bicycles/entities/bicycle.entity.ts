@@ -14,8 +14,12 @@ export class Bicycle {
     @Column('float')
     longitude: number;
 
-    @Column({ default: true })
-    available: boolean;
+    @Column({
+        type: 'simple-enum',
+        enum: ['Rented', 'Available', 'Service'],
+        default: 'Available',
+    })
+    status: 'Rented' | 'Available' | 'Service';
 
     @CreateDateColumn()
     createdAt: Date;
