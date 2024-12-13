@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards, Param, Patch } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AdminGuard } from '../auth/guards/admin.guard';
@@ -44,4 +44,19 @@ export class BicyclesController {
     async getAllBicycles() {
         return await this.bicyclesService.findAll();
 }
+
+    @Post('create')
+    // Create a bike
+    async createABike() {
+        console.log("skapa cykel");
+
+        return await this.bicyclesService.createBike();
+    }
+
+    @Get(':bikeId')
+    // Get a bike
+    async getBikeById(@Param('id') id: string) {
+        return await this.bicyclesService.findById(id);
+    }
+
 }

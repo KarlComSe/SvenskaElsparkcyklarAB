@@ -8,18 +8,22 @@ export class Bicycle {
     @Column({ type: 'int', default: 100 })
     batteryLevel: number;
 
-    @Column('float')
-    latitude: number;
+    @Column('float', { nullable: true })
+    latitude?: number;
 
-    @Column('float')
-    longitude: number;
+    @Column('float', { nullable: true })
+    longitude?: number;
 
-    @Column({ type: 'simple-enum', enum: ['Rented', 'Available', 'Service'], default: 'Available', })
+    @Column({ 
+        type: 'simple-enum', 
+        enum: ['Rented', 'Available', 'Service'], 
+        default: 'Available'
+    })
     status: 'Rented' | 'Available' | 'Service';
 
-    @CreateDateColumn()
+    @CreateDateColumn({ nullable: true })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ nullable: true })
     updatedAt: Date;
 }
