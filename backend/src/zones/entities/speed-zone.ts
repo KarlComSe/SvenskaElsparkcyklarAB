@@ -4,11 +4,11 @@ import { Zone } from './zone';
 @Entity()
 export class SpeedZone {
     @PrimaryGeneratedColumn('uuid')
-    id: string; // Unique identifier
+    id: string;
 
     @OneToOne(() => Zone, (zone) => zone.speedZone)
-    zone: Zone; // Foreign key relation to Zone
+    zone: Zone;
 
-    @Column({ type: 'float' })
-    speedLimit: number; // Speed limit for this speed zone
+    @Column({ type: 'decimal', precision: 5, scale: 2 })
+    speedLimit: number;
 }
