@@ -60,7 +60,7 @@ const Github: React.FC = () => {
     }, [searchParams, isLoggedIn]); 
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
+        <div className="flex flex-col items-center justify-center h-screen" data-testid="github-test">
             <Spinner spinnerColor='red'/>
             Setting credentials 
             {searchParams.get('searchParams')}
