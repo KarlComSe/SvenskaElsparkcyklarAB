@@ -8,5 +8,5 @@
     "esModuleInterop": true,
     "jsx": "react-jsx"
   },
-  "include": ["src/module_typings"]
+  "include": ["src/module_typings"],
 }
