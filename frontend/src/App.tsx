@@ -7,14 +7,26 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 // import LoginPage from './pages/LoginPage';
 // import RegisterPage from './pages/RegisterPage';
-import Header from './components/Header';
+
+import Header from './components/Header.tsx';
+// import LoginOAuth from './pages/LoginOAuth.tsx';
+import Github from './pages/Github.tsx';
+import CustomerStartPage from './pages/CustomerStartPage.tsx';
+import AdminStartPage from './pages/AdminStartPage.tsx';
+import UserListPage from './pages/UserListPage.tsx';
+import UserInfoPage from './pages/UserInfoPage.tsx';
+import ShowMap from './pages/ShowMap.tsx';
+import AdminUserOverviewPage from './pages/AdminUserOverviewPage.tsx';
+
+// import Header from './components/Header';
 // import LoginOAuth from './pages/LoginOAuth';
-import Github from './pages/Github';
-import CustomerStartPage from './pages/CustomerStartPage';
-import AdminStartPage from './pages/AdminStartPage';
-import UserListPage from './pages/UserListPage';
-import UserInfoPage from './pages/UserInfoPage';
-import ShowMap from './pages/ShowMap';
+// import Github from './pages/Github';
+// import CustomerStartPage from './pages/CustomerStartPage';
+// import AdminStartPage from './pages/AdminStartPage';
+// import UserListPage from './pages/UserListPage';
+// import UserInfoPage from './pages/UserInfoPage';
+// import ShowMap from './pages/ShowMap';
+
 
 const App: React.FC = () => {
   return (
@@ -28,6 +40,7 @@ const App: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="github/callback" element={<Github/>} />
           <Route path="/map" element={<ShowMap/>} />
+          <Route path="/user/:githubId" element={<AdminUserOverviewPage />} />
         </Routes>
         <div data-testid="app-test"></div>
     </Router>

@@ -14,6 +14,14 @@ const CustomerStartPage: React.FC = () => {
   const { role } = useSelector((state: RootState) =>  state.auth);
   const { isLoggedIn } = useSelector((state: RootState) =>  state.auth);
   const navigate = useNavigate();
+  const logout = async () => {
+    dispatch(setLoggedInOut(false));
+    dispatch(setCurrentUser(null));
+    dispatch(setToken(''));
+    dispatch(setRole('customer'));
+    navigate('/')
+    console.log("Header here");
+}
 
   const handleUserInfoPage = () => {
     navigate('/userinfopage')
@@ -27,7 +35,7 @@ const CustomerStartPage: React.FC = () => {
             <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">Hyr en elsparkcykel</h5>
             <span className="text-sm text-gray-500 dark:text-gray-400">Snabbt och enkelt!</span>
             <div className="flex mt-4 md:mt-6">
-                <a href="#" className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Hyr nu</a>
+                <a href="/map" className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Hyr nu</a>
                 <a href="#" className="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Avsluta</a>
             </div>
         </div>
@@ -39,10 +47,12 @@ const CustomerStartPage: React.FC = () => {
             <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">Konto information</h5>
             <span className="text-sm text-gray-500 dark:text-gray-400">Se över din saldo, historik med mera</span>
             <div className="flex mt-4 md:mt-6">
-                <button>
-                <a href="#" onClick={handleUserInfoPage} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Se över</a>
+                <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <a href="#" onClick={handleUserInfoPage} className='text-white'>Se över</a>
                 </button>
-                <a href="#" className="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Logga ut</a>
+                <button className="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                    <a href="#" onClick={logout} className='text-gray-900'>Logga ut</a>
+                </button>
             </div>
         </div>
     </div>

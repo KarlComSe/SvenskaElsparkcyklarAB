@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../redux/store/store';
 import { API_URL, getHeader } from '../helpers/config';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 interface User {
   githubId: string;
@@ -43,9 +44,12 @@ const UserListPage: React.FC = () => {
         {users.map((user) => (
           <div
             key={user.githubId}
-            className="p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700"
-          >
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-white">{user.username}</h2>
+            className="p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+              <Link to={`/user/${user.githubId}`} className="text-blue-500 hover:underline">
+                {user.username}
+              </Link>
+              </h2>
             <p className="text-gray-600 dark:text-gray-400">Email: {user.email}</p>
             <p className="text-gray-600 dark:text-gray-400">Roller: {user.roles.join(', ')}</p>
             <p className="text-gray-600 dark:text-gray-400">
