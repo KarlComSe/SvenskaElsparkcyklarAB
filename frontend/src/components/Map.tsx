@@ -1,6 +1,6 @@
 import { MapContainer, Popup, Marker, TileLayer, Polygon, useMap } from 'react-leaflet';
 import React from 'react';
-import { LatLngTuple } from 'leaflet';
+import { LatLngTuple,  LatLngExpression } from 'leaflet';
 import L from 'leaflet';
 import markerIcon from '../assets/images/station.png';
 
@@ -19,7 +19,7 @@ export default function Map() {
         [51.535, -0.08]
         ];
 
-    const multiPolygon = [
+    const multiPolygon:  LatLngExpression[][] = [
         [
           [51.51, -0.12],
           [51.51, -0.13],
