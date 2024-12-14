@@ -15,6 +15,7 @@ import AdminStartPage from './pages/AdminStartPage.tsx';
 import UserListPage from './pages/UserListPage.tsx';
 import UserInfoPage from './pages/UserInfoPage.tsx';
 import ShowMap from './pages/ShowMap.tsx';
+import AdminUserOverviewPage from './pages/AdminUserOverviewPage.tsx';
 
 const App: React.FC = () => {
   return (
@@ -28,6 +29,7 @@ const App: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="github/callback" element={<Github/>} />
           <Route path="/map" element={<ShowMap/>} />
+          <Route path="/user/:githubId" element={<AdminUserOverviewPage />} />
         </Routes>
     </Router>
   );
