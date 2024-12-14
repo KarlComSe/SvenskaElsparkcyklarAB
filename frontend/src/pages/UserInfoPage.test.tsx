@@ -6,9 +6,7 @@ jest.mock("react-leaflet");
 
 describe('UserInfoPage', () => {
   it('renders UserInfoPage component', () => {
-    render(renderWithProviders(<UserInfoPage/>));
+    render(renderWithProviders(<UserInfoPage/>))
     expect(screen.getByText(/Logged In/i)).toBeInTheDocument();
   });
 });
-
-
