@@ -4,9 +4,10 @@
 import './App.css'
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage.tsx';
-// import LoginPage from './pages/LoginPage.tsx';
+import HomePage from './pages/HomePage';
+// import LoginPage from './pages/LoginPage';
 // import RegisterPage from './pages/RegisterPage';
+
 import Header from './components/Header.tsx';
 // import LoginOAuth from './pages/LoginOAuth.tsx';
 import Github from './pages/Github.tsx';
@@ -17,9 +18,19 @@ import UserInfoPage from './pages/UserInfoPage.tsx';
 import ShowMap from './pages/ShowMap.tsx';
 import AdminUserOverviewPage from './pages/AdminUserOverviewPage.tsx';
 
+// import Header from './components/Header';
+// import LoginOAuth from './pages/LoginOAuth';
+// import Github from './pages/Github';
+// import CustomerStartPage from './pages/CustomerStartPage';
+// import AdminStartPage from './pages/AdminStartPage';
+// import UserListPage from './pages/UserListPage';
+// import UserInfoPage from './pages/UserInfoPage';
+// import ShowMap from './pages/ShowMap';
+
+
 const App: React.FC = () => {
   return (
-    <Router>
+    <Router >
       <Header/>
         <Routes>
           <Route path="/customerstartpage" element={<CustomerStartPage />} />
@@ -31,6 +42,7 @@ const App: React.FC = () => {
           <Route path="/map" element={<ShowMap/>} />
           <Route path="/user/:githubId" element={<AdminUserOverviewPage />} />
         </Routes>
+        <div data-testid="app-test"></div>
     </Router>
   );
 };

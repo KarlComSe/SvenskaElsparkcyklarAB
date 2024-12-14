@@ -1,9 +1,9 @@
 import { MapContainer, Popup, Marker, TileLayer, Polygon, useMap } from 'react-leaflet';
 import React from 'react';
-import { LatLngTuple } from 'leaflet';
+import { LatLngTuple,  LatLngExpression } from 'leaflet';
 import L from 'leaflet';
 import markerIcon from '../assets/images/station.png';
-
+jest.mock("react-leaflet");
 export default function Map() {
 
 
@@ -19,7 +19,7 @@ export default function Map() {
         [51.535, -0.08]
         ];
 
-    const multiPolygon = [
+    const multiPolygon:  LatLngExpression[][] = [
         [
           [51.51, -0.12],
           [51.51, -0.13],
@@ -63,7 +63,7 @@ export default function Map() {
         );
 
   return (
-    <div id="map">
+    <div id="map" data-testid="map">
         <MapContainer style={{ height: "400px" }}  center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
