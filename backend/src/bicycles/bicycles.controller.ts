@@ -55,7 +55,7 @@ export class BicyclesController {
 
     @Get(':bikeId')
     // Get a bike
-    async getBikeById(@Param('id') id: string) {
+    async getBikeById(@Param('bikeId') id: string) {
         return await this.bicyclesService.findById(id);
     }
 
