@@ -1,35 +1,92 @@
 import { Controller, Get, Post, UseGuards, Param, Patch, Body } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { AdminGuard } from '../auth/guards/admin.guard';
 import { BicyclesService } from './bicycles.service';
 import { UpdateBicycleDto } from './dto/update-bicycle.dto';
+import { Bicycle } from './entities/bicycle.entity';
 
+@ApiTags('Bicycles')
 @Controller('bike')
 export class BicyclesController {
   constructor(private readonly bicyclesService: BicyclesService) {}
 
-    // Fetch all bicycles
     @Get()
     @ApiBearerAuth()
-    @ApiOperation({ summary: 'Get all bicycles (Only for admin)' })
+    @ApiOperation({ summary: 'Get all bicycles' })
     @ApiResponse({
         status: 200,
         description: 'List of bicycles',
-        examples: {
-            'application/json': {
-                summary: 'Example of a list of bicycles',
-                value: [
-                    {
-                        id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
-                        batteryLevel: 100,
-                        latitude: 59.3293,
-                        longitude: 18.0686,
-                        status: 'Available',
-                        createdAt: '2024-12-01T05:01:01.000Z',
-                        updatedAt: '2024-12-07T18:30:30.000Z',
-                    },
-                ],
+        schema: {
+            type: 'array',
+            example: [
+                {
+                    id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
+                    batteryLevel: 100,
+                    latitude: 59.3293,
+                    longitude: 18.0686,
+                    status: 'Available',
+                    createdAt: '2024-12-01T05:01:01.000Z',
+                    updatedAt: '2024-12-07T18:30:30.000Z',
+                },
+            ],
+        },
+    })
+    @ApiResponse({
+        status: 401,
+        description: 'Unauthorized. Authentication required',
+    })
+    async getAllBicycles(): Promise<Bicycle[]> {
+        return await this.bicyclesService.findAll();
+    }
+
+    @Post('create')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Create a new bicycle' })
+    @ApiResponse({
+        status: 201,
+        description: 'Bicycle created successfully',
+        schema: {
+            example: {
+                id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
+                batteryLevel: 100,
+                latitude: null,
+                longitude: null,
+                status: 'Available',
+                createdAt: '2024-12-01T05:01:01.000Z',
+                updatedAt: '2024-12-01T05:01:01.000Z',
+            },
+        },
+    })
+    @ApiResponse({
+        status: 401,
+        description: 'Unauthorized. Authentication required',
+    })
+    async createABike(): Promise<Bicycle> {
+        console.log("skapa cykel");
+        return await this.bicyclesService.createBike();
+    }
+
+    @Get(':bikeId')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Get a bicycle by ID' })
+    @ApiParam({
+        name: 'bikeId',
+        description: 'Unique identifier of the bicycle',
+        type: 'string',
+        example: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Bicycle details retrieved successfully',
+        schema: {
+            example: {
+                id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
+                batteryLevel: 100,
+                latitude: 59.3293,
+                longitude: 18.0686,
+                status: 'Available',
+                createdAt: '2024-12-01T05:01:01.000Z',
+                updatedAt: '2024-12-07T18:30:30.000Z',
             },
         },
     })
@@ -38,52 +95,36 @@ export class BicyclesController {
         description: 'Unauthorized. Authentication required',
     })
     @ApiResponse({
-        status: 403,
-        description: 'Forbidden. Admin access required',
+        status: 404,
+        description: 'Bicycle not found',
     })
-    async getAllBicycles() {
-        return await this.bicyclesService.findAll();
-}
-
-    @Post('create')
-    // Create a bike
-    async createABike() {
-        console.log("skapa cykel");
-
-        return await this.bicyclesService.createBike();
-    }
-
-    @Get(':bikeId')
-    // Get a bike
-    async getBikeById(@Param('bikeId') id: string) {
+    async getBikeById(@Param('bikeId') id: string): Promise<Bicycle> {
         return await this.bicyclesService.findById(id);
     }
 
     @Patch(':bikeId')
     @ApiBearerAuth()
-    @ApiOperation({ summary: 'Update bicycle by ID (Only for admin)' })
+    @ApiOperation({ summary: 'Update bicycle by ID' })
     @ApiParam({
         name: 'bikeId',
-        description: 'The ID of the bicycle',
+        description: 'Unique identifier of the bicycle',
+        type: 'string',
         example: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
     })
     @ApiBody({
-        description: 'The body containing the updated bicycle details',
+        description: 'Bicycle update details',
         type: UpdateBicycleDto,
     })
     @ApiResponse({
         status: 200,
         description: 'Bicycle updated successfully',
-        examples: {
-            'application/json': {
-                summary: 'Example of a successful bicycle update',
-                value: {
-                    id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
-                    batteryLevel: 85,
-                    latitude: 59.3294,
-                    longitude: 18.0687,
-                    status: 'Service',
-                },
+        schema: {
+            example: {
+                id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
+                batteryLevel: 85,
+                latitude: 59.3294,
+                longitude: 18.0687,
+                status: 'Service',
             },
         },
     })
@@ -98,10 +139,6 @@ export class BicyclesController {
     @ApiResponse({
         status: 401,
         description: 'Unauthorized. Authentication required',
-    })
-    @ApiResponse({
-        status: 403,
-        description: 'Forbidden. Admin access required',
     })
     async updateBicycle(
         @Param('bikeId') bikeId: string,
