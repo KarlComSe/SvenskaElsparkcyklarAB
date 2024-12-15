@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Bicycle } from './entities/bicycle.entity';
 import { NotFoundException } from '@nestjs/common';
+import { UpdateBicycleDto } from './dto/update-bicycle.dto';
 
 @Injectable()
 export class BicyclesService {
@@ -28,11 +29,10 @@ export class BicyclesService {
         return bike;
     }
 
-}
+    async update(id: string, updateBicycleDto: UpdateBicycleDto): Promise<Bicycle> {
+        const bike = await this.findById(id);
 
-// {
-//     batteryLevel: 100,
-//     latitude: 59.3293,
-//     longitude: 18.0686,
-//     status: 'Available',
-// },
+        return this.bicycleRepository.save({ ...bike, ...updateBicycleDto });
+    }
+
+}

@@ -1,8 +1,9 @@
-import { Controller, Get, Post, UseGuards, Param, Patch } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, Post, UseGuards, Param, Patch, Body } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AdminGuard } from '../auth/guards/admin.guard';
 import { BicyclesService } from './bicycles.service';
+import { UpdateBicycleDto } from './dto/update-bicycle.dto';
 
 @Controller('bike')
 export class BicyclesController {
@@ -10,7 +11,6 @@ export class BicyclesController {
 
     // Fetch all bicycles
     @Get()
-    @UseGuards(JwtAuthGuard, AdminGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Get all bicycles (Only for admin)' })
     @ApiResponse({
@@ -58,5 +58,57 @@ export class BicyclesController {
     async getBikeById(@Param('id') id: string) {
         return await this.bicyclesService.findById(id);
     }
+
+    @Patch(':bikeId')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Update bicycle by ID (Only for admin)' })
+    @ApiParam({
+        name: 'bikeId',
+        description: 'The ID of the bicycle',
+        example: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
+    })
+    @ApiBody({
+        description: 'The body containing the updated bicycle details',
+        type: UpdateBicycleDto,
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Bicycle updated successfully',
+        examples: {
+            'application/json': {
+                summary: 'Example of a successful bicycle update',
+                value: {
+                    id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
+                    batteryLevel: 85,
+                    latitude: 59.3294,
+                    longitude: 18.0687,
+                    status: 'Service',
+                },
+            },
+        },
+    })
+    @ApiResponse({
+        status: 400,
+        description: 'Invalid input',
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'Bicycle not found',
+    })
+    @ApiResponse({
+        status: 401,
+        description: 'Unauthorized. Authentication required',
+    })
+    @ApiResponse({
+        status: 403,
+        description: 'Forbidden. Admin access required',
+    })
+    async updateBicycle(
+        @Param('bikeId') bikeId: string,
+        @Body() updateBicycleDto: UpdateBicycleDto
+    ) {
+        return this.bicyclesService.update(bikeId, updateBicycleDto);
+    }
+    
 
 }
