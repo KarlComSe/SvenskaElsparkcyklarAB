@@ -1,6 +1,7 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CitiesService } from './cities.service';
+import { CreateCityDto } from './dto/create-city.dto';
 
 @ApiTags('Cities')
 @Controller('cities')
@@ -46,7 +47,7 @@ export class CitiesController {
             },
         },
     })
-    async createACity() {
+    async createACity(@Body() createCityDto: CreateCityDto) {
         return await this.citiesService.createCity();
     }
 

@@ -11,7 +11,7 @@ export class City {
         default: 'Stockholm',
         unique: true
     })
-    status: 'Stockholm' | 'Linköping' | 'Uppsala';
+    name: 'Stockholm' | 'Linköping' | 'Uppsala';
 
     @Column('float', { nullable: true })
     latitude?: number;
