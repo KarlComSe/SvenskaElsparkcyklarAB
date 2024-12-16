@@ -48,7 +48,7 @@ export class CitiesController {
         },
     })
     async createACity(@Body() createCityDto: CreateCityDto) {
-        return await this.citiesService.createCity();
+        return await this.citiesService.createCity(createCityDto);
     }
 
 }
