@@ -8,7 +8,8 @@ export class City {
     @Column({ 
         type: 'simple-enum', 
         enum: ['Stockholm', 'Linköping', 'Uppsala'], 
-        default: 'Stockholm'
+        default: 'Stockholm',
+        unique: true
     })
     status: 'Stockholm' | 'Linköping' | 'Uppsala';
 
