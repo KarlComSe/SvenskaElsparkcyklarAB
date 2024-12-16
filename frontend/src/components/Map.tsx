@@ -3,7 +3,6 @@ import React from 'react';
 import { LatLngTuple,  LatLngExpression } from 'leaflet';
 import L from 'leaflet';
 import markerIcon from '../assets/images/station.png';
-jest.mock("react-leaflet");
 export default function Map() {
 
 
