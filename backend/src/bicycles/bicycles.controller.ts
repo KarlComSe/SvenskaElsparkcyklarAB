@@ -4,6 +4,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { BicyclesService } from './bicycles.service';
 import { UpdateBicycleDto } from './dto/update-bicycle.dto';
 import { Bicycle } from './entities/bicycle.entity';
+import { BicycleResponse } from './types/bicycle-response.interface';
 
 @ApiTags('Bicycles')
 @Controller('bike')
@@ -36,7 +37,7 @@ export class BicyclesController {
         status: 401,
         description: 'Unauthorized. Authentication required',
     })
-    async getAllBicycles(): Promise<Bicycle[]> {
+    async getAllBicycles(): Promise<BicycleResponse[]> {
         return await this.bicyclesService.findAll();
     }
 
@@ -150,6 +151,4 @@ export class BicyclesController {
     ) {
         return this.bicyclesService.update(bikeId, updateBicycleDto);
     }
-    
-
 }

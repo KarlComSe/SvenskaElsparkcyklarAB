@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNumber, IsEnum, Min, Max } from 'class-validator';
+import { IsOptional, IsNumber, IsEnum, Min, Max, IsUUID } from 'class-validator';
 
 export class UpdateBicycleDto {
     @ApiProperty({
@@ -53,6 +53,6 @@ export class UpdateBicycleDto {
         required: false,
     })
     @IsOptional()
-    @IsEnum(['Stockholm', 'Linköping', 'Uppsala'])
-    city?: 'Stockholm' | 'Linköping' | 'Uppsala';
+    @IsUUID()
+    cityId?: string;
 }

@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { City } from 'src/cities/entities/city.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity()
 export class Bicycle {
@@ -21,12 +22,10 @@ export class Bicycle {
     })
     status: 'Rented' | 'Available' | 'Service';
 
-    @Column({ 
-        type: 'simple-enum', 
-        enum: ['Stockholm', 'Linköping', 'Uppsala'], 
-        default: 'Stockholm'
-    })
-    city: 'Stockholm' | 'Linköping' | 'Uppsala';
+    // maybe we should allow nullable here
+    @ManyToOne(() => City, { nullable: false })
+    @JoinColumn()
+    city: City;
 
     @CreateDateColumn({ nullable: true })
     createdAt: Date;

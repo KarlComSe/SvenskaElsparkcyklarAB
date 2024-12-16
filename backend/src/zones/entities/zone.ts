@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { SpeedZone } from './speed-zone';
+import { City } from 'src/cities/entities/city.entity';
 
 @Entity()
 export class Zone {
@@ -12,8 +13,9 @@ export class Zone {
     @Column({ type: 'simple-enum', enum: ['parking', 'charging', 'speed'] })
     type: 'parking' | 'charging' | 'speed';
 
-    @Column({ type: 'simple-enum', enum: ['Stockholm', 'Linköping', 'Uppsala'] })
-    city: 'Stockholm' | 'Linköping' | 'Uppsala';
+    @ManyToOne(() => City, { nullable: false })
+    @JoinColumn()
+    city: City;
 
     @OneToOne(() => SpeedZone, (speedZone) => speedZone.zone, { 
         nullable: true, 
