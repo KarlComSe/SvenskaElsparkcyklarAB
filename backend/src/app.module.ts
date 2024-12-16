@@ -15,6 +15,7 @@ import { BicyclesModule } from './bicycles/bicycles.module';
 import { ZonesModule } from './zones/zones.module';
 import { Zone } from './zones/entities/zone';
 import { SpeedZone } from './zones/entities/speed-zone';
+import { CitiesModule } from './cities/cities.module';
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { SpeedZone } from './zones/entities/speed-zone';
     UsersModule,
     AuthModule,
     BicyclesModule,
-    ZonesModule
+    ZonesModule,
+    CitiesModule
   ],
   controllers: [AppController],
   providers: [AppService],
