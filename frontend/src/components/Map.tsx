@@ -1,10 +1,17 @@
 import { MapContainer, Popup, Marker, TileLayer, Polygon, useMap } from 'react-leaflet';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { LatLngTuple,  LatLngExpression } from 'leaflet';
 import L from 'leaflet';
 import markerIcon from '../assets/images/station.png';
-export default function Map() {
+import { API_URL, getHeader } from '../helpers/config';
+import axios from 'axios';
+import { RootState } from '../redux/store/store';
+import { useDispatch, useSelector } from 'react-redux';
 
+export default function Map() {
+    
+    const [startPosition, setStartPosition] = useState<LatLngExpression>([51.505, -0.09]);
+    const {isLoggedIn, token, user, role} = useSelector((state: RootState) =>  state.auth);
 
     const scooterPositions: LatLngTuple[] = [
     [51.505, -0.09],
@@ -30,6 +37,23 @@ export default function Map() {
           [51.53, -0.07],
         ],
     ];
+
+    useEffect(() => {
+        const fetchScooters = async() => {
+        try {
+    
+                const response = await axios.get(`${API_URL}/bike`, getHeader(token));
+                console.log(response.data);
+
+            }
+            catch(error)
+            {
+                console.log(error);
+            }
+      }
+      fetchScooters();
+      },[])
+    
 
     const iconStation = new L.Icon({
         iconUrl: markerIcon,
@@ -63,7 +87,7 @@ export default function Map() {
 
   return (
     <div id="map" data-testid="map">
-        <MapContainer style={{ height: "400px" }}  center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+        <MapContainer style={{ height: "400px" }}  center={startPosition} zoom={13} scrollWheelZoom={false}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
