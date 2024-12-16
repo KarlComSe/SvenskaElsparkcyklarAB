@@ -12,6 +12,9 @@ export class Zone {
     @Column({ type: 'simple-enum', enum: ['parking', 'charging', 'speed'] })
     type: 'parking' | 'charging' | 'speed';
 
+    @Column({ type: 'simple-enum', enum: ['Stockholm', 'Linköping', 'Uppsala'] })
+    city: 'Stockholm' | 'Linköping' | 'Uppsala';
+
     @OneToOne(() => SpeedZone, (speedZone) => speedZone.zone, { 
         nullable: true, 
         cascade: true,
