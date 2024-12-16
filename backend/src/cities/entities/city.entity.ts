@@ -15,6 +15,8 @@ export class City {
 
     @Column('float', { nullable: true })
     latitude?: number;
+
+    @Column('float', { nullable: true })
     longitude?: number;
 
     @CreateDateColumn({ nullable: true })
