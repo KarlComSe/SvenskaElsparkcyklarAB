@@ -16,6 +16,7 @@ import { ZonesModule } from './zones/zones.module';
 import { Zone } from './zones/entities/zone';
 import { SpeedZone } from './zones/entities/speed-zone';
 import { CitiesModule } from './cities/cities.module';
+import { City } from './cities/entities/city.entity';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { CitiesModule } from './cities/cities.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: process.env.NODE_ENV === 'test' ? ':memory:' : 'db.sqlite',
-      entities: [User, Bicycle, Zone, SpeedZone],
+      entities: [User, Bicycle, Zone, SpeedZone, City],
       synchronize: true,
     }),
     UsersModule,
