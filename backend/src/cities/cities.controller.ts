@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CitiesService } from './cities.service';
 
@@ -29,4 +29,25 @@ export class CitiesController {
     async getAllCities() {
         return await this.citiesService.findAll();
     }
+
+    @Post('create')
+    @ApiOperation({ summary: 'Create a new city' })
+    @ApiResponse({
+        status: 201,
+        description: 'City created successfully',
+        schema: {
+            example: {
+                id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
+                city: 'Stockholm',
+                latitude: null,
+                longitude: null,
+                createdAt: '2024-12-01T05:01:01.000Z',
+                updatedAt: '2024-12-01T05:01:01.000Z',
+            },
+        },
+    })
+    async createACity() {
+        return await this.citiesService.createCity();
+    }
+
 }

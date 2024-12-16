@@ -13,4 +13,9 @@ export class CitiesService {
     async findAll(): Promise<City[]> {
         return await this.cityRepository.find();
     }
+
+    async createCity(data?: Partial<City>): Promise<City> {
+        const city = this.cityRepository.create(data);
+        return await this.cityRepository.save(city);
+    }
 }
