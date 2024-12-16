@@ -45,4 +45,14 @@ export class UpdateBicycleDto {
     @IsOptional()
     @IsEnum(['Rented', 'Available', 'Service'])
     status?: 'Rented' | 'Available' | 'Service';
+
+    @ApiProperty({
+        description: 'City of the bicycle',
+        example: 'Linköping',
+        enum: ['Stockholm', 'Linköping', 'Uppsala'],
+        required: false,
+    })
+    @IsOptional()
+    @IsEnum(['Stockholm', 'Linköping', 'Uppsala'])
+    city?: 'Stockholm' | 'Linköping' | 'Uppsala';
 }

@@ -21,6 +21,13 @@ export class Bicycle {
     })
     status: 'Rented' | 'Available' | 'Service';
 
+    @Column({ 
+        type: 'simple-enum', 
+        enum: ['Stockholm', 'Linköping', 'Uppsala'], 
+        default: 'Stockholm'
+    })
+    city: 'Stockholm' | 'Linköping' | 'Uppsala';
+
     @CreateDateColumn({ nullable: true })
     createdAt: Date;
 
