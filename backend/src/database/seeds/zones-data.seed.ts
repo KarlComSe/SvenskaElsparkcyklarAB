@@ -14,7 +14,8 @@ export default class ZoneSeeder {
                         { lat: 59.3298, lng: 18.0687 },
                         { lat: 59.3303, lng: 18.0688 }
                     ],
-                    type: 'parking'
+                    type: 'parking',
+                    city: 'Stockholm'
                 },
                 {
                     polygon: [
@@ -22,7 +23,8 @@ export default class ZoneSeeder {
                         { lat: 59.8591, lng: 17.6390 },
                         { lat: 59.8596, lng: 17.6391 }
                     ],
-                    type: 'charging'
+                    type: 'charging',
+                    city: 'Uppsala'
                 },
                 {
                     polygon: [
@@ -31,6 +33,7 @@ export default class ZoneSeeder {
                         { lat: 58.4115, lng: 15.6216 }
                     ],
                     type: 'speed',
+                    city: 'Linköping',
                     speedZone: {
                         speedLimit: 15
                     }
