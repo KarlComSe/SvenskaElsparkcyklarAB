@@ -79,31 +79,31 @@ export default function Map() {
       fetchScooters();
       },[])
     
-      useEffect(() => {
-        /////EJ FÄRDIG ÄN
-        const fetchZones = async() => {
-        try {
+    //   useEffect(() => {
+    //     /////EJ FÄRDIG ÄN
+    //     const fetchZones = async() => {
+    //     try {
     
-                const response = await axios.get(`${API_URL}/zone`);
-                console.log(response.data);
-                const positions: LatLngTuple[] = [];
-                for (let key in response.data) {
-                    if (response.data.hasOwnProperty(key)) {
-                        // const latitude = response.data[key].latitude;
-                        // const longitude = response.data[key].longitude;
-                        // positions.push([latitude, longitude]);
-                        // console.log(key, latitude, longitude);
-                    }
-                 }
-                //  setScooterPosition(positions);
-            }
-            catch(error)
-            {
-                console.log(error);
-            }
-      }
-      fetchZones();
-      },[])
+    //             const response = await axios.get(`${API_URL}/zone`);
+    //             console.log(response.data);
+    //             const positions: LatLngTuple[] = [];
+    //             for (let key in response.data) {
+    //                 if (response.data.hasOwnProperty(key)) {
+    //                     // const latitude = response.data[key].latitude;
+    //                     // const longitude = response.data[key].longitude;
+    //                     // positions.push([latitude, longitude]);
+    //                     // console.log(key, latitude, longitude);
+    //                 }
+    //              }
+    //             //  setScooterPosition(positions);
+    //         }
+    //         catch(error)
+    //         {
+    //             console.log(error);
+    //         }
+    //   }
+    //   fetchZones();
+    //   },[])
 
     
     const renderScooterMarkers = () => (
