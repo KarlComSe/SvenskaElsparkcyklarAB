@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { City } from 'src/cities/entities/city.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity()
 export class Bicycle {
@@ -20,6 +21,11 @@ export class Bicycle {
         default: 'Available'
     })
     status: 'Rented' | 'Available' | 'Service';
+
+    // maybe we should allow nullable here
+    @ManyToOne(() => City, { nullable: false })
+    @JoinColumn()
+    city: City;
 
     @CreateDateColumn({ nullable: true })
     createdAt: Date;

@@ -4,6 +4,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { BicyclesService } from './bicycles.service';
 import { UpdateBicycleDto } from './dto/update-bicycle.dto';
 import { Bicycle } from './entities/bicycle.entity';
+import { BicycleResponse } from './types/bicycle-response.interface';
 
 @ApiTags('Bicycles')
 @Controller('bike')
@@ -25,6 +26,7 @@ export class BicyclesController {
                     latitude: 59.3293,
                     longitude: 18.0686,
                     status: 'Available',
+                    city: 'Stockholm',
                     createdAt: '2024-12-01T05:01:01.000Z',
                     updatedAt: '2024-12-07T18:30:30.000Z',
                 },
@@ -35,7 +37,7 @@ export class BicyclesController {
         status: 401,
         description: 'Unauthorized. Authentication required',
     })
-    async getAllBicycles(): Promise<Bicycle[]> {
+    async getAllBicycles(): Promise<BicycleResponse[]> {
         return await this.bicyclesService.findAll();
     }
 
@@ -52,6 +54,7 @@ export class BicyclesController {
                 latitude: null,
                 longitude: null,
                 status: 'Available',
+                city: 'Stockholm',
                 createdAt: '2024-12-01T05:01:01.000Z',
                 updatedAt: '2024-12-01T05:01:01.000Z',
             },
@@ -85,6 +88,7 @@ export class BicyclesController {
                 latitude: 59.3293,
                 longitude: 18.0686,
                 status: 'Available',
+                city: 'Stockholm',
                 createdAt: '2024-12-01T05:01:01.000Z',
                 updatedAt: '2024-12-07T18:30:30.000Z',
             },
@@ -125,6 +129,7 @@ export class BicyclesController {
                 latitude: 59.3294,
                 longitude: 18.0687,
                 status: 'Service',
+                city: 'Stockholm',
             },
         },
     })
@@ -146,6 +151,4 @@ export class BicyclesController {
     ) {
         return this.bicyclesService.update(bikeId, updateBicycleDto);
     }
-    
-
 }

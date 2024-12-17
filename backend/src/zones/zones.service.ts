@@ -12,7 +12,7 @@ export class ZonesService {
 
     async findAll(): Promise<Zone[]> {
         return await this.zoneRepository.find({
-            relations: ['speedZone']
+            relations: ['speedZone', 'city']
         });
     }
 }

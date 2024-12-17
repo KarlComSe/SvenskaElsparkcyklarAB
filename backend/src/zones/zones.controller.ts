@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 // import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ZonesService } from './zones.service';
@@ -26,6 +26,7 @@ export class ZonesController {
                         { lat: 59.3295, lng: 18.0688 }
                     ],
                     type: 'speed',
+                    city: 'Stockholm',
                     speedZone: {
                         id: 'c2f88dd4-0ba9-5f7c-b5d7-c7fc59f59465',
                         speedLimit: 20.5
@@ -38,7 +39,8 @@ export class ZonesController {
                         { lat: 59.8587, lng: 17.6390 },
                         { lat: 59.8588, lng: 17.6391 }
                     ],
-                    type: 'parking'
+                    type: 'parking',
+                    city: 'Stockholm',
                 }
             ],
         },

@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Bicycle } from './entities/bicycle.entity';
 import { NotFoundException } from '@nestjs/common';
 import { UpdateBicycleDto } from './dto/update-bicycle.dto';
+import { BicycleResponse } from './types/bicycle-response.interface';
 
 @Injectable()
 export class BicyclesService {
@@ -12,9 +13,32 @@ export class BicyclesService {
         private readonly bicycleRepository: Repository<Bicycle>,
     ) {}
 
-    async findAll(): Promise<Bicycle[]> {
-        return await this.bicycleRepository.find();
-    }
+    async findAll(): Promise<BicycleResponse[]> {
+        const bikes = await this.bicycleRepository.find({
+            relations: {
+                city: true
+            },
+            select: {
+                id: true,
+                batteryLevel: true,
+                latitude: true,
+                longitude: true,
+                status: true,
+                createdAt: true,
+                updatedAt: true,
+                city: {
+                    name: true
+                }
+            }
+        });
+
+        return bikes.map(bike => {
+            return {
+                ...bike,
+                city: bike.city.name
+            }
+        });
+    };
 
     async createBike(data?: Partial<Bicycle>): Promise<Bicycle> {
         const bike = this.bicycleRepository.create(data);
@@ -22,7 +46,12 @@ export class BicyclesService {
     }
 
     async findById(id: string): Promise<Bicycle> {
-        const bike = await this.bicycleRepository.findOne({ where: { id } });
+        const bike = await this.bicycleRepository.findOne({ 
+            where: { id },
+            relations: {
+                city: true
+            } 
+        });
         if (!bike) {
             throw new NotFoundException('Bike not found');
         }

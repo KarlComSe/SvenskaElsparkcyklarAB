@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNumber, IsEnum, Min, Max } from 'class-validator';
+import { IsOptional, IsNumber, IsEnum, Min, Max, IsUUID } from 'class-validator';
 
 export class UpdateBicycleDto {
     @ApiProperty({
@@ -45,4 +45,14 @@ export class UpdateBicycleDto {
     @IsOptional()
     @IsEnum(['Rented', 'Available', 'Service'])
     status?: 'Rented' | 'Available' | 'Service';
+
+    @ApiProperty({
+        description: 'City of the bicycle',
+        example: 'Linköping',
+        enum: ['Stockholm', 'Linköping', 'Uppsala'],
+        required: false,
+    })
+    @IsOptional()
+    @IsUUID()
+    cityId?: string;
 }
