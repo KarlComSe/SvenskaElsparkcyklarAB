@@ -20,6 +20,14 @@ describe('ZonesController', () => {
       id: 'c2f88dd4-0ba9-5f7c-b5d7-c7fc59f59465',
       speedLimit: 20.5,
       zone: null
+    },
+    city: {
+      id: '755cacbd-fc18-4884-8859-96fa814b1eb2',
+      name: 'Linköping',
+      latitude: null,
+      longitude: null,
+      createdAt: new Date,
+      updatedAt: new Date,
     }
   };
 

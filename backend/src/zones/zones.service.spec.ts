@@ -3,6 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { ZonesService } from './zones.service';
 import { Zone } from './entities/zone';
 import { Repository } from 'typeorm';
+import { City } from '../cities/entities/city.entity';
 
 const mockRepository = {
   find: jest.fn(),
@@ -11,6 +12,13 @@ const mockRepository = {
 describe('ZonesService', () => {
   let service: ZonesService;
   let repository: Repository<Zone>;
+
+  const mockCity: City = {
+    id: 'city-test-id',
+    name: 'Stockholm',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
 
   const mockZone: Zone = {
     id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
@@ -23,7 +31,8 @@ describe('ZonesService', () => {
       id: 'c2f88dd4-0ba9-5f7c-b5d7-c7fc59f59465',
       speedLimit: 20.5,
       zone: null
-    }
+    },
+    city: mockCity
   };
 
   beforeEach(async () => {
@@ -57,7 +66,7 @@ describe('ZonesService', () => {
       
       expect(result).toEqual([mockZone]);
       expect(mockRepository.find).toHaveBeenCalledWith({
-        relations: ['speedZone']
+        relations: ['speedZone', 'city']
       });
     });
 
