@@ -1,35 +1,12 @@
-import { MapContainer, Popup, Marker, TileLayer, Polygon, useMap } from 'react-leaflet';
+import { MapContainer, Popup, Marker, TileLayer, Polygon, Tooltip, useMap } from 'react-leaflet';
 import React, { useEffect, useState } from 'react';
 import { LatLngTuple,  LatLngExpression } from 'leaflet';
 import { API_URL, getHeader, iconStation } from '../helpers/config';
 import axios from 'axios';
 import { RootState } from '../redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
+import { Scooter, PolygonPoint, SpeedZone, Zone } from '../helpers/leaflet-types'
 
-type Scooter = {
-    id: string;
-    batteryLevel: number;
-    latitude: number;
-    longitude: number;
-    status: string;
-  };
-
-type PolygonPoint = {
-    lat: number;
-    lng: number;
-  };
-
-type SpeedZone = {
-    id: string;
-    speedLimit: number;
-};
-
-type Zone = {
-    id: string;
-    polygon: PolygonPoint[];
-    type: 'parking' | 'charging' | 'speed';
-    speedZone?: SpeedZone | null;
-};
 
 export default function Map() {
     const [startPosition, setStartPosition] = useState<LatLngExpression>([59.2741, 15.2066]);
@@ -48,27 +25,12 @@ export default function Map() {
         [51.535, -0.08]
         ];
 
-    const multiPolygon:  LatLngExpression[][] = [
-        [
-          [51.51, -0.12],
-          [51.51, -0.13],
-          [51.53, -0.13],
-        ],
-        [
-          [51.51, -0.05],
-          [51.51, -0.07],
-          [51.53, -0.07],
-        ],
-    ];
-    const purpleOptions = { color: 'purple' }
-
     useEffect(() => {
         const fetchScooters = async() => {
         try {
     
                 const response = await axios.get(`${API_URL}/bike`);
                 console.log(response.data);
-                const positions: LatLngTuple[] = [];
                 setScooterData(response.data);
             }
             catch(error)
@@ -79,31 +41,21 @@ export default function Map() {
       fetchScooters();
       },[])
     
-    //   useEffect(() => {
-    //     /////EJ FÄRDIG ÄN
-    //     const fetchZones = async() => {
-    //     try {
+      useEffect(() => {
+        const fetchZones = async() => {
+        try {
     
-    //             const response = await axios.get(`${API_URL}/zone`);
-    //             console.log(response.data);
-    //             const positions: LatLngTuple[] = [];
-    //             for (let key in response.data) {
-    //                 if (response.data.hasOwnProperty(key)) {
-    //                     // const latitude = response.data[key].latitude;
-    //                     // const longitude = response.data[key].longitude;
-    //                     // positions.push([latitude, longitude]);
-    //                     // console.log(key, latitude, longitude);
-    //                 }
-    //              }
-    //             //  setScooterPosition(positions);
-    //         }
-    //         catch(error)
-    //         {
-    //             console.log(error);
-    //         }
-    //   }
-    //   fetchZones();
-    //   },[])
+                const response = await axios.get(`${API_URL}/zone`);
+                console.log(response.data);
+                setZoneData(response.data);
+            }
+            catch(error)
+            {
+                console.log(error);
+            }
+      }
+      fetchZones();
+      },[])
 
     
     const renderScooterMarkers = () => (
@@ -126,6 +78,20 @@ export default function Map() {
         </Marker>))
         );
 
+    const renderPolygons = () => (
+        zoneData?.map((zone, index) => (
+
+            <Polygon pathOptions={{ color: "red "}} positions={zone.polygon.map(point => [point.lat, point.lng])} key={index}>
+                <Tooltip direction="bottom" offset={[0, 20]} opacity={1} >
+                <p>Id: {zone.id}</p>
+                <p>Type: {zone.type}</p>
+                </Tooltip>
+
+            </Polygon>
+
+        ))
+    );
+
   return (
     <div id="map" data-testid="map">
         <MapContainer style={{ height: "400px" }}  center={startPosition} zoom={6} scrollWheelZoom={true}>
@@ -135,7 +101,7 @@ export default function Map() {
             />
             { renderScooterMarkers() }
             { renderStationMarkers() }
-            <Polygon pathOptions={purpleOptions} positions={multiPolygon} />
+            { renderPolygons() }
         </MapContainer>
     </div>
   )
