@@ -30,12 +30,10 @@ export default function Map() {
         try {
     
                 const response = await axios.get(`${API_URL}/bike`);
-                console.log(response.data);
                 setScooterData(response.data);
             }
             catch(error)
             {
-                console.log(error);
             }
       }
       fetchScooters();
@@ -44,14 +42,12 @@ export default function Map() {
       useEffect(() => {
         const fetchZones = async() => {
         try {
-    
+
                 const response = await axios.get(`${API_URL}/zone`);
-                console.log(response.data);
                 setZoneData(response.data);
             }
             catch(error)
             {
-                console.log(error);
             }
       }
       fetchZones();
@@ -62,9 +58,9 @@ export default function Map() {
         scooterData?.map((scooter, index) => (
         <Marker key={index} position={[scooter.latitude, scooter.longitude]}>
             <Popup>
-            <p>Id: { scooter.id} </p>
-            <p>BatteryLevel: { scooter.batteryLevel} </p>
-            <p>Status: { scooter.status} </p>
+                <p>Id: { scooter.id} </p>
+                <p>BatteryLevel: { scooter.batteryLevel} </p>
+                <p>Status: { scooter.status} </p>
             </Popup>
         </Marker>))
         );
@@ -80,15 +76,12 @@ export default function Map() {
 
     const renderPolygons = () => (
         zoneData?.map((zone, index) => (
-
             <Polygon pathOptions={{ color: "red "}} positions={zone.polygon.map(point => [point.lat, point.lng])} key={index}>
                 <Tooltip direction="bottom" offset={[0, 20]} opacity={1} >
-                <p>Id: {zone.id}</p>
-                <p>Type: {zone.type}</p>
+                    <p>Id: {zone.id}</p>
+                    <p>Type: {zone.type}</p>
                 </Tooltip>
-
             </Polygon>
-
         ))
     );
 
