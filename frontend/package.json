@@ -8,7 +8,7 @@
     "build-gör-inte-detta-än": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest",
+    "test": "jest --verbose=false",
     "test-tsc": "tsc src/*.tsx --noEmit --jsx react-jsx"
   },
   "dependencies": {

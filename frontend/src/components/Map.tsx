@@ -80,6 +80,7 @@ export default function Map() {
       },[])
     
       useEffect(() => {
+        /////EJ FÄRDIG ÄN
         const fetchZones = async() => {
         try {
     
