@@ -2,7 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { initTestApp } from './utils';
 
-
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   beforeAll(async () => {
@@ -13,7 +12,7 @@ describe('AppController (e2e)', () => {
     const userRepo = app.get('UserRepository');
     await userRepo.clear();
     await app.close();
-});
+  });
 
   it('/ (GET)', () => {
     return request(app.getHttpServer())
@@ -29,5 +28,4 @@ describe('AppController (e2e)', () => {
   //     .expect(200)
   //     .expect('Content-Type', /html/);
   // });
-
 });

@@ -7,39 +7,42 @@ import { UpdateUserDto } from './dto/update-user.dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-    constructor(
-        @InjectRepository(User)
-        private userRepository: Repository<User>
-    ) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
 
-    async updateTerms(githubId: string, hasAcceptedTerms: boolean): Promise<User> {
-        const user = await this.userRepository.findOne({ 
-            where: { githubId } 
-        });
-        
-        if (!user) {
-            throw new NotFoundException('User not found');
-        }
+  async updateTerms(
+    githubId: string,
+    hasAcceptedTerms: boolean,
+  ): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { githubId },
+    });
 
-        user.hasAcceptedTerms = hasAcceptedTerms;
-        return this.userRepository.save(user);
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
-    // Find all customers
-    async findAll(): Promise<User[]> {
-        return this.userRepository.find();
-    }
-    // Find a customer by ID
-    async findById(githubId: string): Promise<User> {
-        const user = await this.userRepository.findOne({ where: { githubId } });
-        if (!user) {
-            throw new NotFoundException('User not found');
-        }
-        return user;
-    }
-    // Update customer fields
-    async update(githubId: string, updateUserDto: UpdateUserDto): Promise<User> {
-        const user = await this.findById(githubId);
 
-        return this.userRepository.save({ ...user, ...updateUserDto });
+    user.hasAcceptedTerms = hasAcceptedTerms;
+    return this.userRepository.save(user);
+  }
+  // Find all customers
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
+  }
+  // Find a customer by ID
+  async findById(githubId: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { githubId } });
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
+    return user;
+  }
+  // Update customer fields
+  async update(githubId: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.findById(githubId);
+
+    return this.userRepository.save({ ...user, ...updateUserDto });
+  }
 }

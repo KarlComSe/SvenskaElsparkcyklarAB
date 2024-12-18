@@ -1,7 +1,7 @@
-import { CanActivate } from "@nestjs/common"
-import { JwtService } from "@nestjs/jwt"
-import { Test } from "@nestjs/testing"
-import { JwtPayload } from "src/auth/types/jwt-payload.interface"
+import { CanActivate } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { Test } from '@nestjs/testing';
+import { JwtPayload } from 'src/auth/types/jwt-payload.interface';
 import { AppModule } from './../src/app.module';
 
 // is guarded is a copy from stackoverflow / stackexchange
@@ -13,39 +13,37 @@ import { AppModule } from './../src/app.module';
  */
 function isGuarded(
   route: ((...args: any[]) => any) | (new (...args: any[]) => unknown),
-  guardType: new (...args: any[]) => CanActivate
+  guardType: new (...args: any[]) => CanActivate,
 ) {
-  const guards: any[] = Reflect.getMetadata('__guards__', route)
+  const guards: any[] = Reflect.getMetadata('__guards__', route);
 
   if (!guards) {
     throw Error(
-      `Expected: ${route.name} to be protected with ${guardType.name}\nReceived: No guard`
-    )
+      `Expected: ${route.name} to be protected with ${guardType.name}\nReceived: No guard`,
+    );
   }
 
-  let foundGuard = false
-  const guardList: string[] = []
+  let foundGuard = false;
+  const guardList: string[] = [];
   guards.forEach((guard) => {
-    guardList.push(guard.name)
+    guardList.push(guard.name);
     // console.log(guard.name)
-    if (guard.name === guardType.name) foundGuard = true
-  })
+    if (guard.name === guardType.name) foundGuard = true;
+  });
 
   if (!foundGuard) {
     throw Error(
-      `Expected: ${route.name} to be protected with ${guardType.name}\nReceived: only ${guardList}`
-    )
+      `Expected: ${route.name} to be protected with ${guardType.name}\nReceived: only ${guardList}`,
+    );
   }
-  return true
+  return true;
 }
-
 
 // sub: user.githubId,
 // username: user.username,
 // email: user.email,
 // roles: user.roles
 function generateToken(user: JwtPayload) {
-
   const secret = process.env.JWT_SECRET || 'your-test-secret';
   const jwtService = new JwtService({
     secret: process.env.JWT_SECRET,
@@ -54,28 +52,26 @@ function generateToken(user: JwtPayload) {
   return token;
 }
 
-
 const adminUser = {
   sub: '67890',
   username: 'adminuser',
   email: 'admin@test.com',
-  roles: ['admin']
+  roles: ['admin'],
 };
 const standardUser = {
   sub: '12345',
   username: 'testuser',
   email: 'testuser@test.com',
-  roles: ['user']
+  roles: ['user'],
 };
 
 function generateTestTokens() {
-
   const adminToken = generateToken(adminUser);
   const userToken = generateToken(standardUser);
 
   return {
     adminToken,
-    userToken
+    userToken,
   };
 }
 
@@ -94,22 +90,27 @@ async function initTestApp() {
       githubId: '12345',
       username: 'testuser',
       email: 'testuser@test.com',
-      roles: ['user']
+      roles: ['user'],
     },
     {
       githubId: '67890',
       username: 'adminuser',
       email: 'admin@test.com',
-      roles: ['admin']
-    }
+      roles: ['admin'],
+    },
   ]);
 
   return app;
 }
 
-
 function removeTimestamps(users: any[]) {
   return users.map(({ createdAt, updatedAt, ...rest }) => rest);
 }
 
-export { isGuarded, generateToken, removeTimestamps, generateTestTokens, initTestApp };
+export {
+  isGuarded,
+  generateToken,
+  removeTimestamps,
+  generateTestTokens,
+  initTestApp,
+};

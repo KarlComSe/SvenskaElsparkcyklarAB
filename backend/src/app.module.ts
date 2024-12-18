@@ -20,11 +20,9 @@ import { City } from './cities/entities/city.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(
-      {
-        isGlobal: true,
-      }
-    ),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: process.env.NODE_ENV === 'test' ? ':memory:' : 'db.sqlite',
@@ -35,7 +33,7 @@ import { City } from './cities/entities/city.entity';
     AuthModule,
     BicyclesModule,
     ZonesModule,
-    CitiesModule
+    CitiesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

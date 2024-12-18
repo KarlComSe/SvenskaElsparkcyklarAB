@@ -17,8 +17,8 @@ describe('UsersService', () => {
         UsersService,
         {
           provide: getRepositoryToken(User),
-          useValue: mockRepository
-        }
+          useValue: mockRepository,
+        },
       ],
     }).compile();
 
@@ -33,7 +33,10 @@ describe('UsersService', () => {
     const mockUser = new User({ githubId: '123', hasAcceptedTerms: false });
 
     mockRepository.findOne.mockResolvedValue(mockUser);
-    mockRepository.save.mockResolvedValue({ ...mockUser, hasAcceptedTerms: true });
+    mockRepository.save.mockResolvedValue({
+      ...mockUser,
+      hasAcceptedTerms: true,
+    });
 
     const result = await service.updateTerms('123', true);
     expect(result.hasAcceptedTerms).toBe(true);
