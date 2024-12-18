@@ -151,4 +151,49 @@ export class BicyclesController {
     ) {
         return this.bicyclesService.update(bikeId, updateBicycleDto);
     }
+
+    @Get('city/:cityName')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Get all bicycles in a specific city' })
+    @ApiResponse({
+        status: 200,
+        description: 'List of bicycles in the specified city',
+        schema: {
+            type: 'array',
+            example: [
+                {
+                    id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
+                    batteryLevel: 80,
+                    latitude: 59.8586,
+                    longitude: 17.6389,
+                    status: 'Rented',
+                    createdAt: '2024-12-17T10:56:43.000Z',
+                    updatedAt: '2024-12-17T10:56:43.000Z',
+                    city: {
+                        id: 'd2322ff3-a81c-4b06-b78d-1bc72b4fe459',
+                        name: 'Uppsala',
+                        latitude: null,
+                        longitude: null,
+                        createdAt: '2024-12-17T10:37:25.000Z',
+                        updatedAt: '2024-12-17T10:37:25.000Z'
+                    }
+                },
+            ],
+        },
+    })
+    @ApiResponse({
+        status: 401,
+        description: 'Unauthorized. Authentication required',
+    })
+    @ApiParam({
+        name: 'cityName',
+        description: 'Name of the city',
+        type: 'string',
+        enum: ['Stockholm', 'Linköping', 'Uppsala']
+    })
+    async getBicyclesByCity(
+      @Param('cityName') cityName: 'Stockholm' | 'Linköping' | 'Uppsala'
+    ) {
+      return await this.bicyclesService.findByCity(cityName);
+    }
 }

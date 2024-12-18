@@ -15,4 +15,15 @@ export class ZonesService {
             relations: ['speedZone', 'city']
         });
     }
+
+    async findByCity(cityName: 'Stockholm' | 'Linköping' | 'Uppsala'): Promise<Zone[]> {
+        return await this.zoneRepository.find({
+          where: { 
+            city: { 
+              name: cityName 
+            } 
+          },
+          relations: ['city']
+        });
+      }
 }
