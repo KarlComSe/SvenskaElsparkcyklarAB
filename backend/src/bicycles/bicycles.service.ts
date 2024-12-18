@@ -64,4 +64,14 @@ export class BicyclesService {
         return this.bicycleRepository.save({ ...bike, ...updateBicycleDto });
     }
 
+    async findByCity(cityName: 'Stockholm' | 'Linköping' | 'Uppsala'): Promise<Bicycle[]> {
+        return await this.bicycleRepository.find({
+          where: { 
+            city: { 
+              name: cityName 
+            } 
+          },
+          relations: ['city']
+        });
+      }
 }
