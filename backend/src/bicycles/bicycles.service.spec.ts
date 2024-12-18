@@ -23,8 +23,8 @@ describe('BicyclesService', () => {
         BicyclesService,
         {
           provide: getRepositoryToken(Bicycle),
-          useValue: mockRepository
-        }
+          useValue: mockRepository,
+        },
       ],
     }).compile();
 
@@ -40,14 +40,16 @@ describe('BicyclesService', () => {
     expect(service).toBeDefined();
   });
 
-    it('should throw NotFoundException when updating non-existent bicycle', async () => {
-      const updateDto: UpdateBicycleDto = { 
-        batteryLevel: 85,
-        status: 'Service'
-      };
+  it('should throw NotFoundException when updating non-existent bicycle', async () => {
+    const updateDto: UpdateBicycleDto = {
+      batteryLevel: 85,
+      status: 'Service',
+    };
 
-      mockRepository.findOne.mockResolvedValue(null);
+    mockRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.update('non-existent-id', updateDto)).rejects.toThrow(NotFoundException);
-    });
+    await expect(service.update('non-existent-id', updateDto)).rejects.toThrow(
+      NotFoundException,
+    );
   });
+});

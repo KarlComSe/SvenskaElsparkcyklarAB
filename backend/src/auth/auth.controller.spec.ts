@@ -13,12 +13,12 @@ describe('AuthController', () => {
     username: 'testuser',
     email: 'test@example.com',
     roles: ['user'],
-    hasAcceptedTerms: false
+    hasAcceptedTerms: false,
   };
 
   const mockAuthResponse = {
     access_token: 'mock-jwt-token',
-    user: mockUser
+    user: mockUser,
   };
 
   beforeEach(async () => {
@@ -31,13 +31,12 @@ describe('AuthController', () => {
             exchangeGithubCode: jest.fn().mockResolvedValue(mockAuthResponse),
             getStatus: jest.fn().mockResolvedValue({
               isAuthenticated: true,
-              user: mockUser
-            })
-          }
-        }
-      ]
-    })
-      .compile();
+              user: mockUser,
+            }),
+          },
+        },
+      ],
+    }).compile();
 
     controller = module.get<AuthController>(AuthController);
     authService = module.get<AuthService>(AuthService);
@@ -53,11 +52,13 @@ describe('AuthController', () => {
     });
 
     it('should handle invalid GitHub code', async () => {
-      jest.spyOn(authService, 'exchangeGithubCode')
+      jest
+        .spyOn(authService, 'exchangeGithubCode')
         .mockRejectedValue(new Error('Invalid code'));
 
-      await expect(controller.exchangeToken({ code: 'invalid' }))
-        .rejects.toThrow('Invalid code');
+      await expect(
+        controller.exchangeToken({ code: 'invalid' }),
+      ).rejects.toThrow('Invalid code');
     });
   });
 
@@ -75,7 +76,7 @@ describe('AuthController', () => {
       const req = { user: mockUser };
       const expectedStatus = {
         isAuthenticated: true,
-        user: mockUser
+        user: mockUser,
       };
 
       const result = await controller.getStatus(req);
@@ -89,12 +90,18 @@ describe('AuthController', () => {
       const guards = Reflect.getMetadata('__guards__', controller.getMe);
       expect(guards).toContain(JwtAuthGuard);
 
-      const statusGuards = Reflect.getMetadata('__guards__', controller.getStatus);
+      const statusGuards = Reflect.getMetadata(
+        '__guards__',
+        controller.getStatus,
+      );
       expect(statusGuards).toContain(JwtAuthGuard);
     });
 
     it('token endpoint should have no guard', () => {
-      const guards = Reflect.getMetadata('__guards__', controller.exchangeToken);
+      const guards = Reflect.getMetadata(
+        '__guards__',
+        controller.exchangeToken,
+      );
       expect(guards).toBeUndefined();
     });
   });

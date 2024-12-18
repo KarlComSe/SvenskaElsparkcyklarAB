@@ -5,8 +5,8 @@ import { BicyclesController } from './bicycles.controller';
 import { BicyclesService } from './bicycles.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Bicycle])],
-    providers: [BicyclesService],
-    controllers: [BicyclesController],
+  imports: [TypeOrmModule.forFeature([Bicycle])],
+  providers: [BicyclesService],
+  controllers: [BicyclesController],
 })
 export class BicyclesModule {}

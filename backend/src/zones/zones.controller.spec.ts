@@ -13,22 +13,22 @@ describe('ZonesController', () => {
     id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
     polygon: [
       { lat: 59.3293, lng: 18.0686 },
-      { lat: 59.3294, lng: 18.0687 }
+      { lat: 59.3294, lng: 18.0687 },
     ],
     type: 'speed',
     speedZone: {
       id: 'c2f88dd4-0ba9-5f7c-b5d7-c7fc59f59465',
       speedLimit: 20.5,
-      zone: null
+      zone: null,
     },
     city: {
       id: '755cacbd-fc18-4884-8859-96fa814b1eb2',
       name: 'Linköping',
       latitude: null,
       longitude: null,
-      createdAt: new Date,
-      updatedAt: new Date,
-    }
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   };
 
   beforeEach(async () => {
@@ -39,8 +39,8 @@ describe('ZonesController', () => {
           provide: ZonesService,
           useValue: {
             findAll: jest.fn().mockResolvedValue([mockZone]),
-          }
-        }
+          },
+        },
       ],
     })
       .overrideGuard(JwtAuthGuard)

@@ -11,12 +11,12 @@ describe('BicyclesController', () => {
   let bicyclesService: BicyclesService;
 
   // Create a mock city
-const mockCity: City = {
-  id: 'city-test-id',
-  name: 'Stockholm',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+  const mockCity: City = {
+    id: 'city-test-id',
+    name: 'Stockholm',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
 
   // Create mock bicycle for reuse
   const mockBicycle: Bicycle = {
@@ -27,13 +27,13 @@ const mockCity: City = {
     status: 'Available',
     createdAt: new Date(),
     updatedAt: new Date(),
-    city: mockCity
+    city: mockCity,
   };
 
   // Create mock updateBicycleDto for reuse
-  const updateBicycleDto: UpdateBicycleDto = { 
+  const updateBicycleDto: UpdateBicycleDto = {
     batteryLevel: 85,
-    status: 'Service'
+    status: 'Service',
   };
 
   beforeEach(async () => {
@@ -46,9 +46,11 @@ const mockCity: City = {
             findAll: jest.fn().mockResolvedValue([mockBicycle]),
             createBike: jest.fn().mockResolvedValue(mockBicycle),
             findById: jest.fn().mockResolvedValue(mockBicycle),
-            update: jest.fn().mockResolvedValue({...mockBicycle, ...updateBicycleDto}),
-          }
-        }
+            update: jest
+              .fn()
+              .mockResolvedValue({ ...mockBicycle, ...updateBicycleDto }),
+          },
+        },
       ],
     })
       .overrideGuard(JwtAuthGuard)
@@ -109,7 +111,7 @@ const mockCity: City = {
     it('should successfully update a bicycle', async () => {
       const bikeId = 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464';
       const result = await controller.updateBicycle(bikeId, updateBicycleDto);
-      expect(result).toEqual({...mockBicycle, ...updateBicycleDto});
+      expect(result).toEqual({ ...mockBicycle, ...updateBicycleDto });
     });
 
     it('should call bicyclesService.update with correct parameters', async () => {
@@ -123,7 +125,9 @@ const mockCity: City = {
       const error = new Error('Update failed');
       jest.spyOn(bicyclesService, 'update').mockRejectedValue(error);
       const bikeId = 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464';
-      await expect(controller.updateBicycle(bikeId, updateBicycleDto)).rejects.toThrow(error);
+      await expect(
+        controller.updateBicycle(bikeId, updateBicycleDto),
+      ).rejects.toThrow(error);
     });
   });
 });

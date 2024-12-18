@@ -6,8 +6,8 @@ import { ZonesController } from './zones.controller';
 import { ZonesService } from './zones.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Zone, SpeedZone])],
-    providers: [ZonesService],
-    controllers: [ZonesController],
+  imports: [TypeOrmModule.forFeature([Zone, SpeedZone])],
+  providers: [ZonesService],
+  controllers: [ZonesController],
 })
 export class ZonesModule {}

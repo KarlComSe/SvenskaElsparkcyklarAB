@@ -24,15 +24,15 @@ describe('ZonesService', () => {
     id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
     polygon: [
       { lat: 59.3293, lng: 18.0686 },
-      { lat: 59.3294, lng: 18.0687 }
+      { lat: 59.3294, lng: 18.0687 },
     ],
     type: 'speed',
     speedZone: {
       id: 'c2f88dd4-0ba9-5f7c-b5d7-c7fc59f59465',
       speedLimit: 20.5,
-      zone: null
+      zone: null,
     },
-    city: mockCity
+    city: mockCity,
   };
 
   beforeEach(async () => {
@@ -41,8 +41,8 @@ describe('ZonesService', () => {
         ZonesService,
         {
           provide: getRepositoryToken(Zone),
-          useValue: mockRepository
-        }
+          useValue: mockRepository,
+        },
       ],
     }).compile();
 
@@ -63,10 +63,10 @@ describe('ZonesService', () => {
       mockRepository.find.mockResolvedValue([mockZone]);
 
       const result = await service.findAll();
-      
+
       expect(result).toEqual([mockZone]);
       expect(mockRepository.find).toHaveBeenCalledWith({
-        relations: ['speedZone', 'city']
+        relations: ['speedZone', 'city'],
       });
     });
 
@@ -74,7 +74,7 @@ describe('ZonesService', () => {
       mockRepository.find.mockResolvedValue([]);
 
       const result = await service.findAll();
-      
+
       expect(result).toEqual([]);
     });
   });

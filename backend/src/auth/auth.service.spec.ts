@@ -19,8 +19,8 @@ describe('AuthService', () => {
     get: jest.fn((key: string) => {
       // console.log('ConfigService.get called with:', key);  // Debug log
       const config = {
-        'OAUTH_CLIENT_ID': 'mock-client-id',
-        'OAUTH_CLIENT_SECRET': 'mock-client-secret',
+        OAUTH_CLIENT_ID: 'mock-client-id',
+        OAUTH_CLIENT_SECRET: 'mock-client-secret',
       };
       const value = config[key];
       // console.log('Returning value:', value);  // Debug log
@@ -28,35 +28,35 @@ describe('AuthService', () => {
     }),
   };
 
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService,
+      providers: [
+        AuthService,
         {
           provide: getRepositoryToken(User),
           useValue: {
             findOne: jest.fn(),
             save: jest.fn(),
-          }
+          },
         },
         {
           provide: JwtService,
           useValue: {
             sign: jest.fn().mockReturnValue('mocked-jwt-token'),
             verify: jest.fn(),
-          }
+          },
         },
         {
           provide: HttpService,
           useValue: {
             post: jest.fn(),
             get: jest.fn(),
-          }
+          },
         },
         {
           provide: ConfigService,
-          useValue: configServiceMock
-        }
+          useValue: configServiceMock,
+        },
       ],
     }).compile();
 
@@ -70,12 +70,12 @@ describe('AuthService', () => {
     it('should exchange code for token and return user data', async () => {
       // Setup mocks
       const mockGithubToken = {
-        access_token: 'github-token-123'
+        access_token: 'github-token-123',
       };
       const mockGithubUser = {
         id: '123',
         login: 'testuser',
-        email: 'test@example.com'
+        email: 'test@example.com',
       };
 
       const mockResponsePost: AxiosResponse = {
@@ -83,32 +83,32 @@ describe('AuthService', () => {
         status: 200,
         statusText: 'OK',
         headers: {},
-        config: {} as any
+        config: {} as any,
       };
 
       // Mock GitHub API responses
-      jest.spyOn(httpService, 'post').mockImplementation(() =>
-        of(mockResponsePost)
-      );
+      jest
+        .spyOn(httpService, 'post')
+        .mockImplementation(() => of(mockResponsePost));
 
       const mockResponseGet: AxiosResponse = {
         data: mockGithubUser,
         status: 200,
         statusText: 'OK',
         headers: {},
-        config: {} as any
+        config: {} as any,
       };
 
-      jest.spyOn(httpService, 'get').mockImplementation(() =>
-        of(mockResponseGet)
-      );
+      jest
+        .spyOn(httpService, 'get')
+        .mockImplementation(() => of(mockResponseGet));
 
       // Mock user repository
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
       jest.spyOn(userRepository, 'save').mockResolvedValue({
         githubId: '123',
         username: 'testuser',
-        email: 'test@example.com'
+        email: 'test@example.com',
       } as User);
 
       // Execute method
@@ -124,9 +124,9 @@ describe('AuthService', () => {
         {
           client_id: 'mock-client-id',
           client_secret: 'mock-client-secret',
-          code: 'test-code'
+          code: 'test-code',
         },
-        { headers: { Accept: 'application/json' } }
+        { headers: { Accept: 'application/json' } },
       );
 
       expect(httpService.get).toHaveBeenCalledWith(
@@ -134,9 +134,9 @@ describe('AuthService', () => {
         {
           headers: {
             Authorization: `Bearer github-token-123`,
-            Accept: 'application/json'
-          }
-        }
+            Accept: 'application/json',
+          },
+        },
       );
     });
   });
