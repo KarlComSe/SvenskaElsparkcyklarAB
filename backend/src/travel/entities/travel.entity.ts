@@ -37,7 +37,7 @@ export class Travel {
     @Column({ type: 'simple-enum', enum: ['Free', 'Parking'], nullable: false })
     startZoneType: 'Free' | 'Parking';
 
-    @Column({ type: 'simple-enum', enum: ['Free', 'Parking'], nullable: false })
+    @Column({ type: 'simple-enum', enum: ['Free', 'Parking'], nullable: true })
     endZoneType: 'Free' | 'Parking';
 
     @CreateDateColumn({ nullable: true })
