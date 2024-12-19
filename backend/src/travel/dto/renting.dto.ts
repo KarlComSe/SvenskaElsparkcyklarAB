@@ -1,16 +1,27 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class StartRentingDto {
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty({
-      description: 'The ID of the bicycle to rent',
-      example: 'bike-123',
-      required: true
-    })
-    bikeId: string;
-  }
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: 'The ID of the bicycle to rent',
+    example: 'bike-123',
+    required: true
+  })
+  bikeId: string;
+}
+
+export class EndTravelDto {
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: 'The ID of the travel to end',
+    example: 1,
+    required: true
+  })
+  travelId: number;
+}
 
 export class TravelResponseDto {
   @ApiProperty({ example: 1 })
