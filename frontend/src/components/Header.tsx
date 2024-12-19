@@ -41,7 +41,7 @@ export default function Header() {
                 <p className="font-normal text-gray-700 dark:text-gray-400">Logged In: <b>{isLoggedIn.toString()}</b></p>
                 <p className="font-normal text-gray-700 dark:text-gray-400">Token: <b>{token ? token : "Empty"}</b></p>
                 <p className="font-normal text-gray-700 dark:text-gray-400">Role: <b>{role}</b></p>
-                <p className="font-normal text-gray-700 dark:text-gray-400">User: <b>{user  ? user : "No User"}</b></p>
+                <p className="font-normal text-gray-700 dark:text-gray-400">User: <b>{user  ? JSON.stringify(user) : "No User"}</b></p>
 
                 <button type="button" className="focus:outline-none text-white bg-red-700 
                 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5

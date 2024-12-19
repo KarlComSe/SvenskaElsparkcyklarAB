@@ -6,7 +6,7 @@ import React from "react";
 
 export const renderWithProviders= (component: JSX.Element): JSX.Element  => {
     return (
-    <Provider store={store}>
+      <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         { component }
       </PersistGate>
