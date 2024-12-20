@@ -36,4 +36,4 @@ const renderPolygons = ( zoneData: Zone[] ) =>  (
     ))
 );
 
-export {renderScooterMarkers, renderStationMarkers, renderPolygons }
+export { renderScooterMarkers, renderStationMarkers, renderPolygons }
