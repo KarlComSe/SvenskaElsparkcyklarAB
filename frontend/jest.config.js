@@ -9,7 +9,7 @@ export default {
   },
   transformIgnorePatterns: ['/node_modules/(?!(react-leaflet|@react-leaflet|leaflet)/)'],
   moduleNameMapper: {
-    "\\.(png|jpg|jpeg|gif|svg)$": "<rootDir>/__mocks__/fileMock.js", // Mock images
+    "\\.(png|jpg|jpeg|gif|svg|webp)$": "<rootDir>/__mocks__/fileMock.js", // Mock images
     "\\.(css|less|scss|sass)$": "identity-obj-proxy"
   },
   extensionsToTreatAsEsm: [".ts", ".tsx"], // Treat TypeScript files as ESM
