@@ -8,9 +8,9 @@ const AdminMapNavigation: React.FC = () => {
   const navigate = useNavigate();
 
   const cities = [
-    { name: 'Stockholm', imageUrl: stockholmImage, route: '/map/stockholm' },
-    { name: 'Göteborg', imageUrl: goteborgImage, route: '/map/goteborg' },
-    { name: 'Malmö', imageUrl: malmoImage, route: '/map/malmo' },
+    { name: 'Stockholm', imageUrl: stockholmImage, route: '/map/Stockholm' },
+    { name: 'Linköping', imageUrl: goteborgImage, route: '/map/Linköping' },
+    { name: 'Uppsala', imageUrl: malmoImage, route: '/map/Uppsala' },
   ];
 
   return (

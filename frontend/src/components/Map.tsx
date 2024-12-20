@@ -1,35 +1,37 @@
-import { MapContainer, Popup, Marker, TileLayer, Polygon, Tooltip, useMap } from 'react-leaflet';
-import React, { useEffect, useState } from 'react';
+import { MapContainer, Popup, Marker, TileLayer, Polygon, Tooltip} from 'react-leaflet';
+import React, { useEffect, useState, useRef } from 'react';
 import { LatLngTuple,  LatLngExpression } from 'leaflet';
 import { API_URL, getHeader, iconStation } from '../helpers/config';
 import axios from 'axios';
 import { RootState } from '../redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { Scooter, PolygonPoint, SpeedZone, Zone } from '../helpers/leaflet-types'
-
+import { Scooter, PolygonPoint, SpeedZone, Zone } from '../helpers/map/leaflet-types'
+import { useParams } from "react-router-dom";
+import { cities } from '../helpers/map/cities';
+import MapCenter from './MapCenter';
+import { renderScooterMarkers, renderStationMarkers, renderPolygons } from '../helpers/map/renders';
 
 export default function Map() {
+    const { city }  = useParams();
     const [startPosition, setStartPosition] = useState<LatLngExpression>([59.2741, 15.2066]);
     const {isLoggedIn, token, user, role} = useSelector((state: RootState) =>  state.auth);
     const [scooterData, setScooterData] = useState<Scooter[]>([]);
     const [zoneData, setZoneData] = useState<Zone[]>([]);
-    // const scooterPositions: LatLngTuple[] = [
-    // [51.505, -0.09],
-    // [51.515, -0.1],
-    // [51.525, -0.08]
-    // ];
+    const zoom = 11;
+    const stationPositions: LatLngTuple[] = [[51.505, -0.04],[51.515, -0.15],[51.535, -0.08]];
 
-    const stationPositions: LatLngTuple[] = [
-        [51.505, -0.04],
-        [51.515, -0.15],
-        [51.535, -0.08]
-        ];
+    useEffect(() => {
+        if (city && cities[city]) {
+            setStartPosition(cities[city]);
+        }
+    }, [city]);
+    
 
     useEffect(() => {
         const fetchScooters = async() => {
         try {
-    
-                const response = await axios.get(`${API_URL}/bike`);
+                const response = await axios.get(`${API_URL}/bike/city/${city}`);
+                console.log(response.data)
                 setScooterData(response.data);
             }
             catch(error)
@@ -43,7 +45,7 @@ export default function Map() {
         const fetchZones = async() => {
         try {
 
-                const response = await axios.get(`${API_URL}/zone`);
+                const response = await axios.get(`${API_URL}/zone/city/${city}`);
                 setZoneData(response.data);
             }
             catch(error)
@@ -54,47 +56,23 @@ export default function Map() {
       },[])
 
     
-    const renderScooterMarkers = () => (
-        scooterData?.map((scooter, index) => (
-        <Marker key={index} position={[scooter.latitude, scooter.longitude]}>
-            <Popup>
-                <p>Id: { scooter.id} </p>
-                <p>BatteryLevel: { scooter.batteryLevel} </p>
-                <p>Status: { scooter.status} </p>
-            </Popup>
-        </Marker>))
-        );
-
-    const renderStationMarkers = () => (
-        stationPositions?.map((position, index) => (
-        <Marker key={index} position={position} icon={iconStation}>
-            <Popup>
-            { position }
-            </Popup>
-        </Marker>))
-        );
-
-    const renderPolygons = () => (
-        zoneData?.map((zone, index) => (
-            <Polygon pathOptions={{ color: "red "}} positions={zone.polygon.map(point => [point.lat, point.lng])} key={index}>
-                <Tooltip direction="bottom" offset={[0, 20]} opacity={1} >
-                    <p>Id: {zone.id}</p>
-                    <p>Type: {zone.type}</p>
-                </Tooltip>
-            </Polygon>
-        ))
-    );
-
   return (
     <div id="map" data-testid="map">
-        <MapContainer style={{ height: "400px" }}  center={startPosition} zoom={6} scrollWheelZoom={true}>
+        <MapContainer
+        style={{ height: "400px" }}
+        center={startPosition}
+        zoom={zoom}
+        scrollWheelZoom={true}
+        >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            { renderScooterMarkers() }
-            { renderStationMarkers() }
-            { renderPolygons() }
+            <MapCenter center={startPosition} zoom={zoom} />
+            { renderScooterMarkers(scooterData) }
+            { renderStationMarkers(stationPositions) }
+            { renderPolygons(zoneData) }
+            
         </MapContainer>
     </div>
   )

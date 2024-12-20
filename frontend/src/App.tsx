@@ -40,7 +40,7 @@ const App: React.FC = () => {
           <Route path="/userinfopage" element={<UserInfoPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="github/callback" element={<Github/>} />
-          <Route path="/map" element={<ShowMap/>} />
+          <Route path="/map/:city" element={<ShowMap/>} />
           <Route path="/user/:githubId" element={<AdminUserOverviewPage />} />
           <Route path="/adminmapnavigation" element={<AdminMapNavigation />} />
         </Routes>
