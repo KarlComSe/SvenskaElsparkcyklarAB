@@ -8,15 +8,16 @@ import HomePage from './pages/HomePage';
 // import LoginPage from './pages/LoginPage';
 // import RegisterPage from './pages/RegisterPage';
 
-import Header from './components/Header.tsx';
+import Header from './components/Header';
 // import LoginOAuth from './pages/LoginOAuth.tsx';
-import Github from './pages/Github.tsx';
-import CustomerStartPage from './pages/CustomerStartPage.tsx';
-import AdminStartPage from './pages/AdminStartPage.tsx';
-import UserListPage from './pages/UserListPage.tsx';
-import UserInfoPage from './pages/UserInfoPage.tsx';
-import ShowMap from './pages/ShowMap.tsx';
-import AdminUserOverviewPage from './pages/AdminUserOverviewPage.tsx';
+import Github from './pages/Github';
+import CustomerStartPage from './pages/CustomerStartPage';
+import AdminStartPage from './pages/AdminStartPage';
+import UserListPage from './pages/UserListPage';
+import UserInfoPage from './pages/UserInfoPage';
+import ShowMap from './pages/ShowMap';
+import AdminUserOverviewPage from './pages/AdminUserOverviewPage';
+import AdminMapNavigation from './pages/AdminMapNavigation';
 
 // import Header from './components/Header';
 // import LoginOAuth from './pages/LoginOAuth';
@@ -41,6 +42,7 @@ const App: React.FC = () => {
           <Route path="github/callback" element={<Github/>} />
           <Route path="/map" element={<ShowMap/>} />
           <Route path="/user/:githubId" element={<AdminUserOverviewPage />} />
+          <Route path="/adminmapnavigation" element={<AdminMapNavigation />} />
         </Routes>
         <div data-testid="app-test"></div>
     </Router>
