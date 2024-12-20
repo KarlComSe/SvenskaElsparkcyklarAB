@@ -5,12 +5,12 @@ import { City } from '../entities/city.entity';
 export class CreateCityDto {
   @ApiProperty({
     description: 'City',
-    example: 'Stockholm',
-    enum: ['Stockholm', 'Linköping', 'Uppsala'],
+    example: 'Göteborg',
+    enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
     required: true,
   })
-  @IsEnum(['Stockholm', 'Linköping', 'Uppsala'])
-  name: 'Stockholm' | 'Linköping' | 'Uppsala';
+  @IsEnum(['Göteborg', 'Jönköping', 'Karlshamn'])
+  name: 'Göteborg' | 'Jönköping' | 'Karlshamn';
 
   @ApiProperty({
     description: 'Latitude coordinate of the city center',

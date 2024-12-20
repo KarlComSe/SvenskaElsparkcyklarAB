@@ -18,7 +18,7 @@ export class CitiesController {
       example: [
         {
           id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
-          city: 'Stockholm',
+          city: 'Göteborg',
           latitude: 59.3293,
           longitude: 18.0686,
           createdAt: '2024-12-01T05:01:01.000Z',
@@ -39,7 +39,7 @@ export class CitiesController {
     schema: {
       example: {
         id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
-        city: 'Stockholm',
+        city: 'Göteborg',
         latitude: null,
         longitude: null,
         createdAt: '2024-12-01T05:01:01.000Z',

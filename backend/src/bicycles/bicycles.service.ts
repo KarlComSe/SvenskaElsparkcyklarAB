@@ -68,7 +68,7 @@ export class BicyclesService {
   }
 
   async findByCity(
-    cityName: 'Stockholm' | 'Linköping' | 'Uppsala',
+    cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn',
   ): Promise<Bicycle[]> {
     return await this.bicycleRepository.find({
       where: {

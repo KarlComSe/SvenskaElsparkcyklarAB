@@ -23,7 +23,7 @@ describe('ZonesController', () => {
     },
     city: {
       id: '755cacbd-fc18-4884-8859-96fa814b1eb2',
-      name: 'Linköping',
+      name: 'Jönköping',
       latitude: null,
       longitude: null,
       createdAt: new Date(),

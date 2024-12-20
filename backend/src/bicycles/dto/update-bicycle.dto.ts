@@ -55,8 +55,8 @@ export class UpdateBicycleDto {
 
   @ApiProperty({
     description: 'City of the bicycle',
-    example: 'Linköping',
-    enum: ['Stockholm', 'Linköping', 'Uppsala'],
+    example: 'Jönköping',
+    enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
     required: false,
   })
   @IsOptional()
