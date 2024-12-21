@@ -15,8 +15,20 @@ Image available at: owsu23/vteam02:v0
 Create a folder for the repo and initiate the git repository with the following commands:
 
 ```bash
-git init
-git remote add origin https://github.com/KarlComSe/SvenskaElsparkcyklarAB.git
+git clone git@github.com:KarlComSe/SvenskaElsparkcyklarAB.git
+cd SvenskaElsparkcyklarAB
 ```
 
-making a change without a branch, is it working?
+## Fetching a remote branch and working on the same locally
+
+```bash
+# list remote branches
+git branch -r
+
+# local branch name same as remote
+git checkout --track origin/<remote-branch-name>
+
+# local branch name different than remote
+git checkout -b <local-branch-name> origin/<remote-branch-name>
+
+```
