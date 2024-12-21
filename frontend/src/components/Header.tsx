@@ -1,4 +1,3 @@
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoggedInOut, setCurrentUser, setToken, setRole } from '../redux/slices/authLogin';
 import { RootState } from '../redux/store/store';
@@ -103,5 +102,5 @@ export default function Header() {
             </div>
         </div>
         </>
-  )
+      )
 };
