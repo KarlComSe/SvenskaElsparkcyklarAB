@@ -1,5 +1,5 @@
 import { MapContainer, Popup, Marker, TileLayer, Polygon, Tooltip} from 'react-leaflet';
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { LatLngTuple,  LatLngExpression } from 'leaflet';
 import { API_URL, getHeader, iconStation } from '../helpers/config';
 import axios from 'axios';

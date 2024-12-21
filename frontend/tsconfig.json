@@ -9,7 +9,9 @@
     "esModuleInterop": true,
     "jsx": "react-jsx",
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noEmit": true,
+    "types": ["jest", "@testing-library/jest-dom"],
+
   },
   "include": ["src/module_typings"],
 
