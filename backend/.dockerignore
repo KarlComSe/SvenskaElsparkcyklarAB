@@ -2,3 +2,12 @@ node_modules
 dist
 *.log
 *.sqlite
+npm-debug.log
+.git
+.gitignore
+.env
+*.md
+.vscode
+coverage
+test
+**/*.spec.ts

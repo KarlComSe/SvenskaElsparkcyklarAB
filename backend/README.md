@@ -2,7 +2,39 @@
 
 This is the backend of the project.
 
+## Development setup
+
+**Prereq:**
+* Docker and Docker Compose
+* Parent directory cloned
+* Copy .env.example to .env
+ * Fill in relevant values
+ * Never commit .env files
+* Set write permissions for package-lock.json:
+ * `chmod o+w package-lock.json`
+
+**Start the dev server:**
+* `docker compose -f docker-compose-dev.yml up --build`
+
+Server is now available at http://localhost:3535, debug port 9229.
+
+**Features:**
+* Hot reload enabled
+* Automatic npm package installation when package.json changes
+* Source code mounted in read-only mode for safety (not fully a feature, also a pain)
+* Database reset through env variable: `RESET_DB=true docker compose -f docker-compose-dev.yml up --build` 
+* Access TTY without packages installed on the DEV machine: (pot sudo need) `docker compose -f docker-compose-dev.yml exec backend-dev sh` (but access is limited to read only...)
+* Status in docker ps, with an implemented endpoint (/health) that uses wget, all returns with status code 2xx is exiting with 0, and container is considered healthy.
+
 ## Installation
+
+### Docker compose for development
+
+Docker compose exist for development. 
+
+```bash
+docker compose -f docker-compose-dev.yml up --build
+```
 
 ### Environment Variables
 
