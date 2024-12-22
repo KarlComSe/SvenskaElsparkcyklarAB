@@ -20,6 +20,7 @@ import { CitiesModule } from './cities/cities.module';
 import { City } from './cities/entities/city.entity';
 import { TravelModule } from './travel/travel.module';
 import { Travel } from './travel/entities/travel.entity';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { Travel } from './travel/entities/travel.entity';
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: process.env.NODE_ENV === 'test' ? ':memory:' : 'db.sqlite',
+      database: process.env.NODE_ENV === 'test' ? ':memory:' : 'data/db.sqlite',
       entities: [User, Bicycle, Zone, SpeedZone, City, Travel],
       synchronize: true,
     }),
@@ -38,6 +39,7 @@ import { Travel } from './travel/entities/travel.entity';
     ZonesModule,
     CitiesModule,
     TravelModule,
+    HealthModule
   ],
   controllers: [AppController],
   providers: [AppService],

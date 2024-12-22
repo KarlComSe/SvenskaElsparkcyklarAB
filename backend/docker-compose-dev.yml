@@ -1,0 +1,59 @@
+services:
+  backend-dev:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      # Configuration files
+      - type: bind
+        source: ./tsconfig.json
+        target: /app/tsconfig.json
+        read_only: true
+      - type: bind
+        source: ./package.json
+        target: /app/package.json
+        read_only: true
+      - type: bind
+        source: ./package-lock.json
+        target: /app/package-lock.json
+      - type: bind
+        source: ./.env
+        target: /app/.env
+        read_only: true
+      # Mount source code directories individually with read-only
+      - type: bind
+        source: ./src
+        target: /app/src
+        read_only: true
+      - type: bind
+        source: ./test
+        target: /app/test
+        read_only: true
+      # Writable volumes
+      - type: volume
+        source: node_modules
+        target: /app/node_modules
+      - type: bind
+        source: ./src/data
+        target: /app/src/data
+
+    ports:
+      - "3535:3535"
+      - "9229:9229"  # Add debug port
+
+    environment:
+      NODE_ENV: development
+      RESET_DB: ${RESET_DB:-false}
+      HOST: '0.0.0.0'
+      PORT: 3535 
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3535/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
+    command: ["/bin/sh", "./start-dev.sh"]
+
+volumes:
+  node_modules:

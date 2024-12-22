@@ -40,11 +40,11 @@ const AdminUserOverviewPage: React.FC = () => {
   }, [githubId]);
 
   if (loading) {
-    return <div>Laddar användardata...</div>;
+    return <div data-testid="admin-user-overview-page">Laddar användardata...</div>;
   }
 
   if (!user) {
-    return <div>Ingen användare hittades.</div>;
+    return <div data-testid="admin-user-overview-page">Ingen användare hittades.</div>;
   }
 
   return (
