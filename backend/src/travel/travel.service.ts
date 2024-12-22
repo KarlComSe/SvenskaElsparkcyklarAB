@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Travel } from './entities/travel.entity';
 import { BicyclesService } from '../bicycles/bicycles.service';
+import { time } from 'console';
 
 @Injectable()
 export class TravelService {
@@ -101,7 +102,8 @@ export class TravelService {
 
   getZoneType(lat: number, long: number): 'Free' | 'Parking' {
     // Dummy implementation for now
-    return 'Free';
+    // randomize the zone type
+    return Math.random() > 0.5 ? 'Free' : 'Parking'; 
   }
 
   
@@ -111,7 +113,15 @@ export class TravelService {
     startZoneType: string,
     endZoneType: string,
   ): number {
-    // Dummy implementation for now
-    return 50; // Example fixed cost
+    const timeDiff = endTime.getTime() - startTime.getTime();
+    const timeDiffInMinutes = timeDiff / 1000 / 60;
+
+    const parkingFee = 10;
+    const startFee = 10;
+    const costPerMinute = 1;
+    
+    let cost = (endZoneType === 'Parking' ? 0 : parkingFee) + (startZoneType === 'Free' && endZoneType === 'Parking' ? startFee/2 : startFee) + timeDiffInMinutes*costPerMinute;
+
+    return cost;
   }
 }

@@ -54,9 +54,11 @@ export class TravelController {
     }
 
     // End a bike travel
-    @Post('end')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth()
+    @Post(':id/end')
+    // removing the guard for now, the bike software should be able to end a travel. 
+    // we could implement a guard that authenticates the bike somehow
+    // we could also expand on this, making it even more complex, like checking that it is the user whom initlized the rental that is ending it
+    // @UseGuards(JwtAuthGuard)
     @ApiOperation({
         summary: 'End a bike travel',
         description: 'Ends the travel, calculates cost, and makes the bike available again'
@@ -73,7 +75,7 @@ export class TravelController {
         status: 401,
         description: 'Unauthorized'
     })
-    async endTravel(@Body() endTravelDto: EndTravelDto) {
-        return this.travelService.endTravel(endTravelDto.travelId);
+    async endTravel(@Param('id') travelId: number) {
+        return this.travelService.endTravel(travelId);
     }
 }
