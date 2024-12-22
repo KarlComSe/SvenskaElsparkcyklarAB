@@ -9,6 +9,7 @@ import { Bicycle } from './bicycles/entities/bicycle.entity';
 import UserDataSeeder from './database/seeds/user-data.seed';
 import BicycleSeeder from './database/seeds/bicycles-data.seed';
 import ZoneSeeder from './database/seeds/zones-data.seed';
+import TravelSeeder from './database/seeds/travel-data.seed';
 import { Module, OnModuleInit } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { BicyclesModule } from './bicycles/bicycles.module';
@@ -17,6 +18,8 @@ import { Zone } from './zones/entities/zone';
 import { SpeedZone } from './zones/entities/speed-zone';
 import { CitiesModule } from './cities/cities.module';
 import { City } from './cities/entities/city.entity';
+import { TravelModule } from './travel/travel.module';
+import { Travel } from './travel/entities/travel.entity';
 import { HealthModule } from './health/health.module';
 
 @Module({
@@ -27,7 +30,7 @@ import { HealthModule } from './health/health.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: process.env.NODE_ENV === 'test' ? ':memory:' : 'data/db.sqlite',
-      entities: [User, Bicycle, Zone, SpeedZone, City],
+      entities: [User, Bicycle, Zone, SpeedZone, City, Travel],
       synchronize: true,
     }),
     UsersModule,
@@ -35,6 +38,7 @@ import { HealthModule } from './health/health.module';
     BicyclesModule,
     ZonesModule,
     CitiesModule,
+    TravelModule,
     HealthModule
   ],
   controllers: [AppController],
@@ -51,6 +55,8 @@ export class AppModule implements OnModuleInit {
       await bicycleSeeder.run(this.dataSource);
       const zoneSeeder = new ZoneSeeder();
       await zoneSeeder.run(this.dataSource);
+      const travelSeeder = new TravelSeeder();
+      await travelSeeder.run(this.dataSource);
     }
   }
 }

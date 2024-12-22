@@ -32,7 +32,7 @@ export class ZonesController {
             { lat: 59.3295, lng: 18.0688 },
           ],
           type: 'speed',
-          city: 'Stockholm',
+          city: 'Göteborg',
           speedZone: {
             id: 'c2f88dd4-0ba9-5f7c-b5d7-c7fc59f59465',
             speedLimit: 20.5,
@@ -46,7 +46,7 @@ export class ZonesController {
             { lat: 59.8588, lng: 17.6391 },
           ],
           type: 'parking',
-          city: 'Stockholm',
+          city: 'Göteborg',
         },
       ],
     },
@@ -78,7 +78,7 @@ export class ZonesController {
           type: 'speed',
           city: {
             id: 'd2322ff3-a81c-4b06-b78d-1bc72b4fe459',
-            name: 'Stockholm',
+            name: 'Göteborg',
             latitude: null,
             longitude: null,
             createdAt: '2024-12-17T10:37:25.000Z',
@@ -100,10 +100,10 @@ export class ZonesController {
     name: 'cityName',
     description: 'Name of the city',
     type: 'string',
-    enum: ['Stockholm', 'Linköping', 'Uppsala'],
+    enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
   })
   async getZonesByCity(
-    @Param('cityName') cityName: 'Stockholm' | 'Linköping' | 'Uppsala',
+    @Param('cityName') cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn',
   ) {
     return await this.zonesService.findByCity(cityName);
   }

@@ -17,7 +17,7 @@ export class ZonesService {
   }
 
   async findByCity(
-    cityName: 'Stockholm' | 'Linköping' | 'Uppsala',
+    cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn',
   ): Promise<Zone[]> {
     return await this.zoneRepository.find({
       where: {

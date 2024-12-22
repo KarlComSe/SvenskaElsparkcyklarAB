@@ -10,17 +10,17 @@ export default class ZoneSeeder {
       const cityRepo = connection.getRepository(City);
 
       const cities = await Promise.all([
-        cityRepo.findOne({ where: { name: 'Stockholm' } }) ||
-          cityRepo.save(cityRepo.create({ name: 'Stockholm' })),
+        cityRepo.findOne({ where: { name: 'Göteborg' } }) ||
+          cityRepo.save(cityRepo.create({ name: 'Göteborg' })),
 
-        cityRepo.findOne({ where: { name: 'Uppsala' } }) ||
-          cityRepo.save(cityRepo.create({ name: 'Uppsala' })),
+        cityRepo.findOne({ where: { name: 'Karlshamn' } }) ||
+          cityRepo.save(cityRepo.create({ name: 'Karlshamn' })),
 
-        cityRepo.findOne({ where: { name: 'Linköping' } }) ||
-          cityRepo.save(cityRepo.create({ name: 'Linköping' })),
+        cityRepo.findOne({ where: { name: 'Jönköping' } }) ||
+          cityRepo.save(cityRepo.create({ name: 'Jönköping' })),
       ]);
 
-      const [stockholm, uppsala, linkoping] = cities;
+      const [goteborg, karlshamn, jonkoping] = cities;
 
       // Add example zones
       await zoneRepo.save([
@@ -31,7 +31,7 @@ export default class ZoneSeeder {
             { lat: 59.3303, lng: 18.0688 },
           ],
           type: 'parking',
-          city: stockholm,
+          city: goteborg,
         },
         {
           polygon: [
@@ -40,7 +40,7 @@ export default class ZoneSeeder {
             { lat: 59.8596, lng: 17.6391 },
           ],
           type: 'charging',
-          city: uppsala,
+          city: karlshamn,
         },
         {
           polygon: [
@@ -49,7 +49,7 @@ export default class ZoneSeeder {
             { lat: 58.4115, lng: 15.6216 },
           ],
           type: 'speed',
-          city: linkoping,
+          city: jonkoping,
           speedZone: {
             speedLimit: 15,
           },

@@ -41,7 +41,7 @@ export class BicyclesController {
           latitude: 59.3293,
           longitude: 18.0686,
           status: 'Available',
-          city: 'Stockholm',
+          city: 'Göteborg',
           createdAt: '2024-12-01T05:01:01.000Z',
           updatedAt: '2024-12-07T18:30:30.000Z',
         },
@@ -69,7 +69,7 @@ export class BicyclesController {
         latitude: null,
         longitude: null,
         status: 'Available',
-        city: 'Stockholm',
+        city: 'Göteborg',
         createdAt: '2024-12-01T05:01:01.000Z',
         updatedAt: '2024-12-01T05:01:01.000Z',
       },
@@ -103,7 +103,7 @@ export class BicyclesController {
         latitude: 59.3293,
         longitude: 18.0686,
         status: 'Available',
-        city: 'Stockholm',
+        city: 'Göteborg',
         createdAt: '2024-12-01T05:01:01.000Z',
         updatedAt: '2024-12-07T18:30:30.000Z',
       },
@@ -144,7 +144,7 @@ export class BicyclesController {
         latitude: 59.3294,
         longitude: 18.0687,
         status: 'Service',
-        city: 'Stockholm',
+        city: 'Göteborg',
       },
     },
   })
@@ -186,7 +186,7 @@ export class BicyclesController {
           updatedAt: '2024-12-17T10:56:43.000Z',
           city: {
             id: 'd2322ff3-a81c-4b06-b78d-1bc72b4fe459',
-            name: 'Uppsala',
+            name: 'Karlshamn',
             latitude: null,
             longitude: null,
             createdAt: '2024-12-17T10:37:25.000Z',
@@ -204,10 +204,10 @@ export class BicyclesController {
     name: 'cityName',
     description: 'Name of the city',
     type: 'string',
-    enum: ['Stockholm', 'Linköping', 'Uppsala'],
+    enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
   })
   async getBicyclesByCity(
-    @Param('cityName') cityName: 'Stockholm' | 'Linköping' | 'Uppsala',
+    @Param('cityName') cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn',
   ) {
     return await this.bicyclesService.findByCity(cityName);
   }

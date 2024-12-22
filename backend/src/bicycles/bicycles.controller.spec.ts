@@ -13,7 +13,7 @@ describe('BicyclesController', () => {
   // Create a mock city
   const mockCity: City = {
     id: 'city-test-id',
-    name: 'Stockholm',
+    name: 'Göteborg',
     createdAt: new Date(),
     updatedAt: new Date(),
   };

@@ -13,11 +13,11 @@ export class City {
 
   @Column({
     type: 'simple-enum',
-    enum: ['Stockholm', 'Linköping', 'Uppsala'],
-    default: 'Stockholm',
+    enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
+    default: 'Göteborg',
     unique: true,
   })
-  name: 'Stockholm' | 'Linköping' | 'Uppsala';
+  name: 'Göteborg' | 'Jönköping' | 'Karlshamn';
 
   @Column('float', { nullable: true })
   latitude?: number;
