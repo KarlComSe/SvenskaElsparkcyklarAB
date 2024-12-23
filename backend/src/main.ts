@@ -26,8 +26,8 @@ async function bootstrap() {
     origin: [
       'http://localhost:5173', // Frontend
       'http://localhost:1337', // kundapp
-      `http://localhost:3535${process.env.PORT ?? 3000}`, // Swagger UI
-
+      'http://localhost:5174', // bike-app
+      `http://localhost:${process.env.PORT ?? 3000}`, // Swagger UI
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
