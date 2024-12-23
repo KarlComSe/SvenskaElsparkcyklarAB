@@ -25,7 +25,9 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:5173', // Frontend
-      `http://localhost:${process.env.PORT ?? 3000}`, // Swagger UI
+      'http://localhost:1337', // kundapp
+      `http://localhost:3535${process.env.PORT ?? 3000}`, // Swagger UI
+
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
