@@ -46,11 +46,11 @@ export class TravelController {
         description: 'Unauthorized - User not authenticated'
     })
     async startRentingBike(
-        @Param('bikeId') bikeId: string,
+        @Param('id') id: string,
         @Req() req: any
     ) {
         const userId = req.user.githubId;
-        return this.travelService.startRentingBike(bikeId, userId);
+        return this.travelService.startRentingBike(id, userId);
     }
 
     // End a bike travel
