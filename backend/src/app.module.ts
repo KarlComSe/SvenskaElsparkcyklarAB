@@ -39,7 +39,7 @@ import { HealthModule } from './health/health.module';
     ZonesModule,
     CitiesModule,
     TravelModule,
-    HealthModule
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

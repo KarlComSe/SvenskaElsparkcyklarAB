@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Not, Repository } from 'typeorm';
 import { Travel } from './entities/travel.entity';
@@ -11,7 +15,7 @@ export class TravelService {
     @InjectRepository(Travel)
     private readonly travelRepository: Repository<Travel>,
     private readonly bicyclesService: BicyclesService,
-  ) { }
+  ) {}
 
   async findAll(): Promise<Travel[]> {
     return await this.travelRepository.find();
@@ -73,7 +77,7 @@ export class TravelService {
   async endTravel(travelId: number): Promise<Travel> {
     const travel = await this.travelRepository.findOne({
       where: { id: travelId },
-      relations: ['bike'] // Ensure we load the bike relation
+      relations: ['bike'], // Ensure we load the bike relation
     });
 
     if (!travel) {
@@ -98,7 +102,7 @@ export class TravelService {
       travel.startTime,
       endTime,
       travel.startZoneType,
-      endZoneType
+      endZoneType,
     );
 
     // Update travel record
@@ -115,13 +119,11 @@ export class TravelService {
     return this.travelRepository.save(travel);
   }
 
-
   getZoneType(lat: number, long: number): 'Free' | 'Parking' {
     // Dummy implementation for now
     // randomize the zone type
     return Math.random() > 0.5 ? 'Free' : 'Parking';
   }
-
 
   calculateCost(
     startTime: Date,
@@ -136,7 +138,12 @@ export class TravelService {
     const startFee = 10;
     const costPerMinute = 1;
 
-    let cost = (endZoneType === 'Parking' ? 0 : parkingFee) + (startZoneType === 'Free' && endZoneType === 'Parking' ? startFee / 2 : startFee) + timeDiffInMinutes * costPerMinute;
+    let cost =
+      (endZoneType === 'Parking' ? 0 : parkingFee) +
+      (startZoneType === 'Free' && endZoneType === 'Parking'
+        ? startFee / 2
+        : startFee) +
+      timeDiffInMinutes * costPerMinute;
 
     return cost;
   }

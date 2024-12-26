@@ -7,7 +7,7 @@ export class StartRentingDto {
   @ApiProperty({
     description: 'The ID of the bicycle to rent',
     example: 'bike-123',
-    required: true
+    required: true,
   })
   bikeId: string;
 }
@@ -18,7 +18,7 @@ export class EndTravelDto {
   @ApiProperty({
     description: 'The ID of the travel to end',
     example: 1,
-    required: true
+    required: true,
   })
   travelId: number;
 }
