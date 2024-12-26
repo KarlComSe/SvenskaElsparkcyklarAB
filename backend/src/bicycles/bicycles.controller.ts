@@ -33,7 +33,7 @@ export class BicyclesController {
   @Get()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all bicycles' })
-  @ApiQuery({ name: 'city', required: false, enum: ['Göteborg', 'Jönköping', 'Karlshamn']})
+  @ApiQuery({ name: 'city', required: false, enum: ['Göteborg', 'Jönköping', 'Karlshamn'] })
   @ApiQuery({ name: 'lat', required: false, minimum: -90, maximum: 90 })
   @ApiQuery({ name: 'lon', required: false, minimum: -180, maximum: 180 })
   @ApiQuery({ name: 'radius', required: false, minimum: 0, maximum: 100000 })
@@ -61,28 +61,30 @@ export class BicyclesController {
     description: 'Unauthorized. Authentication required',
   })
   async getAllBicycles(
-    @Query('lat', new ParseFloatPipe({ optional: true })) lat?: number,
-    @Query('lon', new ParseFloatPipe({ optional: true })) lon?: number,
-    @Query('radius', new ParseFloatPipe({ optional: true })) radius?: number,
+    @Query('lat') lat?: string,
+    @Query('lon') lon?: string,
+    @Query('radius') radius?: string,
     @Query('city') city?: 'Göteborg' | 'Jönköping' | 'Karlshamn',
   ): Promise<BicycleResponse[]> {
-    if (lat && !lon || lon && !lat) {
+    const latitude = lat ? parseFloat(lat) : undefined;
+    const longitude = lon ? parseFloat(lon) : undefined;
+    const radi = radius ? parseFloat(radius) : 3000;
+
+    if (latitude && !longitude || longitude && !latitude) {
       throw new BadRequestException('Both lat and lon must be provided for location search');
     }
 
     if (city) {
-      if (lat) {
-        if (!radius) 
-          radius = 3000; // setting a default radius
-        return await this.bicyclesService.findByCityAndLocation(city, lat, lon, radius);
+      if (latitude) {
+        return await this.bicyclesService.findByCityAndLocation(city, latitude, longitude, radi);
       }
       return await this.bicyclesService.findByCity(city);
     }
 
-    if (lat) {
-      return await this.bicyclesService.findByLocation(lat, lon, radius);
+    if (latitude) {
+      return await this.bicyclesService.findByLocation(latitude, longitude, radi);
     }
-  
+
     return await this.bicyclesService.findAll();
   }
 
