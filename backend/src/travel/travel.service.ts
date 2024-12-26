@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { Travel } from './entities/travel.entity';
 import { BicyclesService } from '../bicycles/bicycles.service';
 import { time } from 'console';
@@ -11,7 +11,7 @@ export class TravelService {
     @InjectRepository(Travel)
     private readonly travelRepository: Repository<Travel>,
     private readonly bicyclesService: BicyclesService,
-  ) {}
+  ) { }
 
   async findAll(): Promise<Travel[]> {
     return await this.travelRepository.find();
@@ -23,6 +23,22 @@ export class TravelService {
       throw new NotFoundException('Travel not found');
     }
     return travel;
+  }
+
+  async findActiveTravelForBike(bikeId: string): Promise<Travel> {
+    const activeTravel = await this.travelRepository.findOne({
+      where: {
+        bike: { id: bikeId },
+        startTime: Not(IsNull()),
+        stopTime: IsNull(),
+      },
+    });
+
+    if (!activeTravel) {
+      throw new NotFoundException(`No active travel found for bike ${bikeId}`);
+    }
+
+    return activeTravel;
   }
 
   async startRentingBike(bikeId: string, customerId: string): Promise<Travel> {
@@ -55,22 +71,22 @@ export class TravelService {
   }
 
   async endTravel(travelId: number): Promise<Travel> {
-    const travel = await this.travelRepository.findOne({ 
-        where: { id: travelId },
-        relations: ['bike'] // Ensure we load the bike relation
+    const travel = await this.travelRepository.findOne({
+      where: { id: travelId },
+      relations: ['bike'] // Ensure we load the bike relation
     });
 
     if (!travel) {
-        throw new NotFoundException('Travel not found');
+      throw new NotFoundException('Travel not found');
     }
 
     if (travel.stopTime) {
-        throw new BadRequestException('Travel has already ended');
+      throw new BadRequestException('Travel has already ended');
     }
 
     // Get current bike location (from bike entity)
     const bike = await this.bicyclesService.findById(travel.bike.id);
-    
+
     // Get the end zone type
     const endZoneType = this.getZoneType(bike.latitude, bike.longitude);
 
@@ -79,10 +95,10 @@ export class TravelService {
 
     // Calculate cost
     const cost = this.calculateCost(
-        travel.startTime,
-        endTime,
-        travel.startZoneType,
-        endZoneType
+      travel.startTime,
+      endTime,
+      travel.startZoneType,
+      endZoneType
     );
 
     // Update travel record
@@ -103,10 +119,10 @@ export class TravelService {
   getZoneType(lat: number, long: number): 'Free' | 'Parking' {
     // Dummy implementation for now
     // randomize the zone type
-    return Math.random() > 0.5 ? 'Free' : 'Parking'; 
+    return Math.random() > 0.5 ? 'Free' : 'Parking';
   }
 
-  
+
   calculateCost(
     startTime: Date,
     endTime: Date,
@@ -119,8 +135,8 @@ export class TravelService {
     const parkingFee = 10;
     const startFee = 10;
     const costPerMinute = 1;
-    
-    let cost = (endZoneType === 'Parking' ? 0 : parkingFee) + (startZoneType === 'Free' && endZoneType === 'Parking' ? startFee/2 : startFee) + timeDiffInMinutes*costPerMinute;
+
+    let cost = (endZoneType === 'Parking' ? 0 : parkingFee) + (startZoneType === 'Free' && endZoneType === 'Parking' ? startFee / 2 : startFee) + timeDiffInMinutes * costPerMinute;
 
     return cost;
   }

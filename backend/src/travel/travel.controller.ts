@@ -11,17 +11,22 @@ export class TravelController {
         private readonly travelService: TravelService,
     ) { }
 
-    // Fetch all travels
-    @Get()
-    async getAllTravels() {
-        return await this.travelService.findAll();
-    }
-
-
-    // Fetch one travel by ID
-    @Get(':id')
-    async getTravelById(@Param('id') id: number) {
-        return await this.travelService.findById(id);
+    @Get('bike/:bikeId/active')
+    @ApiOperation({
+        summary: 'Get active travel for a bike',
+        description: 'Returns the active travel information including renter details for a specific bike'
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Active travel found',
+        type: TravelResponseDto
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'No active travel found for this bike'
+    })
+    async getActiveTravelForBike(@Param('bikeId') bikeId: string) {
+        return await this.travelService.findActiveTravelForBike(bikeId);
     }
 
     // Start a bike rental
@@ -77,5 +82,17 @@ export class TravelController {
     })
     async endTravel(@Param('id') travelId: number) {
         return this.travelService.endTravel(travelId);
+    }
+
+    // Fetch one travel by ID
+    @Get(':id')
+    async getTravelById(@Param('id') id: number) {
+        return await this.travelService.findById(id);
+    }
+
+    // Fetch all travels
+    @Get()
+    async getAllTravels() {
+        return await this.travelService.findAll();
     }
 }
