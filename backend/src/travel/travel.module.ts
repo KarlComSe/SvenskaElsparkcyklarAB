@@ -6,8 +6,8 @@ import { TravelController } from './travel.controller';
 import { BicyclesModule } from '../bicycles/bicycles.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Travel]), BicyclesModule],
-    controllers: [TravelController],
-    providers: [TravelService],
+  imports: [TypeOrmModule.forFeature([Travel]), BicyclesModule],
+  controllers: [TravelController],
+  providers: [TravelService],
 })
 export class TravelModule {}
