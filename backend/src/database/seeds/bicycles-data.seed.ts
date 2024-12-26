@@ -39,28 +39,156 @@ export default class BicycleSeeder {
       // console.log(karlshamn)
 
       // Add example bicycles
-      await bicycleRepo.save([
+      // Göteborg bikes
+      type BicycleStatus = 'Available' | 'Service' | 'Rented';
+
+      const goteborgBikes = [
+        // Available bikes
         {
-          batteryLevel: 100,
-          latitude: 59.3293,
-          longitude: 18.0686,
-          status: 'Available',
+          batteryLevel: 95,
+          latitude: 57.7089,
+          longitude: 11.9726,
+          status: 'Available' as BicycleStatus,
           city: goteborg,
         },
         {
-          batteryLevel: 80,
-          latitude: 59.8586,
-          longitude: 17.6389,
-          status: 'Rented',
+          batteryLevel: 88,
+          latitude: 57.7095,
+          longitude: 11.9689,
+          status: 'Available' as BicycleStatus,
+          city: goteborg,
+        },
+        {
+          batteryLevel: 92,
+          latitude: 57.7066,
+          longitude: 11.9384,
+          status: 'Available' as BicycleStatus,
+          city: goteborg,
+        },
+        // Service bikes
+        {
+          batteryLevel: 15,
+          latitude: 57.7000,
+          longitude: 11.9753,
+          status: 'Service' as BicycleStatus,
+          city: goteborg,
+        },
+        {
+          batteryLevel: 5,
+          latitude: 57.7048,
+          longitude: 11.9757,
+          status: 'Service' as BicycleStatus,
+          city: goteborg,
+        },
+        {
+          batteryLevel: 25,
+          latitude: 57.7001,
+          longitude: 11.9765,
+          status: 'Service' as BicycleStatus,
+          city: goteborg,
+        }
+      ];
+
+      // Karlshamn bikes
+      const karlshamnBikes = [
+        // Available bikes
+        {
+          batteryLevel: 90,
+          latitude: 56.1708,
+          longitude: 14.8631,
+          status: 'Available' as BicycleStatus,
           city: karlshamn,
         },
         {
-          batteryLevel: 60,
-          latitude: 58.4108,
-          longitude: 15.6214,
-          status: 'Service',
+          batteryLevel: 85,
+          latitude: 56.1657,
+          longitude: 14.8607,
+          status: 'Available' as BicycleStatus,
+          city: karlshamn,
+        },
+        {
+          batteryLevel: 93,
+          latitude: 56.1695,
+          longitude: 14.8598,
+          status: 'Available' as BicycleStatus,
+          city: karlshamn,
+        },
+        // Service bikes
+        {
+          batteryLevel: 12,
+          latitude: 56.1712,
+          longitude: 14.8637,
+          status: 'Service' as BicycleStatus,
+          city: karlshamn,
+        },
+        {
+          batteryLevel: 8,
+          latitude: 56.1659,
+          longitude: 14.8612,
+          status: 'Service' as BicycleStatus,
+          city: karlshamn,
+        },
+        {
+          batteryLevel: 20,
+          latitude: 56.1691,
+          longitude: 14.8608,
+          status: 'Service' as BicycleStatus,
+          city: karlshamn,
+        }
+      ];
+
+      // Jönköping bikes
+      const jonkopingBikes = [
+        // Available bikes
+        {
+          batteryLevel: 97,
+          latitude: 57.7741,
+          longitude: 14.2031,
+          status: 'Available' as BicycleStatus,
           city: jonkoping,
         },
+        {
+          batteryLevel: 89,
+          latitude: 57.7843,
+          longitude: 14.1617,
+          status: 'Available' as BicycleStatus,
+          city: jonkoping,
+        },
+        {
+          batteryLevel: 94,
+          latitude: 57.7819,
+          longitude: 14.1556,
+          status: 'Available' as BicycleStatus,
+          city: jonkoping,
+        },
+        // Service bikes
+        {
+          batteryLevel: 10,
+          latitude: 57.7701,
+          longitude: 14.2173,
+          status: 'Service' as BicycleStatus,
+          city: jonkoping,
+        },
+        {
+          batteryLevel: 18,
+          latitude: 57.7706,
+          longitude: 14.2183,
+          status: 'Service' as BicycleStatus,
+          city: jonkoping,
+        },
+        {
+          batteryLevel: 7,
+          latitude: 57.7696,
+          longitude: 14.2183,
+          status: 'Service' as BicycleStatus,
+          city: jonkoping,
+        }
+      ];
+
+      await bicycleRepo.save([
+        ...goteborgBikes,
+        ...karlshamnBikes,
+        ...jonkopingBikes
       ]);
     }
   }

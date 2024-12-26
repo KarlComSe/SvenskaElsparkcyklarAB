@@ -26,6 +26,7 @@ describe('ZonesService', () => {
       { lat: 59.3293, lng: 18.0686 },
       { lat: 59.3294, lng: 18.0687 },
     ],
+    name: 'Test Zone',
     type: 'speed',
     speedZone: {
       id: 'c2f88dd4-0ba9-5f7c-b5d7-c7fc59f59465',

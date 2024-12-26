@@ -20,6 +20,9 @@ export class Zone {
   @Column({ type: 'simple-enum', enum: ['parking', 'charging', 'speed'] })
   type: 'parking' | 'charging' | 'speed';
 
+  @Column({ unique: true, length: 100 })
+  name: string;
+
   @ManyToOne(() => City, { nullable: false })
   @JoinColumn()
   city: City;

@@ -1,10 +1,11 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
   ApiResponse,
   ApiTags,
   ApiParam,
+  ApiQuery,
 } from '@nestjs/swagger';
 // import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ZonesService } from './zones.service';
@@ -18,6 +19,8 @@ export class ZonesController {
   @Get()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all zones' })
+  @ApiQuery({ name: 'lat', required: false, type: Number })
+  @ApiQuery({ name: 'lon', required: false, type: Number })
   @ApiResponse({
     status: 200,
     description: 'List of zones',
@@ -55,7 +58,14 @@ export class ZonesController {
     status: 401,
     description: 'Unauthorized. Authentication required',
   })
-  async getAllZones(): Promise<Zone[]> {
+  async getAllZones(
+    @Query('lat') lat?: number,
+    @Query('lon') lon?: number,
+  ): Promise<Zone[]> {
+    if (lat && lon) {
+      console.log('lat:', lat, 'lon:', lon);
+      return await this.zonesService.getZones(lat, lon);
+    }
     return await this.zonesService.findAll();
   }
 
