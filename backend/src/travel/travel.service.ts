@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Not, Repository } from 'typeorm';
 import { Travel } from './entities/travel.entity';
 import { BicyclesService } from '../bicycles/bicycles.service';
-import { time } from 'console';
+import { ZonesService } from 'src/zones/zones.service';
 
 @Injectable()
 export class TravelService {
@@ -18,7 +18,8 @@ export class TravelService {
     @InjectRepository(Travel)
     private readonly travelRepository: Repository<Travel>,
     private readonly bicyclesService: BicyclesService,
-  ) {}
+    private readonly zonesService: ZonesService,
+  ) { }
 
   async findAll(): Promise<Travel[]> {
     return await this.travelRepository.find();
@@ -49,16 +50,9 @@ export class TravelService {
   }
 
   async startRentingBike(bikeId: string, customerId: string): Promise<Travel> {
-    const bike = await this.bicyclesService.findById(bikeId);
-    if (!bike) {
-      throw new BadRequestException('Bike not found');
-    }
 
-    if (bike.status !== 'Available') {
-      throw new BadRequestException('Bike is not available for renting');
-    }
-
-    const zoneType = this.getZoneType(bike.latitude, bike.longitude);
+    const bike = await this.bicyclesService.setRented(bikeId);
+    const zoneType = this.zonesService.pointInParkingZone(bike.latitude, bike.longitude) ? 'Parking' : 'Free';
 
     const travel = this.travelRepository.create({
       bike,
@@ -71,8 +65,6 @@ export class TravelService {
       cost: 0,
     });
 
-    // Update the bicycle status
-    await this.bicyclesService.update(bike.id, { status: 'Rented' });
 
     return this.travelRepository.save(travel);
   }
@@ -81,7 +73,7 @@ export class TravelService {
     const activeTravel = await this.findActiveTravelForBike(bikeId);
     return this.endTravel(activeTravel.id);
   }
-  
+
   async endTravel(travelId: number): Promise<Travel> {
     const travel = await this.travelRepository.findOne({
       where: { id: travelId },
@@ -100,7 +92,7 @@ export class TravelService {
     const bike = await this.bicyclesService.findById(travel.bike.id);
 
     // Get the end zone type
-    const endZoneType = this.getZoneType(bike.latitude, bike.longitude);
+    const endZoneType = this.zonesService.pointInParkingZone(bike.latitude, bike.longitude) ? 'Parking' : 'Free';
 
     // Set end time to current server time
     const endTime = new Date();
@@ -125,12 +117,6 @@ export class TravelService {
 
     // Save and return updated travel
     return this.travelRepository.save(travel);
-  }
-
-  getZoneType(lat: number, long: number): 'Free' | 'Parking' {
-    // Dummy implementation for now
-    // randomize the zone type
-    return Math.random() > 0.5 ? 'Free' : 'Parking';
   }
 
   calculateCost(

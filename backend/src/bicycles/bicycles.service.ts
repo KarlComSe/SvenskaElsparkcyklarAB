@@ -5,7 +5,6 @@ import { Bicycle } from './entities/bicycle.entity';
 import { NotFoundException } from '@nestjs/common';
 import { UpdateBicycleDto } from './dto/update-bicycle.dto';
 import { BicycleResponse } from './types/bicycle-response.interface';
-import { ZonesService } from 'src/zones/zones.service';
 import { getDistance } from 'src/utils/geo.utils';
 
 @Injectable()
@@ -35,6 +34,17 @@ export class BicyclesService {
     });
 
     return bikes;
+  }
+
+  async setRented(bikeId: string): Promise<Bicycle> {
+    const result = await this.bicycleRepository.update(
+      { id: bikeId, status: 'Available' },
+      { status: 'Rented' }
+    )
+    if (result.affected === 0) {
+      throw new NotFoundException("Bike couldn't be rented. Bike might not exist or it is not available.");
+    }
+    return await this.findById(bikeId);
   }
 
   async createBike(data?: Partial<Bicycle>): Promise<Bicycle> {

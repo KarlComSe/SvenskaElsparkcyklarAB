@@ -90,4 +90,11 @@ export class ZonesService {
 
     return zones;
   }
+
+  async pointInParkingZone(lat: number, lon: number): Promise<boolean> {
+    const zones = await this.findAll();
+    return zones.some((zone) => {
+      return positionInsidePolygon(lat, lon, zone.polygon);
+    });
+  }
 }
