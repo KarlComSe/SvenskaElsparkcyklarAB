@@ -26,6 +26,26 @@ import {
 export class TravelController {
   constructor(private readonly travelService: TravelService) { }
 
+  @Get('customer/:customerId')
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Get all travels for a customer',
+    description: 'Returns all travels for a specific customer',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Travels found',
+    type: [TravelResponseDto],
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No travels found for this customer',
+  })
+  async getTravelsForCustomer(@Param('customerId') customerId: string) {
+    return await this.travelService.findTravelsForCustomer(customerId);
+  }
+
   @Get('bike/:bikeId/active')
   @ApiOperation({
     summary: 'Get active travel for a bike',

@@ -11,6 +11,9 @@ import { time } from 'console';
 
 @Injectable()
 export class TravelService {
+  async findTravelsForCustomer(customerId: string) {
+    return await this.travelRepository.find({ where: { customer: { githubId: customerId } } });
+  }
   constructor(
     @InjectRepository(Travel)
     private readonly travelRepository: Repository<Travel>,

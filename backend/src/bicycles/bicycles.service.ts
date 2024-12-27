@@ -6,6 +6,7 @@ import { NotFoundException } from '@nestjs/common';
 import { UpdateBicycleDto } from './dto/update-bicycle.dto';
 import { BicycleResponse } from './types/bicycle-response.interface';
 import { ZonesService } from 'src/zones/zones.service';
+import { getDistance } from 'src/utils/geo.utils';
 
 @Injectable()
 export class BicyclesService {
@@ -14,7 +15,7 @@ export class BicyclesService {
     private readonly bicycleRepository: Repository<Bicycle>,
   ) { }
 
-  async findAll(): Promise<BicycleResponse[]> {
+  async findAll(): Promise<Bicycle[]> {
     const bikes = await this.bicycleRepository.find({
       relations: {
         city: true,
@@ -33,12 +34,7 @@ export class BicyclesService {
       },
     });
 
-    return bikes.map((bike) => {
-      return {
-        ...bike,
-        city: bike.city.name,
-      };
-    });
+    return bikes;
   }
 
   async createBike(data?: Partial<Bicycle>): Promise<Bicycle> {
@@ -70,7 +66,7 @@ export class BicyclesService {
 
   async findByCity(
     cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn',
-  ): Promise<BicycleResponse[]> {
+  ): Promise<Bicycle[]> {
     const bikes = await this.bicycleRepository.find({
       where: {
         city: {
@@ -80,25 +76,39 @@ export class BicyclesService {
       relations: ['city'],
     });
 
-    return bikes.map(bike => ({
-      ...bike,
-      city: bike.city.name
-    }));
+    return bikes;
   }
-  async findByLocation(lat: number, lon: number, radius: number): Promise<BicycleResponse[]> {
+  async findByLocation(lat: number, lon: number, radius: number): Promise<Bicycle[]> {
     const allBikes = await this.findAll()
     const filteredBikes = allBikes.filter((bike) => {
-      return ZonesService.getDistance(bike.latitude, bike.longitude, lat, lon) <= radius;
+      return getDistance(bike.latitude, bike.longitude, lat, lon) <= radius;
     }
     )
     return filteredBikes;
   }
-  async findByCityAndLocation(city: any, lat: number, lon: number, radius: number): Promise<BicycleResponse[]> {
+  async findByCityAndLocation(city: any, lat: number, lon: number, radius: number): Promise<Bicycle[]> {
     const bikesInCity = await this.findByCity(city);
     const filteredBikes = bikesInCity.filter((bike) => {
-      return ZonesService.getDistance(bike.latitude, bike.longitude, lat, lon) <= radius;
+      return getDistance(bike.latitude, bike.longitude, lat, lon) <= radius;
     }
     )
     return filteredBikes;
+  }
+
+  private toBicycleResponse(bike: Bicycle): BicycleResponse {
+    return {
+      id: bike.id,
+      batteryLevel: bike.batteryLevel,
+      latitude: bike.latitude,
+      longitude: bike.longitude,
+      status: bike.status,
+      city: bike.city.name,
+      createdAt: bike.createdAt,
+      updatedAt: bike.updatedAt,
+    };
+  }
+
+  toBicycleResponses(bikes: Bicycle[]): BicycleResponse[] {
+    return bikes.map(bike => this.toBicycleResponse(bike));
   }
 }

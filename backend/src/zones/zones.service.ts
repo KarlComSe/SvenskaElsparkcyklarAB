@@ -2,13 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Zone } from './entities/zone';
-import * as turf from "@turf/turf";
+import { ZoneQuery } from './types/ZoneQuery';
+import { ZoneResponse } from './types/ZoneResponse';
+import { BicyclesService } from 'src/bicycles/bicycles.service';
+import { getDistance, positionInsidePolygon } from 'src/utils/geo.utils';
 
 @Injectable()
 export class ZonesService {
   constructor(
     @InjectRepository(Zone)
     private readonly zoneRepository: Repository<Zone>,
+    private readonly bicyclesService: BicyclesService
   ) {}
 
   async findAll(): Promise<Zone[]> {
@@ -41,22 +45,49 @@ export class ZonesService {
       },
     };
     zones = zones.filter((zone) => {
-      const polygon = {
-        type: 'Feature' as const,
-        properties: {},
-        geometry: {
-          type: 'Polygon' as const,
-          coordinates: [zone.polygon.map((p) => [p.lng, p.lat])],
-        },
-      };
-      return turf.pointsWithinPolygon(point, polygon).features.length > 0;
+      return positionInsidePolygon(lat, lon, zone.polygon);
     });
     return zones;
   }
-  
-  static getDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
-    const from = turf.point([lon1, lat1]);
-    const to = turf.point([lon2, lat2]);
-    return turf.distance(from, to)*1000;
-  } 
+
+  async getZonesByFilter(query: ZoneQuery): Promise<ZoneResponse> {
+    const zones : ZoneResponse = {
+      zones: [],
+    }; 
+    zones.zones = await this.findAll();
+
+    if (query.city && query.city.length > 0) {
+      zones.zones = zones.zones.filter((zone) => {
+        return query.city.includes(zone.city.name);
+      })
+    }
+
+    if (query.type && query.type.length > 0) {
+      zones.zones = zones.zones.filter((zone) => {
+        return query.type.includes(zone.type);
+      })
+    }
+
+    if (query.lat && query.lon) {
+      console.log(query.lat, query.lon);
+      zones.zones = zones.zones.filter((zone) => {
+        return getDistance(query.lat, query.lon, zone.polygon[0].lat, zone.polygon[0].lng) <= query.rad;
+      })
+    }
+
+    if (query.includes && query.includes.length > 0) {
+      const allBikes = await this.bicyclesService.findAll(); 
+      zones.zones = zones.zones.map((zone) => {
+        const bikes = allBikes.filter((bike) => {
+          return positionInsidePolygon(bike.latitude, bike.longitude, zone.polygon);
+        });
+        return {
+          ...zone,
+          bikes: bikes,
+        }
+      });
+    }
+
+    return zones;
+  }
 }

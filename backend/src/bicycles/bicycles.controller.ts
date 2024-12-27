@@ -76,16 +76,16 @@ export class BicyclesController {
 
     if (city) {
       if (latitude) {
-        return await this.bicyclesService.findByCityAndLocation(city, latitude, longitude, radi);
+        return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findByCityAndLocation(city, latitude, longitude, radi));
       }
-      return await this.bicyclesService.findByCity(city);
+      return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findByCity(city));
     }
 
     if (latitude) {
-      return await this.bicyclesService.findByLocation(latitude, longitude, radi);
+      return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findByLocation(latitude, longitude, radi));
     }
 
-    return await this.bicyclesService.findAll();
+    return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findAll());
   }
 
   @Post('create')
