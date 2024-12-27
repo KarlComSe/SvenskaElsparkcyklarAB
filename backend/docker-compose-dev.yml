@@ -12,7 +12,6 @@ services:
       - type: bind
         source: ./package.json
         target: /app/package.json
-        read_only: true
       - type: bind
         source: ./package-lock.json
         target: /app/package-lock.json
@@ -30,9 +29,9 @@ services:
         target: /app/test
         read_only: true
       # Writable volumes
-      - type: volume
-        source: node_modules
-        target: /app/node_modules
+      # - type: volume
+      #   source: node_modules
+      #   target: /app/node_modules
       - type: bind
         source: ./src/data
         target: /app/src/data

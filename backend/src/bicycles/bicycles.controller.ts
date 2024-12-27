@@ -6,6 +6,9 @@ import {
   Param,
   Patch,
   Body,
+  Query,
+  ParseFloatPipe,
+  BadRequestException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -14,6 +17,7 @@ import {
   ApiParam,
   ApiBody,
   ApiTags,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { BicyclesService } from './bicycles.service';
@@ -24,11 +28,15 @@ import { BicycleResponse } from './types/bicycle-response.interface';
 @ApiTags('Bicycles')
 @Controller('bike')
 export class BicyclesController {
-  constructor(private readonly bicyclesService: BicyclesService) {}
+  constructor(private readonly bicyclesService: BicyclesService) { }
 
   @Get()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all bicycles' })
+  @ApiQuery({ name: 'city', required: false, enum: ['Göteborg', 'Jönköping', 'Karlshamn'] })
+  @ApiQuery({ name: 'lat', required: false, minimum: -90, maximum: 90 })
+  @ApiQuery({ name: 'lon', required: false, minimum: -180, maximum: 180 })
+  @ApiQuery({ name: 'radius', required: false, minimum: 0, maximum: 100000 })
   @ApiResponse({
     status: 200,
     description: 'List of bicycles',
@@ -52,8 +60,32 @@ export class BicyclesController {
     status: 401,
     description: 'Unauthorized. Authentication required',
   })
-  async getAllBicycles(): Promise<BicycleResponse[]> {
-    return await this.bicyclesService.findAll();
+  async getAllBicycles(
+    @Query('lat') lat?: string,
+    @Query('lon') lon?: string,
+    @Query('radius') radius?: string,
+    @Query('city') city?: 'Göteborg' | 'Jönköping' | 'Karlshamn',
+  ): Promise<BicycleResponse[]> {
+    const latitude = lat ? parseFloat(lat) : undefined;
+    const longitude = lon ? parseFloat(lon) : undefined;
+    const radi = radius ? parseFloat(radius) : 3000;
+
+    if (latitude && !longitude || longitude && !latitude) {
+      throw new BadRequestException('Both lat and lon must be provided for location search');
+    }
+
+    if (city) {
+      if (latitude) {
+        return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findByCityAndLocation(city, latitude, longitude, radi));
+      }
+      return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findByCity(city));
+    }
+
+    if (latitude) {
+      return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findByLocation(latitude, longitude, radi));
+    }
+
+    return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findAll());
   }
 
   @Post('create')

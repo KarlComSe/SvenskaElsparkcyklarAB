@@ -3,6 +3,7 @@ import { ZonesController } from './zones.controller';
 import { ZonesService } from './zones.service';
 import { Zone } from './entities/zone';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ZoneFilterQueryDto } from './dto/zone-filter-query.dto';
 
 describe('ZonesController', () => {
   let controller: ZonesController;
@@ -15,6 +16,7 @@ describe('ZonesController', () => {
       { lat: 59.3293, lng: 18.0686 },
       { lat: 59.3294, lng: 18.0687 },
     ],
+    name: 'Test Zone',
     type: 'speed',
     speedZone: {
       id: 'c2f88dd4-0ba9-5f7c-b5d7-c7fc59f59465',
@@ -29,6 +31,20 @@ describe('ZonesController', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+  };
+
+  const query: ZoneFilterQueryDto = {
+
+    lat: 59.3293,
+
+    lon: 18.0686,
+
+    type: 'speed',
+
+    city: 'Jönköping',
+
+    rad: 3,
+
   };
 
   beforeEach(async () => {
@@ -58,13 +74,13 @@ describe('ZonesController', () => {
 
   describe('getAllZones', () => {
     it('should return an array of zones', async () => {
-      const result = await controller.getAllZones();
+      const result = await controller.getAllZones(query);
       expect(result).toEqual([mockZone]);
     });
 
     it('should call zonesService.findAll', async () => {
       const findAllSpy = jest.spyOn(zonesService, 'findAll');
-      await controller.getAllZones();
+      await controller.getAllZones(query);
       expect(findAllSpy).toHaveBeenCalled();
     });
   });

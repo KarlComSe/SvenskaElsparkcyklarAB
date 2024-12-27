@@ -13,8 +13,8 @@ export default class TravelDataSeeder {
       // Fetch references for existing bikes and customers
 
       // Note that bike reference in seed is made by 'batteryLevel' for now
-      const bike1 = await bikeRepository.findOneBy({ batteryLevel: 100 });
-      const bike2 = await bikeRepository.findOneBy({ batteryLevel: 80 });
+      const bike1 = await bikeRepository.findOneBy({ batteryLevel: 95 });
+      const bike2 = await bikeRepository.findOneBy({ batteryLevel: 88 });
       const user1 = await userRepository.findOneBy({ githubId: '149484382' });
       const user2 = await userRepository.findOneBy({ githubId: '13668660' });
 

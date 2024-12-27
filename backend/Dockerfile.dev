@@ -9,25 +9,30 @@ RUN addgroup --system --gid 1001 appgroup && \
     --ingroup appgroup \
     --disabled-password \
     --no-create-home \
+    --home /app \
     --gecos "Application user" \
     appuser && \
     mkdir -p /var/log /app/dist /app/src/data && \
     chown -R appuser:appgroup /app /var/log /app/src/data && \
-    chmod 755 /app && \
+    chmod -R 755 /app && \
     chmod 777 /app/src/data
 
 COPY package*.json ./
-RUN chown appuser:appgroup package*.json && npm install --include=dev
+
+RUN chown appuser:appgroup package*.json 
+USER appuser
+RUN npm install --include=dev
+
+USER root
 COPY watch-package.json.sh ./
 COPY start-dev.sh ./
 
 RUN chmod +x watch-package.json.sh && \
     chmod +x start-dev.sh && \
     chown -R appuser:appgroup . && \
-    chmod 777 /app/dist
+    chmod -R 775 /app /app/node_modules /app/dist
 
 USER appuser
-
 EXPOSE 3535
 
 SHELL ["/bin/sh", "-c"]
