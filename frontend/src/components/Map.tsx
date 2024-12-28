@@ -57,23 +57,42 @@ export default function Map() {
 
     
   return (
-    <div id="map" data-testid="map">
-        <MapContainer
-        style={{ height: "400px" }}
-        center={startPosition}
-        zoom={zoom}
-        scrollWheelZoom={true}
-        >
-            <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <MapCenter center={startPosition} zoom={zoom} />
-            { renderScooterMarkers(scooterData) }
-            { renderStationMarkers(stationPositions) }
-            { renderPolygons(zoneData) }
-            
-        </MapContainer>
-    </div>
+    <div id="map-container">
+            <div id="map" data-testid="map">
+                <MapContainer
+                    style={{ height: "400px" }}
+                    center={startPosition}
+                    zoom={zoom}
+                    scrollWheelZoom={true}
+                >
+                    <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <MapCenter center={startPosition} zoom={zoom} />
+                    {renderScooterMarkers(scooterData)}
+                    {renderStationMarkers(stationPositions)}
+                    {renderPolygons(zoneData)}
+                </MapContainer>
+            </div>
+            <div id="scooter-list" className="mt-4 bg-gray-600 rounded">
+                <h2 className="text-xl font-bold mb-2">Cyklar i {city}:</h2>
+                {scooterData.length > 0 ? (
+                    <ul className="list-disc pl-6 list-none">
+                        {scooterData.map((scooter) => (
+                            <li key={scooter.id} className="mb-2">
+                                <div className="mt-4 p-6 mx-auto w-1/2 hover:opacity-5 bg-gray-400 rounded text-center">
+                                <h2><span className="font-semibold">ID:</span>{scooter.id} -{" "}</h2>
+                                <span className="font-semibold">Batteri:</span> {scooter.batteryLevel}% -{" "}
+                                <span className="font-semibold">Status:</span> {scooter.status}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>Inga cyklar tillgängliga i denna stad.</p>
+                )}
+            </div>
+        </div>
   )
 };
