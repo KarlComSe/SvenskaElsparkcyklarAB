@@ -11,5 +11,6 @@ import { BicyclesModule } from 'src/bicycles/bicycles.module';
   imports: [TypeOrmModule.forFeature([Zone, SpeedZone]), BicyclesModule],
   providers: [ZonesService],
   controllers: [ZonesController],
+  exports: [ZonesService],
 })
 export class ZonesModule {}
