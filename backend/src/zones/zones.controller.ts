@@ -75,17 +75,13 @@ export class ZonesController {
     const filters: ZoneQuery = {
       lat: query.lat ? query.lat : null,
       lon: query.lon ? query.lon : null,
-      type: query.type
-        ? (query.type.split(',') as ('parking' | 'charging' | 'speed')[])
-        : [],
+      type: query.type ? (query.type.split(',') as ('parking' | 'charging' | 'speed')[]) : [],
       includes: query.includes ? (query.includes.split(',') as 'bikes'[]) : [],
-      city: query.city
-        ? (query.city.split(',') as ('Göteborg' | 'Jönköping' | 'Karlshamn')[])
-        : [],
+      city: query.city ? (query.city.split(',') as ('Göteborg' | 'Jönköping' | 'Karlshamn')[]) : [],
       rad: query.rad ? query.rad : null,
     };
 
-    let zones = await this.zonesService.getZonesByFilter(filters);
+    const zones = await this.zonesService.getZonesByFilter(filters);
     return {
       filters: filters,
       ...zones,
@@ -135,9 +131,7 @@ export class ZonesController {
     type: 'string',
     enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
   })
-  async getZonesByCity(
-    @Param('cityName') cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn',
-  ) {
+  async getZonesByCity(@Param('cityName') cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn') {
     return await this.zonesService.findByCity(cityName);
   }
 }

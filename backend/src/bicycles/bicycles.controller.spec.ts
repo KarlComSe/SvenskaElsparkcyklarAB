@@ -46,9 +46,7 @@ describe('BicyclesController', () => {
             findAll: jest.fn().mockResolvedValue([mockBicycle]),
             createBike: jest.fn().mockResolvedValue(mockBicycle),
             findById: jest.fn().mockResolvedValue(mockBicycle),
-            update: jest
-              .fn()
-              .mockResolvedValue({ ...mockBicycle, ...updateBicycleDto }),
+            update: jest.fn().mockResolvedValue({ ...mockBicycle, ...updateBicycleDto }),
           },
         },
       ],
@@ -125,9 +123,7 @@ describe('BicyclesController', () => {
       const error = new Error('Update failed');
       jest.spyOn(bicyclesService, 'update').mockRejectedValue(error);
       const bikeId = 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464';
-      await expect(
-        controller.updateBicycle(bikeId, updateBicycleDto),
-      ).rejects.toThrow(error);
+      await expect(controller.updateBicycle(bikeId, updateBicycleDto)).rejects.toThrow(error);
     });
   });
 });

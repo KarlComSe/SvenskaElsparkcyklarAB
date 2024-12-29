@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Not, Repository } from 'typeorm';
 import { Travel } from './entities/travel.entity';
@@ -21,7 +17,7 @@ export class TravelService {
     private readonly travelRepository: Repository<Travel>,
     private readonly bicyclesService: BicyclesService,
     private readonly zonesService: ZonesService,
-  ) { }
+  ) {}
 
   async findAll(): Promise<Travel[]> {
     return await this.travelRepository.find();
@@ -52,9 +48,10 @@ export class TravelService {
   }
 
   async startRentingBike(bikeId: string, customerId: string): Promise<Travel> {
-
     const bike = await this.bicyclesService.setRented(bikeId);
-    const zoneType = this.zonesService.pointInParkingZone(bike.latitude, bike.longitude) ? 'Parking' : 'Free';
+    const zoneType = this.zonesService.pointInParkingZone(bike.latitude, bike.longitude)
+      ? 'Parking'
+      : 'Free';
 
     const travel = this.travelRepository.create({
       bike,
@@ -66,7 +63,6 @@ export class TravelService {
       endZoneType: null,
       cost: 0,
     });
-
 
     return this.travelRepository.save(travel);
   }
@@ -81,45 +77,42 @@ export class TravelService {
       where: { id: travelId },
       relations: ['bike', 'customer'], // Load bike and customer relations
     });
-  
+
     if (!travel) {
       throw new NotFoundException('Travel not found');
     }
-  
+
     if (travel.stopTime) {
       throw new BadRequestException('Travel has already ended');
     }
-  
+
     // Get current bike location (from bike entity)
     const bike = await this.bicyclesService.findById(travel.bike.id);
-  
+
     // Get the end zone type
-    const endZoneType = this.zonesService.pointInParkingZone(bike.latitude, bike.longitude) ? 'Parking' : 'Free';
-  
+    const endZoneType = this.zonesService.pointInParkingZone(bike.latitude, bike.longitude)
+      ? 'Parking'
+      : 'Free';
+
     // Set end time to current server time
     const endTime = new Date();
-  
+
     // Calculate cost
-    const cost = this.calculateCost(
-      travel.startTime,
-      endTime,
-      travel.startZoneType,
-      endZoneType,
-    );
-  
+    const cost = this.calculateCost(travel.startTime, endTime, travel.startZoneType, endZoneType);
+
     // Update travel record
     travel.stopTime = endTime;
     travel.latStop = bike.latitude;
     travel.longStop = bike.longitude;
     travel.endZoneType = endZoneType;
     travel.cost = cost;
-  
+
     // Update bike status to available
     await this.bicyclesService.update(bike.id, { status: 'Available' });
-  
+
     // Update user account
     const customer = travel.customer;
-  
+
     if (customer.isMonthlyPayment) {
       // Accumulate cost for monthly payment users
       customer.accumulatedCost += cost;
@@ -130,14 +123,13 @@ export class TravelService {
       }
       customer.balance -= cost;
     }
-  
+
     // Save updated user
     await this.travelRepository.manager.getRepository('User').save(customer);
-  
+
     // Save and return updated travel
     return this.travelRepository.save(travel);
   }
-  
 
   calculateCost(
     startTime: Date,
@@ -152,11 +144,9 @@ export class TravelService {
     const startFee = 10;
     const costPerMinute = 1;
 
-    let cost =
+    const cost =
       (endZoneType === 'Parking' ? 0 : parkingFee) +
-      (startZoneType === 'Free' && endZoneType === 'Parking'
-        ? startFee / 2
-        : startFee) +
+      (startZoneType === 'Free' && endZoneType === 'Parking' ? startFee / 2 : startFee) +
       timeDiffInMinutes * costPerMinute;
 
     return cost;

@@ -48,8 +48,6 @@ describe('BicyclesService', () => {
 
     mockRepository.findOne.mockResolvedValue(null);
 
-    await expect(service.update('non-existent-id', updateDto)).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(service.update('non-existent-id', updateDto)).rejects.toThrow(NotFoundException);
   });
 });

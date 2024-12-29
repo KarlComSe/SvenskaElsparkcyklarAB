@@ -1,12 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsOptional,
-  IsNumber,
-  IsEnum,
-  Min,
-  Max,
-  IsUUID,
-} from 'class-validator';
+import { IsOptional, IsNumber, IsEnum, Min, Max, IsUUID } from 'class-validator';
 
 export class UpdateBicycleDto {
   @ApiProperty({

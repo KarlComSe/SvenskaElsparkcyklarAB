@@ -21,9 +21,7 @@ export class ZonesService {
     });
   }
 
-  async findByCity(
-    cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn',
-  ): Promise<Zone[]> {
+  async findByCity(cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn'): Promise<Zone[]> {
     return await this.zoneRepository.find({
       where: {
         city: {
@@ -72,12 +70,7 @@ export class ZonesService {
       console.log(query.lat, query.lon);
       zones.zones = zones.zones.filter((zone) => {
         return (
-          getDistance(
-            query.lat,
-            query.lon,
-            zone.polygon[0].lat,
-            zone.polygon[0].lng,
-          ) <= query.rad
+          getDistance(query.lat, query.lon, zone.polygon[0].lat, zone.polygon[0].lng) <= query.rad
         );
       });
     }
@@ -86,11 +79,7 @@ export class ZonesService {
       const allBikes = await this.bicyclesService.findAll();
       zones.zones = zones.zones.map((zone) => {
         const bikes = allBikes.filter((bike) => {
-          return positionInsidePolygon(
-            bike.latitude,
-            bike.longitude,
-            zone.polygon,
-          );
+          return positionInsidePolygon(bike.latitude, bike.longitude, zone.polygon);
         });
         return {
           ...zone,
