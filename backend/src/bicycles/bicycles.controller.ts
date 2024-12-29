@@ -24,16 +24,21 @@ import { BicyclesService } from './bicycles.service';
 import { UpdateBicycleDto } from './dto/update-bicycle.dto';
 import { Bicycle } from './entities/bicycle.entity';
 import { BicycleResponse } from './types/bicycle-response.interface';
+import { CreateBicycleDto } from './dto/create-bicycle.dto';
 
 @ApiTags('Bicycles')
 @Controller('bike')
 export class BicyclesController {
-  constructor(private readonly bicyclesService: BicyclesService) { }
+  constructor(private readonly bicyclesService: BicyclesService) {}
 
   @Get()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all bicycles' })
-  @ApiQuery({ name: 'city', required: false, enum: ['Göteborg', 'Jönköping', 'Karlshamn'] })
+  @ApiQuery({
+    name: 'city',
+    required: false,
+    enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
+  })
   @ApiQuery({ name: 'lat', required: false, minimum: -90, maximum: 90 })
   @ApiQuery({ name: 'lon', required: false, minimum: -180, maximum: 180 })
   @ApiQuery({ name: 'radius', required: false, minimum: 0, maximum: 100000 })
@@ -70,27 +75,56 @@ export class BicyclesController {
     const longitude = lon ? parseFloat(lon) : undefined;
     const radi = radius ? parseFloat(radius) : 3000;
 
-    if (latitude && !longitude || longitude && !latitude) {
-      throw new BadRequestException('Both lat and lon must be provided for location search');
+    if ((latitude && !longitude) || (longitude && !latitude)) {
+      throw new BadRequestException(
+        'Both lat and lon must be provided for location search',
+      );
     }
 
     if (city) {
       if (latitude) {
-        return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findByCityAndLocation(city, latitude, longitude, radi));
+        return this.bicyclesService.toBicycleResponses(
+          await this.bicyclesService.findByCityAndLocation(
+            city,
+            latitude,
+            longitude,
+            radi,
+          ),
+        );
       }
-      return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findByCity(city));
+      return this.bicyclesService.toBicycleResponses(
+        await this.bicyclesService.findByCity(city),
+      );
     }
 
     if (latitude) {
-      return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findByLocation(latitude, longitude, radi));
+      return this.bicyclesService.toBicycleResponses(
+        await this.bicyclesService.findByLocation(latitude, longitude, radi),
+      );
     }
 
-    return this.bicyclesService.toBicycleResponses(await this.bicyclesService.findAll());
+    return this.bicyclesService.toBicycleResponses(
+      await this.bicyclesService.findAll(),
+    );
   }
 
   @Post('create')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create a new bicycle' })
+  @ApiBody({
+    type: CreateBicycleDto,
+    description: 'Bicycle creation data',
+    required: false,
+    schema: {
+      example: {
+        batteryLevel: 100,
+        latitude: null,
+        longitude: null,
+        status: 'Available',
+        city: 'Göteborg'
+      }
+    }
+  })
   @ApiResponse({
     status: 201,
     description: 'Bicycle created successfully',
@@ -101,19 +135,95 @@ export class BicyclesController {
         latitude: null,
         longitude: null,
         status: 'Available',
-        city: 'Göteborg',
+        city: {
+          id: '123e4567-e89b-12d3-a456-426614174000',
+          name: 'Göteborg',
+          latitude: 57.708870,
+          longitude: 11.974560,
+          createdAt: '2024-12-01T05:01:01.000Z',
+          updatedAt: '2024-12-01T05:01:01.000Z'
+        },
         createdAt: '2024-12-01T05:01:01.000Z',
         updatedAt: '2024-12-01T05:01:01.000Z',
       },
     },
   })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized. Authentication required',
-  })
-  async createABike(): Promise<Bicycle> {
+  async createABike(@Body() createBicycleDto: CreateBicycleDto): Promise<Bicycle> {
     console.log('skapa cykel');
-    return await this.bicyclesService.createBike();
+    return await this.bicyclesService.createBike(createBicycleDto);
+  }
+
+  @Post('create-many')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Create multiple bicycles' })
+  @ApiBody({
+    type: [CreateBicycleDto],
+    description: 'Array of bicycle creation data',
+    required: false,
+    schema: {
+      example: [
+        {
+          batteryLevel: 100,
+          latitude: null,
+          longitude: null,
+          status: 'Available',
+          city: 'Göteborg'
+        },
+        {
+          batteryLevel: 100,
+          latitude: null,
+          longitude: null,
+          status: 'Available',
+          city: 'Göteborg'
+        },
+      ]
+    }
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Bicycles created successfully',
+    schema: {
+      type: 'array',
+      example: [
+        {
+          id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
+          batteryLevel: 100,
+          latitude: null,
+          longitude: null,
+          status: 'Available',
+          city: {
+            id: '123e4567-e89b-12d3-a456-426614174000',
+            name: 'Göteborg',
+            latitude: 57.708870,
+            longitude: 11.974560,
+            createdAt: '2024-12-01T05:01:01.000Z',
+            updatedAt: '2024-12-01T05:01:01.000Z'
+          },
+          createdAt: '2024-12-01T05:01:01.000Z',
+          updatedAt: '2024-12-01T05:01:01.000Z',
+        },
+        {
+          id: 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464',
+          batteryLevel: 100,
+          latitude: null,
+          longitude: null,
+          status: 'Available',
+          city: {
+            id: '123e4567-e89b-12d3-a456-426614174000',
+            name: 'Göteborg',
+            latitude: 57.708870,
+            longitude: 11.974560,
+            createdAt: '2024-12-01T05:01:01.000Z',
+            updatedAt: '2024-12-01T05:01:01.000Z'
+          },
+          createdAt: '2024-12-01T05:01:01.000Z',
+          updatedAt: '2024-12-01T05:01:01.000Z',
+        },
+      ],
+    },
+  })
+  async createManyBikes(@Body() createBicycleDto: CreateBicycleDto[]): Promise<Bicycle[]> {
+    return await this.bicyclesService.createManyBikes(createBicycleDto);
   }
 
   @Get(':bikeId')

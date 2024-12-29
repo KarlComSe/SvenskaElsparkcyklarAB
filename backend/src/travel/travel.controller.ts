@@ -24,7 +24,7 @@ import {
 @ApiTags('Bike Rentals')
 @Controller('rental')
 export class TravelController {
-  constructor(private readonly travelService: TravelService) { }
+  constructor(private readonly travelService: TravelService) {}
 
   @Get('customer/:customerId')
   // @UseGuards(JwtAuthGuard)
@@ -67,15 +67,15 @@ export class TravelController {
   @Post('bike/:bikeId/end-active')
   @ApiOperation({
     summary: 'End active travel for specific bike',
-    description: 'Ends the currently active travel for the specified bike'
+    description: 'Ends the currently active travel for the specified bike',
   })
   @ApiResponse({
     status: 201,
-    description: 'Travel ended successfully'
+    description: 'Travel ended successfully',
   })
   @ApiResponse({
     status: 404,
-    description: 'No active travel found for this bike'
+    description: 'No active travel found for this bike',
   })
   async endActiveBikeTravel(@Param('bikeId') bikeId: string) {
     return await this.travelService.endActiveTravelForBike(bikeId);

@@ -12,7 +12,9 @@ import { ZonesService } from 'src/zones/zones.service';
 @Injectable()
 export class TravelService {
   async findTravelsForCustomer(customerId: string) {
-    return await this.travelRepository.find({ where: { customer: { githubId: customerId } } });
+    return await this.travelRepository.find({
+      where: { customer: { githubId: customerId } },
+    });
   }
   constructor(
     @InjectRepository(Travel)

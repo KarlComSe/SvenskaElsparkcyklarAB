@@ -12,7 +12,7 @@ export class ZonesService {
   constructor(
     @InjectRepository(Zone)
     private readonly zoneRepository: Repository<Zone>,
-    private readonly bicyclesService: BicyclesService
+    private readonly bicyclesService: BicyclesService,
   ) {}
 
   async findAll(): Promise<Zone[]> {
@@ -51,40 +51,51 @@ export class ZonesService {
   }
 
   async getZonesByFilter(query: ZoneQuery): Promise<ZoneResponse> {
-    const zones : ZoneResponse = {
+    const zones: ZoneResponse = {
       zones: [],
-    }; 
+    };
     zones.zones = await this.findAll();
 
     if (query.city && query.city.length > 0) {
       zones.zones = zones.zones.filter((zone) => {
         return query.city.includes(zone.city.name);
-      })
+      });
     }
 
     if (query.type && query.type.length > 0) {
       zones.zones = zones.zones.filter((zone) => {
         return query.type.includes(zone.type);
-      })
+      });
     }
 
     if (query.lat && query.lon) {
       console.log(query.lat, query.lon);
       zones.zones = zones.zones.filter((zone) => {
-        return getDistance(query.lat, query.lon, zone.polygon[0].lat, zone.polygon[0].lng) <= query.rad;
-      })
+        return (
+          getDistance(
+            query.lat,
+            query.lon,
+            zone.polygon[0].lat,
+            zone.polygon[0].lng,
+          ) <= query.rad
+        );
+      });
     }
 
     if (query.includes && query.includes.length > 0) {
-      const allBikes = await this.bicyclesService.findAll(); 
+      const allBikes = await this.bicyclesService.findAll();
       zones.zones = zones.zones.map((zone) => {
         const bikes = allBikes.filter((bike) => {
-          return positionInsidePolygon(bike.latitude, bike.longitude, zone.polygon);
+          return positionInsidePolygon(
+            bike.latitude,
+            bike.longitude,
+            zone.polygon,
+          );
         });
         return {
           ...zone,
           bikes: bikes,
-        }
+        };
       });
     }
 

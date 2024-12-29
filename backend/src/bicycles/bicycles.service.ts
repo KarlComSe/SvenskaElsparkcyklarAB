@@ -6,13 +6,18 @@ import { NotFoundException } from '@nestjs/common';
 import { UpdateBicycleDto } from './dto/update-bicycle.dto';
 import { BicycleResponse } from './types/bicycle-response.interface';
 import { getDistance } from 'src/utils/geo.utils';
+import { CreateBicycleDto } from './dto/create-bicycle.dto';
+import { City } from 'src/cities/entities/city.entity';
 
 @Injectable()
 export class BicyclesService {
+
   constructor(
     @InjectRepository(Bicycle)
     private readonly bicycleRepository: Repository<Bicycle>,
-  ) { }
+    @InjectRepository(City)
+    private cityRepository: Repository<City>,
+  ) {}
 
   async findAll(): Promise<Bicycle[]> {
     const bikes = await this.bicycleRepository.find({
@@ -47,9 +52,52 @@ export class BicyclesService {
     return await this.findById(bikeId);
   }
 
-  async createBike(data?: Partial<Bicycle>): Promise<Bicycle> {
-    const bike = this.bicycleRepository.create(data);
+  async createBike(createBicycleDto: CreateBicycleDto): Promise<Bicycle> {
+    const bike = this.bicycleRepository.create({
+      batteryLevel: createBicycleDto.batteryLevel ?? 100,
+      latitude: createBicycleDto.latitude,
+      longitude: createBicycleDto.longitude,
+      status: createBicycleDto.status ?? 'Available',
+    });
+
+    const city = createBicycleDto.city ?? 'Göteborg';
+      // Find the city by name
+      const cityEntity = await this.cityRepository.findOne({
+        where: { name: city }
+      });
+      
+      if (cityEntity) {
+        bike.city = cityEntity;
+      } 
+
+
     return await this.bicycleRepository.save(bike);
+  }
+
+  async createManyBikes(createBicycleDto: CreateBicycleDto[]): Promise<Bicycle[]> {
+
+    const defaultCity = await this.cityRepository.findOne({
+      where: { name: 'Göteborg' }
+    });
+    const Karlshamn = await this.cityRepository.findOne({
+      where: { name: 'Karlshamn' }
+    });
+    const Jönköping = await this.cityRepository.findOne({
+      where: { name: 'Jönköping' }
+    });
+
+    const bikes = createBicycleDto.map((bike) => {
+      return this.bicycleRepository.create({
+        batteryLevel: bike.batteryLevel ?? 100,
+        latitude: bike.latitude,
+        longitude: bike.longitude,
+        status: bike.status ?? 'Available',
+        city: bike.city === 'Jönköping' ? Jönköping : bike.city === 'Karlshamn' ? Karlshamn : defaultCity,
+      });
+    });
+
+    return await this.bicycleRepository.save(bikes);
+
   }
 
   async findById(id: string): Promise<Bicycle> {
@@ -88,20 +136,27 @@ export class BicyclesService {
 
     return bikes;
   }
-  async findByLocation(lat: number, lon: number, radius: number): Promise<Bicycle[]> {
-    const allBikes = await this.findAll()
+  async findByLocation(
+    lat: number,
+    lon: number,
+    radius: number,
+  ): Promise<Bicycle[]> {
+    const allBikes = await this.findAll();
     const filteredBikes = allBikes.filter((bike) => {
       return getDistance(bike.latitude, bike.longitude, lat, lon) <= radius;
-    }
-    )
+    });
     return filteredBikes;
   }
-  async findByCityAndLocation(city: any, lat: number, lon: number, radius: number): Promise<Bicycle[]> {
+  async findByCityAndLocation(
+    city: any,
+    lat: number,
+    lon: number,
+    radius: number,
+  ): Promise<Bicycle[]> {
     const bikesInCity = await this.findByCity(city);
     const filteredBikes = bikesInCity.filter((bike) => {
       return getDistance(bike.latitude, bike.longitude, lat, lon) <= radius;
-    }
-    )
+    });
     return filteredBikes;
   }
 
@@ -112,13 +167,13 @@ export class BicyclesService {
       latitude: bike.latitude,
       longitude: bike.longitude,
       status: bike.status,
-      city: bike.city.name,
+      city: bike.city?.name,
       createdAt: bike.createdAt,
       updatedAt: bike.updatedAt,
     };
   }
 
   toBicycleResponses(bikes: Bicycle[]): BicycleResponse[] {
-    return bikes.map(bike => this.toBicycleResponse(bike));
+    return bikes.map((bike) => this.toBicycleResponse(bike));
   }
 }

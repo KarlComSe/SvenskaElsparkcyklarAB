@@ -68,7 +68,7 @@ export default class BicycleSeeder {
         // Service bikes
         {
           batteryLevel: 15,
-          latitude: 57.7000,
+          latitude: 57.7,
           longitude: 11.9753,
           status: 'Service' as BicycleStatus,
           city: goteborg,
@@ -86,7 +86,7 @@ export default class BicycleSeeder {
           longitude: 11.9765,
           status: 'Service' as BicycleStatus,
           city: goteborg,
-        }
+        },
       ];
 
       // Karlshamn bikes
@@ -134,7 +134,7 @@ export default class BicycleSeeder {
           longitude: 14.8608,
           status: 'Service' as BicycleStatus,
           city: karlshamn,
-        }
+        },
       ];
 
       // Jönköping bikes
@@ -182,13 +182,13 @@ export default class BicycleSeeder {
           longitude: 14.2183,
           status: 'Service' as BicycleStatus,
           city: jonkoping,
-        }
+        },
       ];
 
       await bicycleRepo.save([
         ...goteborgBikes,
         ...karlshamnBikes,
-        ...jonkopingBikes
+        ...jonkopingBikes,
       ]);
     }
   }
