@@ -43,7 +43,3 @@ tools:
     config:
       extensions:
         - .ts
-  
-  # Enable general code metrics
-  metrics:
-    enabled: true
