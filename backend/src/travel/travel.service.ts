@@ -126,7 +126,7 @@ export class TravelService {
     } else {
       // Deduct from balance for prepaid users
       if (customer.balance < cost) {
-        throw new BadRequestException('Insufficient balance. Please top up.');
+        throw new BadRequestException('Insufficient balance. Please insert funds.');
       }
       customer.balance -= cost;
     }

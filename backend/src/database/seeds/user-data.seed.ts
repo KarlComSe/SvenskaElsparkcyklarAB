@@ -14,8 +14,9 @@ export default class UserDataSeeder {
           email: 'pbris@example.com',
           roles: ['admin'],
           hasAcceptedTerms: true,
-          isMonthlyPayment: true,
+          isMonthlyPayment: false,
           accumulatedCost: 0,
+          balance: 100,
         },
         {
           githubId: '149296874',
