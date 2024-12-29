@@ -194,4 +194,25 @@ export class UsersController {
   ) {
     return this.usersService.update(githubId, updateUserDto);
   }
+
+  @Get(':githubId/account')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Get account balance and accumulated cost',
+    description: 'Returns the users balance and accumulated monthly payment cost.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Account details retrieved successfully.',
+  })
+  async getAccountDetails(@Param('githubId') githubId: string) {
+    const user = await this.usersService.findById(githubId);
+    return {
+      balance: user.balance,
+      accumulatedCost: user.accumulatedCost,
+      isMonthlyPayment: user.isMonthlyPayment,
+    };
+  }
+
 }
