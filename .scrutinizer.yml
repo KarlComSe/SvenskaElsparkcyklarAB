@@ -15,7 +15,7 @@ build:
           # TypeScript compilation check
           - command: cd backend && tsc --noEmit
             analysis:
-              format: typescript
+              format: typescript-eslint
 
           # Run tests with coverage
           - command: cd backend && npm run test:full-cov
@@ -42,8 +42,9 @@ filter:
     - 'backend/**/*.module.ts'   # Module files are typically just configuration
 
 checks:
-  typescript: true
-  javascript: true
+  javascript:
+    code_rating: true
+    duplication: true
   method_complexity:
     config:
       threshold: 15    # Reasonably permissive - methods more complex than this should probably be split
