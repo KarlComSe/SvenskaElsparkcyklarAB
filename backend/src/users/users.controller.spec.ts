@@ -15,17 +15,20 @@ describe('UsersController', () => {
   let controller: UsersController;
   let usersService: UsersService;
 
-  // Create mock user for reuse
-  const mockUser: User = {
-    githubId: '123',
-    username: 'testuser',
-    email: 'test@example.com',
-    roles: [],
-    hasAcceptedTerms: true,
-    avatarUrl: 'https://example.com/avatar.png',
-    updatedAt: new Date(),
-    createdAt: new Date(),
-  };
+// Create mock user for reuse
+const mockUser: User = {
+  githubId: '123',
+  username: 'testuser',
+  email: 'test@example.com',
+  roles: [],
+  hasAcceptedTerms: true,
+  avatarUrl: 'https://example.com/avatar.png',
+  updatedAt: new Date(),
+  createdAt: new Date(),
+  isMonthlyPayment: false,
+  accumulatedCost: 50, 
+  balance: 100,
+};
 
   // Create mock request for reuse
   const mockRequest = { user: { githubId: '123' } };
