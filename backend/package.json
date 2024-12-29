@@ -17,12 +17,12 @@
     "lint:report": "eslint \"{src,apps,libs,test}/**/*.ts\" --format json --output-file eslint-report.json",
     "lint:show": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "analyze": "echo '=== TypeScript Check ===' && tsc --noEmit || true && echo '\n=== Linting ===' && npm run lint:show || true && echo '\n=== Tests and Coverage ===' && npm run test:full-cov",
-    "test": "jest -c jest.config.ts",
+    "test": "jest -c jest.config.json",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:full-cov": "jest -c jest.config.ts --coverage && jest -c test/jest-e2e.config.ts --coverage && ts-node test/merge-coverage.ts",
+    "test:full-cov": "jest -c jest.config.json --coverage && jest -c test/jest-e2e.config.json --coverage && ts-node test/merge-coverage.ts",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest -c test/jest-e2e.config.ts"
+    "test:e2e": "jest -c test/jest-e2e.config.json"
   },
   "dependencies": {
     "@nestjs/axios": "^3.1.2",
