@@ -79,26 +79,26 @@ export class TravelService {
   async endTravel(travelId: number): Promise<Travel> {
     const travel = await this.travelRepository.findOne({
       where: { id: travelId },
-      relations: ['bike'], // Ensure we load the bike relation
+      relations: ['bike', 'customer'], // Load bike and customer relations
     });
-
+  
     if (!travel) {
       throw new NotFoundException('Travel not found');
     }
-
+  
     if (travel.stopTime) {
       throw new BadRequestException('Travel has already ended');
     }
-
+  
     // Get current bike location (from bike entity)
     const bike = await this.bicyclesService.findById(travel.bike.id);
-
+  
     // Get the end zone type
     const endZoneType = this.zonesService.pointInParkingZone(bike.latitude, bike.longitude) ? 'Parking' : 'Free';
-
+  
     // Set end time to current server time
     const endTime = new Date();
-
+  
     // Calculate cost
     const cost = this.calculateCost(
       travel.startTime,
@@ -106,20 +106,38 @@ export class TravelService {
       travel.startZoneType,
       endZoneType,
     );
-
+  
     // Update travel record
     travel.stopTime = endTime;
     travel.latStop = bike.latitude;
     travel.longStop = bike.longitude;
     travel.endZoneType = endZoneType;
     travel.cost = cost;
-
+  
     // Update bike status to available
     await this.bicyclesService.update(bike.id, { status: 'Available' });
-
+  
+    // Update user account
+    const customer = travel.customer;
+  
+    if (customer.isMonthlyPayment) {
+      // Accumulate cost for monthly payment users
+      customer.accumulatedCost += cost;
+    } else {
+      // Deduct from balance for prepaid users
+      if (customer.balance < cost) {
+        throw new BadRequestException('Insufficient balance. Please top up.');
+      }
+      customer.balance -= cost;
+    }
+  
+    // Save updated user
+    await this.travelRepository.manager.getRepository('User').save(customer);
+  
     // Save and return updated travel
     return this.travelRepository.save(travel);
   }
+  
 
   calculateCost(
     startTime: Date,

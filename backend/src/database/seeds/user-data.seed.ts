@@ -14,6 +14,8 @@ export default class UserDataSeeder {
           email: 'pbris@example.com',
           roles: ['admin'],
           hasAcceptedTerms: true,
+          isMonthlyPayment: true,
+          accumulatedCost: 0,
         },
         {
           githubId: '149296874',
@@ -21,6 +23,8 @@ export default class UserDataSeeder {
           email: 'airhelios@example.com',
           roles: ['admin'],
           hasAcceptedTerms: true,
+          isMonthlyPayment: true,
+          accumulatedCost: 0,
         },
         {
           githubId: '13668660',
@@ -28,6 +32,8 @@ export default class UserDataSeeder {
           email: 'karlcomse@example.com',
           roles: ['admin'],
           hasAcceptedTerms: true,
+          isMonthlyPayment: true,
+          accumulatedCost: 0,
         },
         {
           githubId: '149683406',
@@ -35,6 +41,8 @@ export default class UserDataSeeder {
           email: 'gumme1@example.com',
           roles: ['admin'],
           hasAcceptedTerms: true,
+          isMonthlyPayment: true,
+          accumulatedCost: 0,
         },
         {
           githubId: '123456789',
@@ -43,6 +51,8 @@ export default class UserDataSeeder {
           roles: ['user'],
           hasAcceptedTerms: true,
           avatarUrl: 'https://example.com/john.jpg',
+          isMonthlyPayment: true,
+          accumulatedCost: 0,
         },
         {
           githubId: '234567890',
@@ -51,6 +61,8 @@ export default class UserDataSeeder {
           roles: ['user', 'admin'],
           hasAcceptedTerms: true,
           avatarUrl: 'https://example.com/jane.jpg',
+          isMonthlyPayment: true,
+          accumulatedCost: 0,
         },
         {
           githubId: '345678901',
@@ -59,6 +71,8 @@ export default class UserDataSeeder {
           roles: ['user'],
           hasAcceptedTerms: false,
           avatarUrl: 'https://example.com/bob.jpg',
+          isMonthlyPayment: true,
+          accumulatedCost: 0,
         },
       ]);
     }

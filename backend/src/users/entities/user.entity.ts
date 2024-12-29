@@ -32,6 +32,15 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Column({ type: 'boolean', default: true })
+  isMonthlyPayment: boolean;
+
+  @Column({ type: 'decimal', default: 0 })
+  accumulatedCost: number;
+
+  @Column({ type: 'decimal', default: 0 })
+  balance: number;
+
   constructor(partial: Partial<User>) {
     Object.assign(this, partial);
   }
