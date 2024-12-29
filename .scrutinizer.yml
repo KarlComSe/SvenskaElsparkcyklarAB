@@ -8,9 +8,9 @@ build:
       tests:
         override:
           # Run ESLint analysis
-          - command: cd backend && npm run lint:report
+          - command: cd backend && npm run lint:report-checkstyle
             analysis:
-              format: eslint
+              format: eslint-checkstyle
 
           # Run tests with coverage
           - command: cd backend && npm run test:full-cov
