@@ -1,6 +1,6 @@
-import { BadRequestException, Controller, Param } from '@nestjs/common';
+import { BadRequestException, Controller, Param, ForbiddenException } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { Patch, Get, Body, Req, UseGuards } from '@nestjs/common';
+import { Patch, Get, Body, Req, Post, UseGuards, Request } from '@nestjs/common';
 import { UpdateTermsDto } from './dto/update-terms.dto/update-terms.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import {
@@ -11,6 +11,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto/update-user.dto';
+import { AdjustFundsDto } from './dto/update-user.dto/adjust-funds.dto';
 import { AdminGuard } from '../auth/guards/admin.guard';
 
 @Controller('users')
@@ -214,5 +215,43 @@ export class UsersController {
       isMonthlyPayment: user.isMonthlyPayment,
     };
   }
+  @Post(':githubId/adjust-funds')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Adjust user balance and payment mode',
+    description: 'Set a new balance for the user and optionally toggle monthly payment mode.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User balance adjusted successfully',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden. You cannot adjust other users unless you are an admin.',
+  })
+  async adjustFunds(
+    @Param('githubId') githubId: string,
+    @Body() adjustFundsDto: AdjustFundsDto,
+    @Request() req: any,
+  ) {
+    const authenticatedUser = req.user;
+  
+    // Only allow if the user is an admin or adjusting their own account
+    if (
+      authenticatedUser.githubId !== githubId &&
+      !authenticatedUser.roles.includes('admin')
+    ) {
+      throw new ForbiddenException('You are not allowed to adjust other users\' accounts.');
+    }
+  
+    return await this.usersService.adjustFunds(githubId, adjustFundsDto);
+  }
+  
+
 
 }
