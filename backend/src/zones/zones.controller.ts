@@ -16,15 +16,23 @@ import { ZoneQuery } from './types/ZoneQuery';
 @ApiTags('Zones')
 @Controller('zone')
 export class ZonesController {
-  constructor(private readonly zonesService: ZonesService) { }
+  constructor(private readonly zonesService: ZonesService) {}
   @Get()
   // @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all zones' })
   @ApiQuery({ name: 'lat', required: false, type: Number })
   @ApiQuery({ name: 'lon', required: false, type: Number })
-  @ApiQuery({ name: 'type', required: false, enum: ['parking', 'charging', 'speed'] })
+  @ApiQuery({
+    name: 'type',
+    required: false,
+    enum: ['parking', 'charging', 'speed'],
+  })
   @ApiQuery({ name: 'includes', required: false, enum: ['bikes'] })
-  @ApiQuery({ name: 'city', required: false, enum: ['Göteborg', 'Jönköping', 'Karlshamn'] })
+  @ApiQuery({
+    name: 'city',
+    required: false,
+    enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
+  })
   @ApiQuery({ name: 'rad', required: false, type: Number })
   @ApiResponse({
     status: 200,
@@ -64,22 +72,24 @@ export class ZonesController {
     description: 'Unauthorized. Authentication required',
   })
   async getAllZones(@Query() query: ZoneFilterQueryDto): Promise<ZoneResponse> {
-
     const filters: ZoneQuery = {
-      lat: query.lat? query.lat : null,
-      lon: query.lon? query.lon : null,
-      type: query.type ? query.type.split(',') as ('parking' | 'charging' | 'speed')[] : [],
-      includes: query.includes ? query.includes.split(',') as ('bikes')[] : [],
-      city: query.city ? query.city.split(',') as ('Göteborg' | 'Jönköping' | 'Karlshamn')[] : [],
+      lat: query.lat ? query.lat : null,
+      lon: query.lon ? query.lon : null,
+      type: query.type
+        ? (query.type.split(',') as ('parking' | 'charging' | 'speed')[])
+        : [],
+      includes: query.includes ? (query.includes.split(',') as 'bikes'[]) : [],
+      city: query.city
+        ? (query.city.split(',') as ('Göteborg' | 'Jönköping' | 'Karlshamn')[])
+        : [],
       rad: query.rad ? query.rad : null,
     };
 
     let zones = await this.zonesService.getZonesByFilter(filters);
     return {
       filters: filters,
-      ...zones
-    }
-
+      ...zones,
+    };
   }
 
   @Get('city/:cityName')

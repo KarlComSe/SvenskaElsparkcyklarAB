@@ -31,7 +31,7 @@ export class Bicycle {
   status: 'Rented' | 'Available' | 'Service';
 
   // maybe we should allow nullable here
-  @ManyToOne(() => City, { nullable: false })
+  @ManyToOne(() => City, { nullable: true })
   @JoinColumn()
   city: City;
 

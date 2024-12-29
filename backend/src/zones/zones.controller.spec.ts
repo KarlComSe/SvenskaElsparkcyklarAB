@@ -34,7 +34,6 @@ describe('ZonesController', () => {
   };
 
   const query: ZoneFilterQueryDto = {
-
     lat: 59.3293,
 
     lon: 18.0686,
@@ -44,7 +43,6 @@ describe('ZonesController', () => {
     city: 'Jönköping',
 
     rad: 3,
-
   };
 
   beforeEach(async () => {

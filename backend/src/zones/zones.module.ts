@@ -6,7 +6,6 @@ import { ZonesController } from './zones.controller';
 import { ZonesService } from './zones.service';
 import { BicyclesModule } from 'src/bicycles/bicycles.module';
 
-
 @Module({
   imports: [TypeOrmModule.forFeature([Zone, SpeedZone]), BicyclesModule],
   providers: [ZonesService],
