@@ -19,7 +19,7 @@ build:
               format: clover
 
   environment:
-    node: '22'
+    node: '22.12.0'
     postgresql: false  # Exclude if not needed
     redis: false      # Exclude if not needed
 
