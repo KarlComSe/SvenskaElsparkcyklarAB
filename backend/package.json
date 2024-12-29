@@ -14,11 +14,15 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "NODE_ENV=production node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
+    "lint:report": "eslint \"{src,apps,libs,test}/**/*.ts\" --format json --output-file eslint-report.json",
+    "lint:show": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "analyze": "echo '=== TypeScript Check ===' && tsc --noEmit && echo '\n=== Linting ===' && npm run lint:show && echo '\n=== Tests and Coverage ===' && npm run test:combined-coverage",
+    "test": "jest -c jest.config.ts",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
+    "test:full-cov": "jest -c jest.config.ts --coverage && jest -c test/jest-e2e.config.ts --coverage && ts-node test/merge-coverage.ts",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest -c test/jest-e2e.config.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^3.1.2",
@@ -59,6 +63,10 @@
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-sonarjs": "^3.0.1",
+    "istanbul-lib-coverage": "^3.2.2",
+    "istanbul-lib-report": "^3.0.1",
+    "istanbul-reports": "^3.1.7",
     "jest": "^29.5.0",
     "prettier": "^3.0.0",
     "source-map-support": "^0.5.21",

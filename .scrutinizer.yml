@@ -1,0 +1,73 @@
+build:
+  nodes:
+    analysis:
+      project_setup:
+        override:
+          - cd backend && npm install  # Ensure we're in backend directory and dependencies are installed
+      
+      tests:
+        override:
+          # Run ESLint analysis
+          - command: cd backend && npm run lint:report
+            analysis:
+              format: eslint
+
+          # TypeScript compilation check
+          - command: cd backend && tsc --noEmit
+            analysis:
+              format: typescript
+
+          # Run tests with coverage
+          - command: cd backend && npm run test:full-cov
+            coverage:
+              file: coverage-combined/clover.xml
+              format: clover
+
+  environment:
+    node: '22'
+    postgresql: false  # Exclude if not needed
+    redis: false      # Exclude if not needed
+
+filter:
+  paths:
+    - 'backend/*'    # Only analyze backend code
+  excluded_paths:
+    - 'backend/test/*'
+    - 'backend/**/*.spec.ts'
+    - 'backend/**/*.e2e-spec.ts'
+    - 'backend/dist/*'
+    - 'backend/node_modules/*'
+    - 'backend/**/*.swagger.ts'  # Exclude generated OpenAPI files
+    - 'backend/**/*.dto.ts'      # DTOs are typically just type definitions
+    - 'backend/**/*.module.ts'   # Module files are typically just configuration
+
+checks:
+  typescript: true
+  javascript: true
+  method_complexity:
+    config:
+      threshold: 15    # Reasonably permissive - methods more complex than this should probably be split
+  similar_code:
+    config:
+      threshold: 60    # Higher threshold to avoid noise from necessary duplication
+  identical_code:
+    enabled: true     # Catch exact duplications
+
+tools:
+  # ESLint integration
+  eslint:
+    enabled: true
+    config:
+      extensions:
+        - .ts
+  
+  # Enable general code metrics
+  metrics:
+    enabled: true
+
+coding_style:
+  ts:
+    indentation:
+      general:
+        use_tabs: false
+        size: 2    # Consistent with prettier config
