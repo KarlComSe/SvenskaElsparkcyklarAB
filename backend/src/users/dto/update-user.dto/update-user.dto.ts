@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsBoolean, IsArray } from 'class-validator';
+import { IsEmail, IsOptional, IsBoolean, IsArray, IsNumber } from 'class-validator';
 
 export class UpdateUserDto {
-  // User details that can be updated
   @ApiProperty({
     description: 'The email of the user',
     example: 'user@example.com',
@@ -32,4 +31,24 @@ export class UpdateUserDto {
   @IsOptional()
   @IsBoolean()
   hasAcceptedTerms?: boolean;
+
+  @ApiProperty({
+    description: 'The balance of the user',
+    example: 100,
+    type: Number,
+    required: false,
+  })
+  @IsOptional()
+  @IsNumber()
+  balance?: number;
+
+  @ApiProperty({
+    description: 'If user is on a monthly payment plan',
+    example: true,
+    type: Boolean,
+    required: false,
+  })
+  @IsOptional()
+  @IsBoolean()
+  isMonthlyPayment?: boolean;
 }

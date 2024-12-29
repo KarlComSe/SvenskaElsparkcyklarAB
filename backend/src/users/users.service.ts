@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { NotFoundException } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto/update-user.dto';
+import { AdjustFundsDto } from './dto/update-user.dto/adjust-funds.dto';
 
 @Injectable()
 export class UsersService {
@@ -44,5 +45,23 @@ export class UsersService {
     const user = await this.findById(githubId);
 
     return this.userRepository.save({ ...user, ...updateUserDto });
+  }
+
+  async adjustFunds(githubId: string, adjustFundsDto: AdjustFundsDto): Promise<User> {
+    const user = await this.userRepository.findOneBy({ githubId });
+  
+    if (!user) {
+      throw new NotFoundException(`User with GitHub ID ${githubId} not found.`);
+    }
+  
+    // Update balance and/or isMonthlyPayment only if provided
+    if (adjustFundsDto.balance !== undefined) {
+      user.balance = adjustFundsDto.balance;
+    }
+    if (adjustFundsDto.isMonthlyPayment !== undefined) {
+      user.isMonthlyPayment = adjustFundsDto.isMonthlyPayment;
+    }
+
+    return this.userRepository.save(user);
   }
 }
