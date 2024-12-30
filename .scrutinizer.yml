@@ -2,6 +2,8 @@ build:
   nodes:
     analysis:
       project_setup:
+        before:
+          - cd $SCRUTINIZER_PROJECT_DIR
         override:
           - cd backend && npm install  # Ensure we're in backend directory and dependencies are installed
       
