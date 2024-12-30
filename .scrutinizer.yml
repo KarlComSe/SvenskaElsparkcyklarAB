@@ -3,42 +3,41 @@ import:
 
 checks:
   javascript:
-    javascript:
-      code_rating: true
-      duplicate_code: true
-      wrap_iife: true
-      no_process_exit: true
-      no_process_env: true
-      no_extra_semi: true
-      no_extra_bind: true
-      no_eval: true
-      no_else_return: true
-      dot_notation: true
-      camelcase: true
-      wrap_regex: true
-      valid_typeof: true
-      no_wrap_func: true
-      no_use_before_define: true
-      no_unreachable: true
-      no_undefined: true
-      no_trailing_spaces: true
-      no_reserved_keys: true
-      no_redeclare: true
-      no_obj_calls: true
-      no_loop_func: true
-      no_lonely_if: true
-      no_lone_blocks: true
-      no_inner_declarations: true
-      no_floating_decimal: true
-      no_extra_boolean_cast: true
-      no_empty: true
-      no_dupe_keys: true
-      no_var: true
-      no_param_assign: true
-      no_loop_var_assign: true
-      no_implicit_undefined_return: true
-      eqeqeq: true
-      no_alert: true
+    code_rating: true
+    duplicate_code: true
+    wrap_iife: true
+    no_process_exit: true
+    no_process_env: true
+    no_extra_semi: true
+    no_extra_bind: true
+    no_eval: true
+    no_else_return: true
+    dot_notation: true
+    camelcase: true
+    wrap_regex: true
+    valid_typeof: true
+    no_wrap_func: true
+    no_use_before_define: true
+    no_unreachable: true
+    no_undefined: true
+    no_trailing_spaces: true
+    no_reserved_keys: true
+    no_redeclare: true
+    no_obj_calls: true
+    no_loop_func: true
+    no_lonely_if: true
+    no_lone_blocks: true
+    no_inner_declarations: true
+    no_floating_decimal: true
+    no_extra_boolean_cast: true
+    no_empty: true
+    no_dupe_keys: true
+    no_var: true
+    no_param_assign: true
+    no_loop_var_assign: true
+    no_implicit_undefined_return: true
+    eqeqeq: true
+    no_alert: true
 
 build:
   nodes:
