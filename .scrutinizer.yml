@@ -13,6 +13,7 @@ build:
           # Run ESLint analysis
           - command: npm run lint:report-checkstyle
             analysis:
+              file: eslint-report.xml
               format: eslint-checkstyle
 
           # Run tests with coverage
