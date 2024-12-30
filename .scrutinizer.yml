@@ -1,3 +1,9 @@
+checks:
+  php: false
+  javascript: true
+    code_rating: true
+    duplication: true
+
 build:
   nodes:
     analysis:
