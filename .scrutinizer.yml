@@ -1,14 +1,7 @@
 build:
   nodes:
     analysis:
-      project_setup:
-        before:
-          - pwd
-          - ls -la 
-          - echo $SCRUTINIZER_PROJECT_DIR 
-        override:
-          - cd backend && npm install  # Ensure we're in backend directory and dependencies are installed
-      
+      root_path: './backend'
       tests:
         override:
           # Run ESLint analysis
@@ -21,24 +14,6 @@ build:
             coverage:
               file: coverage-combined/clover.xml
               format: clover
-
-  environment:
-    postgresql: false  # Exclude if not needed
-    redis: false      # Exclude if not needed
-
-filter:
-  paths:
-    - 'backend/*'    # Only analyze backend code
-  excluded_paths:
-    - 'backend/test/*'
-    - 'backend/**/*.spec.ts'
-    - 'backend/**/*.e2e-spec.ts'
-    - 'backend/dist/*'
-    - 'backend/node_modules/*'
-    - 'backend/**/*.swagger.ts'  # Exclude generated OpenAPI files
-    - 'backend/**/*.dto.ts'      # DTOs are typically just type definitions
-    - 'backend/**/*.module.ts'   # Module files are typically just configuration
-
 tools:
   # ESLint integration
   eslint:
