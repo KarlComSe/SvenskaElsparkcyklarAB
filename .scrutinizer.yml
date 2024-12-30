@@ -74,3 +74,9 @@ filter:
   excluded_paths:
     - 'tests/*'
     - 'node_modules/*'
+    - 'dist/*'
+    - 'coverage/*'
+    - 'coverage-e2e/*'
+    - 'coverage-combined/*'
+  paths:
+    - 'src/'
