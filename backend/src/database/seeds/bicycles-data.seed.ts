@@ -185,11 +185,7 @@ export default class BicycleSeeder {
         },
       ];
 
-      await bicycleRepo.save([
-        ...goteborgBikes,
-        ...karlshamnBikes,
-        ...jonkopingBikes,
-      ]);
+      await bicycleRepo.save([...goteborgBikes, ...karlshamnBikes, ...jonkopingBikes]);
     }
   }
 }

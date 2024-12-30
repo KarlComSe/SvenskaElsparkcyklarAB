@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Token } from './entities/token.entity/token.entity';
@@ -21,9 +17,7 @@ export class TokensService {
     const existingTokens = await this.tokenRepository.find({
       where: { customerId: userId },
     });
-    const existingTokensRemainingUses = existingTokens.filter(
-      (token) => token.remainingUses > 0,
-    );
+    const existingTokensRemainingUses = existingTokens.filter((token) => token.remainingUses > 0);
 
     if (existingTokens.length >= 5 && existingTokensRemainingUses.length > 0) {
       throw new BadRequestException(

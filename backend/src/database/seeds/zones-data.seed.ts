@@ -21,11 +21,7 @@ export default class ZoneSeeder {
       ]);
 
       const [goteborg, karlshamn, jonkoping] = cities;
-      const [parking, charging, speed] = [
-        'parking',
-        'charging',
-        'speed',
-      ] as const;
+      const [parking, charging, speed] = ['parking', 'charging', 'speed'] as const;
 
       await zoneRepo.clear();
 
@@ -194,11 +190,7 @@ export default class ZoneSeeder {
       ];
 
       // Save all zones
-      await zoneRepo.save([
-        ...gotebergZones,
-        ...karlshamnZones,
-        ...jonkopingZones,
-      ]);
+      await zoneRepo.save([...gotebergZones, ...karlshamnZones, ...jonkopingZones]);
     }
   }
 }

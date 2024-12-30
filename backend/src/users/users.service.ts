@@ -13,10 +13,7 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  async updateTerms(
-    githubId: string,
-    hasAcceptedTerms: boolean,
-  ): Promise<User> {
+  async updateTerms(githubId: string, hasAcceptedTerms: boolean): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { githubId },
     });
@@ -49,11 +46,11 @@ export class UsersService {
 
   async adjustFunds(githubId: string, adjustFundsDto: AdjustFundsDto): Promise<User> {
     const user = await this.userRepository.findOneBy({ githubId });
-  
+
     if (!user) {
       throw new NotFoundException(`User with GitHub ID ${githubId} not found.`);
     }
-  
+
     // Update balance and/or isMonthlyPayment only if provided
     if (adjustFundsDto.balance !== undefined) {
       user.balance = adjustFundsDto.balance;

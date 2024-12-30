@@ -1,25 +1,8 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Post,
-  Body,
-  UseGuards,
-  Req,
-} from '@nestjs/common';
-import {
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Controller, Get, Param, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { TravelService } from './travel.service';
-import {
-  StartRentingDto,
-  TravelResponseDto,
-  EndTravelDto,
-} from './dto/renting.dto';
+import { StartRentingDto, TravelResponseDto, EndTravelDto } from './dto/renting.dto';
 
 @ApiTags('Bike Rentals')
 @Controller('rental')
@@ -116,8 +99,7 @@ export class TravelController {
   // @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'End a bike travel',
-    description:
-      'Ends the travel, calculates cost, and makes the bike available again',
+    description: 'Ends the travel, calculates cost, and makes the bike available again',
   })
   @ApiResponse({
     status: 201,

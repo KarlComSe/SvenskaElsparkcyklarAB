@@ -107,10 +107,4 @@ function removeTimestamps(users: any[]) {
   return users.map(({ createdAt, updatedAt, ...rest }) => rest);
 }
 
-export {
-  isGuarded,
-  generateToken,
-  removeTimestamps,
-  generateTestTokens,
-  initTestApp,
-};
+export { isGuarded, generateToken, removeTimestamps, generateTestTokens, initTestApp };

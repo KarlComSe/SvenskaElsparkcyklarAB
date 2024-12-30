@@ -52,13 +52,9 @@ describe('AuthController', () => {
     });
 
     it('should handle invalid GitHub code', async () => {
-      jest
-        .spyOn(authService, 'exchangeGithubCode')
-        .mockRejectedValue(new Error('Invalid code'));
+      jest.spyOn(authService, 'exchangeGithubCode').mockRejectedValue(new Error('Invalid code'));
 
-      await expect(
-        controller.exchangeToken({ code: 'invalid' }),
-      ).rejects.toThrow('Invalid code');
+      await expect(controller.exchangeToken({ code: 'invalid' })).rejects.toThrow('Invalid code');
     });
   });
 
@@ -90,18 +86,12 @@ describe('AuthController', () => {
       const guards = Reflect.getMetadata('__guards__', controller.getMe);
       expect(guards).toContain(JwtAuthGuard);
 
-      const statusGuards = Reflect.getMetadata(
-        '__guards__',
-        controller.getStatus,
-      );
+      const statusGuards = Reflect.getMetadata('__guards__', controller.getStatus);
       expect(statusGuards).toContain(JwtAuthGuard);
     });
 
     it('token endpoint should have no guard', () => {
-      const guards = Reflect.getMetadata(
-        '__guards__',
-        controller.exchangeToken,
-      );
+      const guards = Reflect.getMetadata('__guards__', controller.exchangeToken);
       expect(guards).toBeUndefined();
     });
   });

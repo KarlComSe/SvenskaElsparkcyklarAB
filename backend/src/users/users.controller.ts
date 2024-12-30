@@ -3,13 +3,7 @@ import { UsersService } from './users.service';
 import { Patch, Get, Body, Req, Post, UseGuards, Request } from '@nestjs/common';
 import { UpdateTermsDto } from './dto/update-terms.dto/update-terms.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto/update-user.dto';
 import { AdjustFundsDto } from './dto/update-user.dto/adjust-funds.dto';
 import { AdminGuard } from '../auth/guards/admin.guard';
@@ -52,10 +46,7 @@ export class UsersController {
       throw new BadRequestException('Invalid input');
     }
     // console.log(req.user);
-    return await this.usersService.updateTerms(
-      req.user.githubId,
-      updateTermsDto.hasAcceptedTerms,
-    );
+    return await this.usersService.updateTerms(req.user.githubId, updateTermsDto.hasAcceptedTerms);
   }
   // Fetch all customers
   @Get()
@@ -189,10 +180,7 @@ export class UsersController {
     status: 403,
     description: 'Forbidden. Admin access required',
   })
-  async updateCustomer(
-    @Param('githubId') githubId: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
+  async updateCustomer(@Param('githubId') githubId: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(githubId, updateUserDto);
   }
 
@@ -240,18 +228,12 @@ export class UsersController {
     @Request() req: any,
   ) {
     const authenticatedUser = req.user;
-  
+
     // Only allow if the user is an admin or adjusting their own account
-    if (
-      authenticatedUser.githubId !== githubId &&
-      !authenticatedUser.roles.includes('admin')
-    ) {
-      throw new ForbiddenException('You are not allowed to adjust other users\' accounts.');
+    if (authenticatedUser.githubId !== githubId && !authenticatedUser.roles.includes('admin')) {
+      throw new ForbiddenException("You are not allowed to adjust other users' accounts.");
     }
-  
+
     return await this.usersService.adjustFunds(githubId, adjustFundsDto);
   }
-  
-
-
 }

@@ -12,7 +12,6 @@ import { AxiosResponse } from 'axios';
 describe('AuthService', () => {
   let service: AuthService;
   let httpService: HttpService;
-  let jwtService: JwtService;
   let userRepository: Repository<User>;
 
   const configServiceMock = {
@@ -62,7 +61,6 @@ describe('AuthService', () => {
 
     service = module.get<AuthService>(AuthService);
     httpService = module.get<HttpService>(HttpService);
-    jwtService = module.get<JwtService>(JwtService);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
   });
 
@@ -87,9 +85,7 @@ describe('AuthService', () => {
       };
 
       // Mock GitHub API responses
-      jest
-        .spyOn(httpService, 'post')
-        .mockImplementation(() => of(mockResponsePost));
+      jest.spyOn(httpService, 'post').mockImplementation(() => of(mockResponsePost));
 
       const mockResponseGet: AxiosResponse = {
         data: mockGithubUser,
@@ -99,9 +95,7 @@ describe('AuthService', () => {
         config: {} as any,
       };
 
-      jest
-        .spyOn(httpService, 'get')
-        .mockImplementation(() => of(mockResponseGet));
+      jest.spyOn(httpService, 'get').mockImplementation(() => of(mockResponseGet));
 
       // Mock user repository
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
@@ -129,15 +123,12 @@ describe('AuthService', () => {
         { headers: { Accept: 'application/json' } },
       );
 
-      expect(httpService.get).toHaveBeenCalledWith(
-        'https://api.github.com/user',
-        {
-          headers: {
-            Authorization: `Bearer github-token-123`,
-            Accept: 'application/json',
-          },
+      expect(httpService.get).toHaveBeenCalledWith('https://api.github.com/user', {
+        headers: {
+          Authorization: `Bearer github-token-123`,
+          Accept: 'application/json',
         },
-      );
+      });
     });
   });
 });

@@ -1,22 +1,8 @@
-import {
-  Controller,
-  Post,
-  Body,
-  UseGuards,
-  Req,
-  Param,
-  Get,
-} from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req, Param, Get } from '@nestjs/common';
 import { TokensService } from './tokens.service';
 import { TokenResponseDto } from './dto/token-response.dto/token-response.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import {
-  ApiBearerAuth,
-  ApiHeader,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TokenRevocationResponseDto } from './dto/token-revocation-response.dto/TokenRevocationResponseDto';
 import { TokenGuard } from './guards/token.guard';
 
@@ -30,8 +16,7 @@ export class TokensController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Create a new token',
-    description:
-      'Creates a new token for the authenticated user with specified parameters',
+    description: 'Creates a new token for the authenticated user with specified parameters',
   })
   @ApiResponse({
     status: 201,
@@ -60,8 +45,7 @@ export class TokensController {
   @Post(':id/consume')
   @ApiOperation({
     summary: 'Consume a token',
-    description:
-      'Decrements the remaining uses of a token and returns updated token information',
+    description: 'Decrements the remaining uses of a token and returns updated token information',
   })
   @ApiResponse({
     status: 201,

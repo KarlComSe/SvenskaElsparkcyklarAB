@@ -30,6 +30,8 @@ docker-compose.override.yml
 # Testing
 coverage/
 .nyc_output/
+coverage-e2e/
+coverage-combined/
 
 # Build
 build/

@@ -1,0 +1,23 @@
+build:
+  nodes:
+    analysis:
+      root_path: './backend'
+      tests:
+        override:
+          # Run ESLint analysis
+          - command: cd backend && npm run lint:report-checkstyle
+            analysis:
+              format: eslint-checkstyle
+
+          # Run tests with coverage
+          - command: cd backend && npm run test:full-cov
+            coverage:
+              file: coverage-combined/clover.xml
+              format: clover
+tools:
+  # ESLint integration
+  eslint:
+    enabled: true
+    config:
+      extensions:
+        - .ts
