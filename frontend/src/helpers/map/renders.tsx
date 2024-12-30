@@ -1,4 +1,3 @@
-import React from 'react';
 import { Popup, Marker, Polygon, Tooltip} from 'react-leaflet';
 import { Scooter, Zone } from './leaflet-types'
 import { LatLngTuple } from 'leaflet';
