@@ -15,15 +15,15 @@
     "start:prod": "NODE_ENV=production node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "lint:report": "eslint \"{src,apps,libs,test}/**/*.ts\" --format json --output-file eslint-report.json",
-    "lint-report-checkstyle": "eslint \"{src,apps,libs,test}/**/*.ts\" --format checkstyle --output-file eslint-report.xml",
+    "lint:report-checkstyle": "eslint \"{src,apps,libs,test}/**/*.ts\" --format checkstyle --output-file eslint-report.xml",
     "lint:show": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "analyze": "echo '=== TypeScript Check ===' && tsc --noEmit || true && echo '\n=== Linting ===' && npm run lint:show || true && echo '\n=== Tests and Coverage ===' && npm run test:full-cov",
     "test": "jest -c jest.config.json",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:full-cov": "jest -c jest.config.json --coverage && jest -c test/jest-e2e.config.json --coverage && ts-node test/merge-coverage.ts",
+    "test:cov": "jest -c jest.config.json --coverage",
+    "test:full-cov": "npm run test:cov || true && npm run test:e2e || true && ts-node test/merge-coverage.ts",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest -c test/jest-e2e.config.json"
+    "test:e2e": "jest -c test/jest-e2e.config.json --coverage"
   },
   "dependencies": {
     "@nestjs/axios": "^3.1.2",

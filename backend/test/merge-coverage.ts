@@ -1,8 +1,8 @@
 // merge-coverage.ts
 // this is AI generated code, except my corrections... :)
 // corrections : 1. fix imports, 2. go for TS, 3. fix type issues
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 import { create } from 'istanbul-reports';
 import { createContext } from 'istanbul-lib-report';
 import { createCoverageMap, CoverageMap } from 'istanbul-lib-coverage';
@@ -35,3 +35,4 @@ const context = createContext({
 reporters.forEach((reporter) => {
   create(reporter, {}).execute(context);
 });
+
