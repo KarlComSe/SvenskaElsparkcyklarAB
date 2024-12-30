@@ -1,6 +1,6 @@
 checks:
   php: false
-  javascript: true
+  javascript:
     code_rating: true
     duplication: true
 
