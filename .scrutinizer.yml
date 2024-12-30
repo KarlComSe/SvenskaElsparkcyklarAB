@@ -72,11 +72,11 @@ tools:
 
 filter:
   excluded_paths:
-    - 'tests/*'
-    - 'node_modules/*'
-    - 'dist/*'
-    - 'coverage/*'
-    - 'coverage-e2e/*'
-    - 'coverage-combined/*'
+    - 'backend/tests/**/*'
+    - 'backend/node_modules/**/*'
+    - 'backend/dist/**/*'
+    - 'backend/coverage/**/*'
+    - 'backend/coverage-e2e/**/*'
+    - 'backend/coverage-combined/**/*'
   paths:
-    - 'src/**/*'
+    - 'backend/src/**/*'
