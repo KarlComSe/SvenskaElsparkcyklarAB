@@ -2,22 +2,29 @@ build:
   nodes:
     analysis:
       root_path: './backend'
+      project_setup:
+        override: true  # This ensures proper project setup
       tests:
         override:
           # Run ESLint analysis
-          - command: cd backend && npm run lint:report-checkstyle
+          - command: npm run lint:report-checkstyle
             analysis:
               format: eslint-checkstyle
 
           # Run tests with coverage
-          - command: cd backend && npm run test:full-cov
+          - command: npm run test:full-cov
             coverage:
               file: coverage-combined/clover.xml
               format: clover
+
 tools:
-  # ESLint integration
   eslint:
     enabled: true
     config:
       extensions:
         - .ts
+
+filter:
+  excluded_paths:
+    - 'tests/*'
+    - 'node_modules/*'
