@@ -4,8 +4,8 @@ build:
       root_path: './backend'
       project_setup:
         before:
-          - nvm install --lts
-          - nvm use --lts
+          - nvm install 18
+          - nvm use 18
         override:
           - npm install
       tests:
