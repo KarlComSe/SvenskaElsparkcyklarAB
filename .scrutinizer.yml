@@ -3,7 +3,12 @@ build:
     analysis:
       root_path: './backend'
       project_setup:
-        override: true  # This ensures proper project setup
+        before:
+          - nvm install --lts
+          - nvm use --lts
+        override:
+          - npm install
+        override: true
       tests:
         override:
           # Run ESLint analysis
@@ -14,7 +19,7 @@ build:
           # Run tests with coverage
           - command: npm run test:full-cov
             coverage:
-              file: coverage-combined/clover.xml
+              file: coverage/clover.xml
               format: clover
 
 tools:

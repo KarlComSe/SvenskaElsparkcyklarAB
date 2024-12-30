@@ -27,11 +27,13 @@ Thumbs.db
 docker-compose.override.yml
 *.env.docker
 
-# Testing
+# Testing & linting
 coverage/
 .nyc_output/
 coverage-e2e/
 coverage-combined/
+eslint-report.xml
+
 
 # Build
 build/
