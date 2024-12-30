@@ -19,7 +19,6 @@ build:
               format: clover
 
   environment:
-    node: v20.18.1
     postgresql: false  # Exclude if not needed
     redis: false      # Exclude if not needed
 
