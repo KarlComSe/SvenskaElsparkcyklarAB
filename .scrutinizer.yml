@@ -51,7 +51,7 @@ build:
           - npm install
       tests:
         override:
-          # Run ESLint analysis
+          - js-scrutinizer-run
           - command: npm run lint:report-checkstyle
             analysis:
               file: eslint-report.xml
