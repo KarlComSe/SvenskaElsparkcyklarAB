@@ -1,4 +1,7 @@
-checks:
+import:
+  - javascript
+
+hecks:
   javascript:
     code_rating: true
     duplication: true
