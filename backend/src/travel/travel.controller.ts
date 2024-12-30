@@ -1,8 +1,26 @@
-import { Controller, Get, Param, Post, Body, UseGuards, Req } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { TravelService } from './travel.service';
-import { StartRentingDto, TravelResponseDto, EndTravelDto } from './dto/renting.dto';
+import {
+  StartRentingDto,
+  TravelResponseDto,
+  EndTravelDto,
+} from './dto/renting.dto';
 
 @ApiTags('Bike Rentals')
 @Controller('rental')
@@ -47,6 +65,7 @@ export class TravelController {
   async getActiveTravelForBike(@Param('bikeId') bikeId: string) {
     return await this.travelService.findActiveTravelForBike(bikeId);
   }
+
   @Post('bike/:bikeId/end-active')
   @ApiOperation({
     summary: 'End active travel for specific bike',
@@ -63,6 +82,31 @@ export class TravelController {
   async endActiveBikeTravel(@Param('bikeId') bikeId: string) {
     return await this.travelService.endActiveTravelForBike(bikeId);
   }
+  
+  @Post(':githubId/end-all-travels')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'End all active travels for a customer',
+    description: 'Ends all active travels for the specified customer by GitHub ID.',
+  })
+  @ApiParam({
+    name: 'githubId',
+    description: 'The GitHub ID of the user whose travels are to be ended.',
+    example: '12345',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'All active travels for the customer have been ended.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Customer or active travels not found.',
+  })
+  async endAllTravelsForCustomer(@Param('githubId') githubId: string) {
+    return await this.travelService.endAllTravelsForCustomer(githubId);
+  }
+
 
   // Start a bike rental
   @Post('bike/:id')
@@ -99,7 +143,8 @@ export class TravelController {
   // @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'End a bike travel',
-    description: 'Ends the travel, calculates cost, and makes the bike available again',
+    description:
+      'Ends the travel, calculates cost, and makes the bike available again',
   })
   @ApiResponse({
     status: 201,
