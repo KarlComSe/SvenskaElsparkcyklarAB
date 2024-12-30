@@ -79,4 +79,4 @@ filter:
     - 'coverage-e2e/*'
     - 'coverage-combined/*'
   paths:
-    - 'src/'
+    - 'src/**/*'
