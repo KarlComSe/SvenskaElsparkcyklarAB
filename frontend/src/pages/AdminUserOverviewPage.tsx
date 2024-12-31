@@ -7,6 +7,7 @@ import axios, { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
 import { Button, ToggleSwitch, TextInput, Checkbox, Label, Card } from "flowbite-react";
 import { ToastContainer, toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 
 
 type User = {
@@ -22,6 +23,7 @@ type User = {
 }
 
 const AdminUserOverviewPage: React.FC = () => {
+  const location = useLocation();
   const { githubId } = useParams<{ githubId: string }>();
   const { token } = useSelector((state: RootState) => state.auth);
   const [user, setUser] = useState<User | null>(null);
@@ -40,17 +42,6 @@ const AdminUserOverviewPage: React.FC = () => {
 
   const updateUserInfo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const userJson = JSON.stringify({
-    //   githubId,
-    //   username,
-    //   email,
-    //   roles: [isAdmin && "admin", isKund && "user"].filter(Boolean),
-    //   hasAcceptedTerms,
-    //   avatarUrl,
-    //   isMonthlyPayment,
-    //   accumulatedCost,
-    //   balance,
-    // });
     const updatedData = {
       'githubId': githubId,
       'username': username,
@@ -61,19 +52,17 @@ const AdminUserOverviewPage: React.FC = () => {
       'isMonthlyPayment': isMonthlyPayment,
       'accumulatedCost': accumulatedCost,
       'balance': balance,
-    };
-    // console.log(userJson);
+      };
     try {
       const response = await axios.patch(`${API_URL}/users/${githubId}`, updatedData, getHeader(token));
       console.log(response);
       toast.success("User was updated");
-    } catch(error)
-    {
+      } catch(error)
+      {
       const axiosError = error as AxiosError;
       toast.error(`User was not updated ${axiosError.message}`);
-      console.error("Error:", axiosError.response || axiosError.toJSON());    }
-
-
+      console.error("Error:", axiosError.response || axiosError.toJSON());
+    }
   }
 
 
