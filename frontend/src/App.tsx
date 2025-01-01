@@ -18,16 +18,7 @@ import UserInfoPage from './pages/UserInfoPage';
 import ShowMap from './pages/ShowMap';
 import AdminUserOverviewPage from './pages/AdminUserOverviewPage';
 import AdminMapNavigation from './pages/AdminMapNavigation';
-
-// import Header from './components/Header';
-// import LoginOAuth from './pages/LoginOAuth';
-// import Github from './pages/Github';
-// import CustomerStartPage from './pages/CustomerStartPage';
-// import AdminStartPage from './pages/AdminStartPage';
-// import UserListPage from './pages/UserListPage';
-// import UserInfoPage from './pages/UserInfoPage';
-// import ShowMap from './pages/ShowMap';
-
+import AllBikes from './pages/AllBikes'
 
 const App: React.FC = () => {
   return (
@@ -43,6 +34,7 @@ const App: React.FC = () => {
           <Route path="/map/:city" element={<ShowMap/>} />
           <Route path="/user/:githubId" element={<AdminUserOverviewPage />} />
           <Route path="/adminmapnavigation" element={<AdminMapNavigation />} />
+          <Route path="/allbikes" element={<AllBikes />} />
         </Routes>
         <div data-testid="app-test"></div>
     </Router>

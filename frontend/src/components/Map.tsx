@@ -1,11 +1,9 @@
-import { MapContainer, Popup, Marker, TileLayer, Polygon, Tooltip} from 'react-leaflet';
-import { useEffect, useState, useRef } from 'react';
+import { MapContainer, TileLayer} from 'react-leaflet';
+import { useEffect, useState } from 'react';
 import { LatLngTuple,  LatLngExpression } from 'leaflet';
-import { API_URL, getHeader, iconStation } from '../helpers/config';
+import { API_URL} from '../helpers/config';
 import axios from 'axios';
-import { RootState } from '../redux/store/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { Scooter, PolygonPoint, SpeedZone, Zone } from '../helpers/map/leaflet-types'
+import { Scooter,  Zone } from '../helpers/map/leaflet-types'
 import { useParams } from "react-router-dom";
 import { cities } from '../helpers/map/cities';
 import MapCenter from './MapCenter';
@@ -14,7 +12,6 @@ import { renderScooterMarkers, renderStationMarkers, renderPolygons } from '../h
 export default function Map() {
     const { city }  = useParams();
     const [startPosition, setStartPosition] = useState<LatLngExpression>([59.2741, 15.2066]);
-    const {isLoggedIn, token, user, role} = useSelector((state: RootState) =>  state.auth);
     const [scooterData, setScooterData] = useState<Scooter[]>([]);
     const [zoneData, setZoneData] = useState<Zone[]>([]);
     const zoom = 11;
@@ -31,7 +28,6 @@ export default function Map() {
         const fetchScooters = async() => {
         try {
                 const response = await axios.get(`${API_URL}/bike/city/${city}`);
-                console.log(response.data)
                 setScooterData(response.data);
             }
             catch(error)
@@ -82,9 +78,11 @@ export default function Map() {
                         {scooterData.map((scooter) => (
                             <li key={scooter.id} className="mb-2">
                                 <div className="mt-4 p-6 mx-auto w-1/2 hover:opacity-5 bg-gray-400 rounded text-center">
-                                <h2><span className="font-semibold">ID:</span>{scooter.id} -{" "}</h2>
+                                <h2><span className="font-semibold">ID:</span> {scooter.id} -{" "}</h2>
                                 <span className="font-semibold">Batteri:</span> {scooter.batteryLevel}% -{" "}
-                                <span className="font-semibold">Status:</span> {scooter.status}
+                                <span className="font-semibold">Status:</span> {scooter.status} -{" "}
+                                <span className="font-semibold">Longitud:</span> {scooter.longitude} -{" "}
+                                <span className="font-semibold">Latitud:</span> {scooter.latitude}
                                 </div>
                             </li>
                         ))}

@@ -8,9 +8,13 @@ const renderScooterMarkers = (scooterData: Scooter[])=>   (
     scooterData?.map((scooter, index) => (
     <Marker key={index} position={[scooter.latitude, scooter.longitude]}>
         <Popup>
-            <p>Id: { scooter.id} </p>
-            <p>BatteryLevel: { scooter.batteryLevel} </p>
-            <p>Status: { scooter.status} </p>
+            <p className="my-0 py-0">id: {scooter.id}</p>
+            <p className="my-0 py-0">batteryLevel: {scooter.batteryLevel}</p>
+            <p className="my-0 py-0">status: {scooter.status}</p>
+            <p className="my-0 py-0">longitude: {scooter.longitude}</p>
+            <p className="my-0 py-0">latitude: {scooter.latitude}</p>
+            <p className="my-0 py-0">updatedAt: {scooter.updatedAt}</p>
+            <p className="my-0 py-0">createdAt: {scooter.createdAt}</p>
         </Popup>
     </Marker>))
     );

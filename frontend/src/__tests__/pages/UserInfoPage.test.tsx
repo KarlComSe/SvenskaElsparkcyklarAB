@@ -1,7 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import UserInfoPage from './UserInfoPage';
-import {renderWithProviders } from '../helpers/test-redux';
+import UserInfoPage from '../../pages/UserInfoPage';
+import {renderWithProviders } from '../../helpers/test-redux';
 import { MemoryRouter as Router } from "react-router-dom";
 jest.mock("react-leaflet");
 

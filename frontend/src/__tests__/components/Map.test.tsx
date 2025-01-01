@@ -1,7 +1,7 @@
 
 import { render, screen } from '@testing-library/react';
-import Map from './Map';
-import {renderWithProviders } from '../helpers/test-redux';
+import Map from '../../components/Map';
+import {renderWithProviders } from '../../helpers/test-redux';
 
 jest.mock("react-leaflet", () => ({
   ...jest.requireActual("react-leaflet"),

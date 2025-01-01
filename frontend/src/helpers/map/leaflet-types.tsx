@@ -4,6 +4,9 @@ export type Scooter = {
     latitude: number;
     longitude: number;
     status: string;
+    city: string;
+    createdAt: string;
+    updatedAt: string;
   };
 
 export type PolygonPoint = {
