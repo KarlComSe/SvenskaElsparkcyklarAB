@@ -4,7 +4,7 @@ import { CitiesService } from './cities.service';
 import { CreateCityDto } from './dto/create-city.dto';
 
 @ApiTags('Cities')
-@Controller('cities')
+@Controller({ path: 'cities', version: '1' })
 export class CitiesController {
   constructor(private readonly citiesService: CitiesService) {}
 
@@ -12,7 +12,7 @@ export class CitiesController {
   @ApiOperation({ summary: 'Get all cities' })
   @ApiResponse({
     status: 200,
-    description: 'List of bicycles',
+    description: 'List of cities',
     schema: {
       type: 'array',
       example: [

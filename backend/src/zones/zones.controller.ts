@@ -14,7 +14,7 @@ import { ZoneResponse } from './types/ZoneResponse';
 import { ZoneQuery } from './types/ZoneQuery';
 
 @ApiTags('Zones')
-@Controller('zone')
+@Controller({ path: 'zone', version: '1' })
 export class ZonesController {
   constructor(private readonly zonesService: ZonesService) {}
   @Get()

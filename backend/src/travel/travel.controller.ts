@@ -23,7 +23,7 @@ import {
 } from './dto/renting.dto';
 
 @ApiTags('Bike Rentals')
-@Controller('rental')
+@Controller({ path: 'rental', version: '1' })
 export class TravelController {
   constructor(private readonly travelService: TravelService) {}
 

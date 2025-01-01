@@ -8,7 +8,7 @@ import { UpdateUserDto } from './dto/update-user.dto/update-user.dto';
 import { AdjustFundsDto } from './dto/update-user.dto/adjust-funds.dto';
 import { AdminGuard } from '../auth/guards/admin.guard';
 
-@Controller('users')
+@Controller({ path: 'users', version: '1' })
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
