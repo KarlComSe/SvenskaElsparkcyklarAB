@@ -8,7 +8,7 @@ import { RootState } from '../redux/store/store';
 import { useSelector } from 'react-redux';
 
 
-export default function Map() {
+export default function AllBikes() {
     const [scooterData, setScooterData] = useState<Scooter[]>([]);
     const { token } = useSelector((state: RootState) =>  state.auth);
 

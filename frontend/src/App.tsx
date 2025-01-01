@@ -19,6 +19,7 @@ import ShowMap from './pages/ShowMap';
 import AdminUserOverviewPage from './pages/AdminUserOverviewPage';
 import AdminMapNavigation from './pages/AdminMapNavigation';
 import AllBikes from './pages/AllBikes'
+import AllZones from './pages/AllZones';
 
 const App: React.FC = () => {
   return (
@@ -35,6 +36,7 @@ const App: React.FC = () => {
           <Route path="/user/:githubId" element={<AdminUserOverviewPage />} />
           <Route path="/adminmapnavigation" element={<AdminMapNavigation />} />
           <Route path="/allbikes" element={<AllBikes />} />
+          <Route path="/allzones" element={<AllZones />} />
         </Routes>
         <div data-testid="app-test"></div>
     </Router>
