@@ -7,7 +7,7 @@ import axios, { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
 import { Button, ToggleSwitch, TextInput, Checkbox, Label, Card } from "flowbite-react";
 import { ToastContainer, toast } from 'react-toastify';
-import { useLocation } from 'react-router-dom';
+
 
 
 type User = {
@@ -23,7 +23,6 @@ type User = {
 }
 
 const AdminUserOverviewPage: React.FC = () => {
-  const location = useLocation();
   const { githubId } = useParams<{ githubId: string }>();
   const { token } = useSelector((state: RootState) => state.auth);
   const [user, setUser] = useState<User | null>(null);

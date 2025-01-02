@@ -1,7 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import AdminUserOverviewPage from './AdminUserOverviewPage';
-import {renderWithProviders } from '../helpers/test-redux';
+import AdminUserOverviewPage from '../../pages/AdminUserOverviewPage';
+import {renderWithProviders } from '../../helpers/test-redux';
 import { MemoryRouter as Router } from "react-router-dom";
 
 
