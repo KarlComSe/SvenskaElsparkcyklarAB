@@ -1,0 +1,15 @@
+# PyCharm
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# HTTP test files
+*.http
+
+# Virtual environment (if you create one later)
+venv/
+env/
