@@ -8,6 +8,7 @@ import { BicycleResponse } from './types/bicycle-response.interface';
 import { getDistance } from 'src/utils/geo.utils';
 import { CreateBicycleDto } from './dto/create-bicycle.dto';
 import { City } from 'src/cities/entities/city.entity';
+import { CityName } from 'src/cities/types/city.enum';
 
 @Injectable()
 export class BicyclesService {
@@ -64,7 +65,7 @@ export class BicyclesService {
     const city = createBicycleDto.city ?? 'Göteborg';
     // Find the city by name
     const cityEntity = await this.cityRepository.findOne({
-      where: { name: city },
+      where: { name: city as CityName },
     });
 
     if (cityEntity) {
@@ -76,13 +77,13 @@ export class BicyclesService {
 
   async createManyBikes(createBicycleDto: CreateBicycleDto[]): Promise<Bicycle[]> {
     const defaultCity = await this.cityRepository.findOne({
-      where: { name: 'Göteborg' },
+      where: { name: CityName.Göteborg }
     });
     const Karlshamn = await this.cityRepository.findOne({
-      where: { name: 'Karlshamn' },
+      where: { name: CityName.Karlshamn }
     });
     const Jönköping = await this.cityRepository.findOne({
-      where: { name: 'Jönköping' },
+      where: { name: CityName.Jönköping }
     });
 
     const bikes = createBicycleDto.map((bike) => {
@@ -122,7 +123,7 @@ export class BicyclesService {
     return this.bicycleRepository.save({ ...bike, ...updateBicycleDto });
   }
 
-  async findByCity(cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn'): Promise<Bicycle[]> {
+  async findByCity(cityName: CityName): Promise<Bicycle[]> {
     const bikes = await this.bicycleRepository.find({
       where: {
         city: {

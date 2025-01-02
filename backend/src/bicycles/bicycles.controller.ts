@@ -24,6 +24,7 @@ import { UpdateBicycleDto } from './dto/update-bicycle.dto';
 import { Bicycle } from './entities/bicycle.entity';
 import { BicycleResponse } from './types/bicycle-response.interface';
 import { CreateBicycleDto } from './dto/create-bicycle.dto';
+import { CityName } from 'src/cities/types/city.enum';
 
 const BIKE_ID = 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464';
 const BIKE_STATUS_AVAILABLE = 'Available';
@@ -43,7 +44,7 @@ export class BicyclesController {
   @ApiQuery({
     name: 'city',
     required: false,
-    enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
+    enum: CityName,
   })
   @ApiQuery({ name: 'lat', required: false, minimum: -90, maximum: 90 })
   @ApiQuery({ name: 'lon', required: false, minimum: -180, maximum: 180 })
@@ -51,21 +52,7 @@ export class BicyclesController {
   @ApiResponse({
     status: 200,
     description: 'List of bicycles',
-    schema: {
-      type: 'array',
-      example: [
-        {
-          id: BIKE_ID,
-          batteryLevel: 100,
-          latitude: 59.3293,
-          longitude: 18.0686,
-          status: BIKE_STATUS_AVAILABLE,
-          city: 'Göteborg',
-          createdAt: CREATED_AT,
-          updatedAt: UPDATED_AT,
-        },
-      ],
-    },
+    type: [Bicycle],
   })
   @ApiResponse({
     status: 401,
@@ -75,7 +62,7 @@ export class BicyclesController {
     @Query('lat') lat?: string,
     @Query('lon') lon?: string,
     @Query('radius') radius?: string,
-    @Query('city') city?: 'Göteborg' | 'Jönköping' | 'Karlshamn',
+    @Query('city') city?: CityName,
   ): Promise<BicycleResponse[]> {
     const latitude = lat ? parseFloat(lat) : undefined;
     const longitude = lon ? parseFloat(lon) : undefined;
@@ -110,38 +97,11 @@ export class BicyclesController {
     type: CreateBicycleDto,
     description: 'Bicycle creation data',
     required: false,
-    schema: {
-      example: {
-        batteryLevel: 100,
-        latitude: null,
-        longitude: null,
-        status: BIKE_STATUS_AVAILABLE,
-        city: 'Göteborg',
-      },
-    },
   })
   @ApiResponse({
     status: 201,
     description: 'Bicycle created successfully',
-    schema: {
-      example: {
-        id: BIKE_ID,
-        batteryLevel: 100,
-        latitude: null,
-        longitude: null,
-        status: BIKE_STATUS_AVAILABLE,
-        city: {
-          id: CITY_ID_GOTHENBURG,
-          name: 'Göteborg',
-          latitude: 57.70887,
-          longitude: 11.97456,
-          createdAt: CREATED_AT,
-          updatedAt: UPDATED_AT,
-        },
-        createdAt: CREATED_AT,
-        updatedAt: UPDATED_AT,
-      },
-    },
+    type: Bicycle,
   })
   async createABike(@Body() createBicycleDto: CreateBicycleDto): Promise<Bicycle> {
     console.log('skapa cykel');
@@ -150,74 +110,28 @@ export class BicyclesController {
 
   @Post('create-many')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Create multiple bicycles' })
+  @ApiOperation({
+    summary: 'Create multiple bicycles',
+    description: 'Creates multiple bicycles in a single request. At least one bicycle must be provided.',
+  })
   @ApiBody({
     type: [CreateBicycleDto],
     description: 'Array of bicycle creation data',
-    required: false,
-    schema: {
-      example: [
-        {
-          batteryLevel: 100,
-          latitude: null,
-          longitude: null,
-          status: BIKE_STATUS_AVAILABLE,
-          city: 'Göteborg',
-        },
-        {
-          batteryLevel: 100,
-          latitude: null,
-          longitude: null,
-          status: BIKE_STATUS_AVAILABLE,
-          city: 'Göteborg',
-        },
-      ],
-    },
+    required: true,
   })
   @ApiResponse({
     status: 201,
     description: 'Bicycles created successfully',
-    schema: {
-      type: 'array',
-      example: [
-        {
-          id: BIKE_ID,
-          batteryLevel: 100,
-          latitude: null,
-          longitude: null,
-          status: BIKE_STATUS_AVAILABLE,
-          city: {
-            id: CITY_ID_GOTHENBURG,
-            name: 'Göteborg',
-            latitude: 57.70887,
-            longitude: 11.97456,
-            createdAt: CREATED_AT,
-            updatedAt: UPDATED_AT,
-          },
-          createdAt: CREATED_AT,
-          updatedAt: UPDATED_AT,
-        },
-        {
-          id: BIKE_ID,
-          batteryLevel: 100,
-          latitude: null,
-          longitude: null,
-          status: BIKE_STATUS_AVAILABLE,
-          city: {
-            id: CITY_ID_GOTHENBURG,
-            name: 'Göteborg',
-            latitude: 57.70887,
-            longitude: 11.97456,
-            createdAt: CREATED_AT,
-            updatedAt: UPDATED_AT,
-          },
-          createdAt: CREATED_AT,
-          updatedAt: UPDATED_AT,
-        },
-      ],
-    },
+    type: [Bicycle],
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request - Empty array or invalid bicycle data provided',
   })
   async createManyBikes(@Body() createBicycleDto: CreateBicycleDto[]): Promise<Bicycle[]> {
+    if (!createBicycleDto?.length) {
+      throw new BadRequestException('At least one bike is required');
+    }
     return await this.bicyclesService.createManyBikes(createBicycleDto);
   }
 
@@ -233,18 +147,7 @@ export class BicyclesController {
   @ApiResponse({
     status: 200,
     description: 'Bicycle details retrieved successfully',
-    schema: {
-      example: {
-        id: BIKE_ID,
-        batteryLevel: 100,
-        latitude: 59.3293,
-        longitude: 18.0686,
-        status: BIKE_STATUS_AVAILABLE,
-        city: 'Göteborg',
-        createdAt: CREATED_AT,
-        updatedAt: UPDATED_AT,
-      },
-    },
+    type: Bicycle,
   })
   @ApiResponse({
     status: 401,
@@ -274,16 +177,7 @@ export class BicyclesController {
   @ApiResponse({
     status: 200,
     description: 'Bicycle updated successfully',
-    schema: {
-      example: {
-        id: BIKE_ID,
-        batteryLevel: 85,
-        latitude: 59.3294,
-        longitude: 18.0687,
-        status: 'Service',
-        city: 'Göteborg',
-      },
-    },
+    type: Bicycle
   })
   @ApiResponse({
     status: 400,
@@ -307,28 +201,7 @@ export class BicyclesController {
   @ApiResponse({
     status: 200,
     description: 'List of bicycles in the specified city',
-    schema: {
-      type: 'array',
-      example: [
-        {
-          id: BIKE_ID,
-          batteryLevel: 80,
-          latitude: 59.8586,
-          longitude: 17.6389,
-          status: 'Rented',
-          createdAt: CREATED_AT,
-          updatedAt: UPDATED_AT,
-          city: {
-            id: 'd2322ff3-a81c-4b06-b78d-1bc72b4fe459',
-            name: 'Karlshamn',
-            latitude: null,
-            longitude: null,
-            createdAt: CREATED_AT,
-            updatedAt: UPDATED_AT,
-          },
-        },
-      ],
-    },
+    type: [Bicycle],
   })
   @ApiResponse({
     status: 401,
@@ -338,9 +211,9 @@ export class BicyclesController {
     name: 'cityName',
     description: 'Name of the city',
     type: 'string',
-    enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
+    enum: CityName,
   })
-  async getBicyclesByCity(@Param('cityName') cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn') {
+  async getBicyclesByCity(@Param('cityName') cityName: CityName): Promise<Bicycle[]> {
     return await this.bicyclesService.findByCity(cityName);
   }
 }

@@ -5,6 +5,7 @@ import { Bicycle } from './entities/bicycle.entity';
 import { UpdateBicycleDto } from './dto/update-bicycle.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { City } from '../cities/entities/city.entity';
+import { CityName } from 'src/cities/types/city.enum';
 
 describe('BicyclesController', () => {
   let controller: BicyclesController;
@@ -13,7 +14,7 @@ describe('BicyclesController', () => {
   // Create a mock city
   const mockCity: City = {
     id: 'city-test-id',
-    name: 'Göteborg',
+    name: CityName.Göteborg,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
