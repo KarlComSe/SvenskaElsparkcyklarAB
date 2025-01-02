@@ -44,8 +44,12 @@ const renderPolygons = ( zoneData: Zone[] ) =>  (
     zoneData?.map((zone, index) => (
         <Polygon pathOptions={zoneColors(zone.type)} positions={zone.polygon.map(point => [point.lat, point.lng])} key={index}>
             <Tooltip direction="bottom" offset={[0, 20]} opacity={1} >
+                <p>Name: {zone.name}</p>
                 <p>Id: {zone.id}</p>
                 <p>Type: {zone.type}</p>
+                { zone.bikes && <p>Number of bikes: {zone.bikes?.length} </p> }
+
+                <p></p>
             </Tooltip>
         </Polygon>
     ))

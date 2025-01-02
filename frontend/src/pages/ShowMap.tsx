@@ -3,28 +3,44 @@ import { useParams } from "react-router-dom";
 import axios from 'axios';
 import { API_URL} from '../helpers/config';
 import { useEffect, useState } from 'react';
-import { Scooter } from '../helpers/map/leaflet-types'
+import { Scooter,  Zone } from '../helpers/map/leaflet-types'
 
 export default function ShowMap() {
-  const { city }  = useParams();
-      const [scooterData, setScooterData] = useState<Scooter[]>([]);
-  
-  useEffect(() => {
-    const fetchScooters = async() => {
-    try {
-            const response = await axios.get(`${API_URL}/bike/city/${city}`);
-            setScooterData(response.data);
-        }
-        catch(error)
-        {
-        }
-  }
-  fetchScooters();
-  },[])
+    const { city }  = useParams();
+    const [zoneData, setZoneData] = useState<Zone[]>([]);
+    const [scooterData, setScooterData] = useState<Scooter[]>([]);
+    
+    useEffect(() => {
+      const fetchScooters = async() => {
+      try {
+              const response = await axios.get(`${API_URL}/bike/city/${city}`);
+              setScooterData(response.data);
+          }
+          catch(error)
+          {
+          }
+    }
+    fetchScooters();
+    },[])
+
+    useEffect(() => {
+      const fetchZones = async() => {
+      try {
+
+              const response = await axios.get(`${API_URL}/zone/city/${city}`);
+              setZoneData(response.data);
+          }
+          catch(error)
+          {
+          }
+    }
+    fetchZones();
+    },[city])
+
 
   return (
     <>
-      <div data-testid="show-map"><Map city={city ?? "Göteborg"}/></div>
+      <div data-testid="show-map"><Map city={city ?? "Göteborg"} zoneData={zoneData} scooterData={scooterData}/></div>
       <div id="scooter-list" className="mt-4 bg-gray-600 rounded">
       <h2 className="text-xl font-bold mb-2">Cyklar i {city}:</h2>
       {scooterData.length > 0 ? (
