@@ -12,6 +12,7 @@ import { ZonesService } from './zones.service';
 import { ZoneFilterQueryDto } from './dto/zone-filter-query.dto';
 import { ZoneResponse } from './types/ZoneResponse';
 import { ZoneQuery } from './types/ZoneQuery';
+import { CityName } from 'src/cities/types/city.enum';
 
 @ApiTags('Zones')
 @Controller('zone')
@@ -131,7 +132,7 @@ export class ZonesController {
     type: 'string',
     enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
   })
-  async getZonesByCity(@Param('cityName') cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn') {
+  async getZonesByCity(@Param('cityName') cityName: CityName) {
     return await this.zonesService.findByCity(cityName);
   }
 }

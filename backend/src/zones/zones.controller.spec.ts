@@ -4,6 +4,7 @@ import { ZonesService } from './zones.service';
 import { Zone } from './entities/zone';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ZoneFilterQueryDto } from './dto/zone-filter-query.dto';
+import { CityName } from 'src/cities/types/city.enum';
 
 describe('ZonesController', () => {
   let controller: ZonesController;
@@ -25,7 +26,7 @@ describe('ZonesController', () => {
     },
     city: {
       id: '755cacbd-fc18-4884-8859-96fa814b1eb2',
-      name: 'Jönköping',
+      name: CityName.Jönköping,
       latitude: null,
       longitude: null,
       createdAt: new Date(),

@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import { Bicycle } from '../../bicycles/entities/bicycle.entity';
 import { City } from '../../cities/entities/city.entity';
+import { CityName } from 'src/cities/types/city.enum';
 
 export default class BicycleSeeder {
   async run(connection: DataSource): Promise<void> {
@@ -9,26 +10,26 @@ export default class BicycleSeeder {
       const cityRepo = connection.getRepository(City);
 
       // keeping debug logs for now
-      let goteborg = await cityRepo.findOne({ where: { name: 'Göteborg' } });
+      let goteborg = await cityRepo.findOne({ where: { name: CityName.Göteborg } });
       if (!goteborg) {
         // console.log('Creating Göteborg...');
-        goteborg = cityRepo.create({ name: 'Göteborg' });
+        goteborg = cityRepo.create({ name: CityName.Göteborg });
         await cityRepo.save(goteborg);
         // console.log('Göteborg created with ID:', goteborg.id);
       }
 
-      let karlshamn = await cityRepo.findOne({ where: { name: 'Karlshamn' } });
+      let karlshamn = await cityRepo.findOne({ where: { name: CityName.Karlshamn } });
       if (!karlshamn) {
         // console.log('Creating Karlshamn...');
-        karlshamn = cityRepo.create({ name: 'Karlshamn' });
+        karlshamn = cityRepo.create({ name: CityName.Karlshamn });
         await cityRepo.save(karlshamn);
         // console.log('Karlshamn created with ID:', karlshamn.id);
       }
 
-      let jonkoping = await cityRepo.findOne({ where: { name: 'Jönköping' } });
+      let jonkoping = await cityRepo.findOne({ where: { name: CityName.Jönköping } });
       if (!jonkoping) {
         // console.log('Creating Jönköping...');
-        jonkoping = cityRepo.create({ name: 'Jönköping' });
+        jonkoping = cityRepo.create({ name: CityName.Jönköping });
         await cityRepo.save(jonkoping);
         // console.log('Jönköping created with ID:', jonkoping.id);
       }

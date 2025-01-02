@@ -4,6 +4,7 @@ import { ZonesService } from './zones.service';
 import { Zone } from './entities/zone';
 import { Repository } from 'typeorm';
 import { City } from '../cities/entities/city.entity';
+import { CityName } from 'src/cities/types/city.enum';
 
 const mockRepository = {
   find: jest.fn(),
@@ -15,7 +16,7 @@ describe('ZonesService', () => {
 
   const mockCity: City = {
     id: 'city-test-id',
-    name: 'Göteborg',
+    name: CityName.Göteborg,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
