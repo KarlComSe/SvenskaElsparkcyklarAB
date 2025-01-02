@@ -1,13 +1,28 @@
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { initTestApp } from './utils';
+import { User } from 'src/users/entities/user.entity';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  beforeAll(async () => {
-    app = await initTestApp();
-  });
+  let adminToken: string;
+  let userToken: string;
+  let adminUser: User;
+  let standardUser: User;
+  let fakeUserToken: string;
+  let fakeUser: User;
 
+  beforeAll(async () => {
+    const { app: initializedApp, tokens } = await initTestApp();
+    app = initializedApp;
+    adminToken = tokens.adminToken;
+    userToken = tokens.userToken;
+    adminUser = tokens.adminUser;
+    standardUser = tokens.standardUser;
+    fakeUserToken = tokens.fakeUserToken;
+    fakeUser = tokens.fakeUser;
+  });
+  
   afterAll(async () => {
     const userRepo = app.get('UserRepository');
     await userRepo.clear();
