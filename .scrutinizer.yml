@@ -60,7 +60,7 @@ build:
           # Run tests with coverage
           - command: npm run test:full-cov
             coverage:
-              file: coverage/clover.xml
+              file: coverage-combined/clover.xml
               format: clover
 
 tools:
