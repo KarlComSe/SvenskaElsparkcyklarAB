@@ -74,8 +74,8 @@ class BikeManager:
                 if response.status != 200:
                     raise aiohttp.ClientResponseError(
                         status=response.status,
-                        message=f"Error while fetching bikes from {url}"
-                    )
+                        message=f"Error while fetching bikes from {url}")
+
                 bikes = await response.json()
                 for bike in bikes:
                     self.bikes.append(Bike(bike.get('id'), bike.get('longitude'), bike.get('latitude'), self.session, self.socket))
