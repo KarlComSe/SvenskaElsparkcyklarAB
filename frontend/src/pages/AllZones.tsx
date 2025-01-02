@@ -16,6 +16,7 @@ export default function AllZones() {
     const [zoneDataLoading, setZoneDataLoading] = useState<Zone[]>();
     const [zoneDataTotal, setZoneDataTotal] = useState<Zone[]>();
     const [bikeTotal, setBikeTotal] = useState<Scooter[]>();
+    const [stadTitel, setStadTitel] = useState("");
 
     const changeCity = (e: React.ChangeEvent<HTMLSelectElement>)=> {
         const selectedCity = e.target.value as "Göteborg" | "Jönköping" | "Karlshamn";
@@ -41,6 +42,7 @@ export default function AllZones() {
                 }
             });
             setBikeTotal(bikes);
+            setStadTitel(city);
 
         } catch (error)
         {
@@ -72,7 +74,7 @@ export default function AllZones() {
                 </div>
                 <Map city={city} zoneData={zoneDataTotal ?? []} scooterData={bikeTotal ?? []}/>
                 <div>
-                    <h1>Parkeringszoner</h1>
+                    <h1>Parkeringszoner i {stadTitel}</h1>
                     {
                         zoneDataParking?.map((zone: Zone) => (
                             <div key={zone.id}>
@@ -89,7 +91,7 @@ export default function AllZones() {
                         }
                 </div>
                 <div>
-                    <h1>Laddzoner</h1>
+                    <h1>Laddzoner i {stadTitel}</h1>
                     {
                         zoneDataLoading?.map((zone: Zone) => (
                             <div key={zone.id}>

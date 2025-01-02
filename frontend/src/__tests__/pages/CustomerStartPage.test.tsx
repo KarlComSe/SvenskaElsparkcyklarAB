@@ -17,7 +17,6 @@ describe('CustomerStartPage', () => {
   it('renders CustomerStartPage component', () => {
     render(renderWithProviders(<Router><CustomerStartPage/></Router>, preloadedState));
     expect(screen.getByTestId("customerstartpage")).toBeInTheDocument();
-    screen.debug();
 });
 });
 
