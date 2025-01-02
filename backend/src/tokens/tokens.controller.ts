@@ -7,7 +7,7 @@ import { TokenRevocationResponseDto } from './dto/token-revocation-response.dto/
 import { TokenGuard } from './guards/token.guard';
 
 @ApiTags('Tokens')
-@Controller('tokens')
+@Controller({ path: 'tokens', version: '1' })
 export class TokensController {
   constructor(private readonly tokensService: TokensService) {}
 

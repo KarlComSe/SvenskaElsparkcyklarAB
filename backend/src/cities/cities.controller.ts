@@ -6,7 +6,7 @@ import { CityName } from './types/city.enum';
 import { City } from './entities/city.entity';
 
 @ApiTags('Cities')
-@Controller('cities')
+@Controller({ path: 'cities', version: '1' })
 export class CitiesController {
   constructor(private readonly citiesService: CitiesService) {}
 

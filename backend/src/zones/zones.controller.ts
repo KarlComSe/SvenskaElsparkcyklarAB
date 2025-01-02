@@ -15,7 +15,7 @@ import { ZoneQuery } from './types/ZoneQuery';
 import { CityName } from 'src/cities/types/city.enum';
 
 @ApiTags('Zones')
-@Controller('zone')
+@Controller({ path: 'zone', version: '1' })
 export class ZonesController {
   constructor(private readonly zonesService: ZonesService) {}
   @Get()

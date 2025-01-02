@@ -34,7 +34,7 @@ const UNAUTHORIZED_ERROR_MESSAGE = 'Unauthorized. Authentication required';
 const CITY_ID_GOTHENBURG = '123e4567-e89b-12d3-a456-426614174000';
 
 @ApiTags('Bicycles')
-@Controller('bike')
+@Controller({ path: 'bike', version: '1' })
 export class BicyclesController {
   constructor(private readonly bicyclesService: BicyclesService) {}
 
