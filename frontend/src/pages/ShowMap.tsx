@@ -47,7 +47,6 @@ export default function ShowMap() {
       try {
               const response = await axios.get(`${API_URL}/bike/city/${city}`);
               setScooterData(response.data);
-              console.log(trigger)
           }
           catch(error)
           {
@@ -62,7 +61,6 @@ export default function ShowMap() {
 
               const response = await axios.get(`${API_URL}/zone/city/${city}`);
               setZoneData(response.data);
-              console.log(trigger)
           }
           catch(error)
           {
