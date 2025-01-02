@@ -32,7 +32,7 @@ async def main():
 
             try:
                 duration = int(input("Enter simulation duration (seconds): "))
-                speed_factor = int(input("Enter speed factor (1-10): "))
+                speed_factor = int(input("Enter speed factor (1-50): "))
                 await manager.run(duration=duration, speed_factor=speed_factor)
             except ValueError:
                 print("Invalid input. Please enter numerical values.")
@@ -101,7 +101,7 @@ class BikeManager:
                 return bike
         return None
 
-    async def simulate(self, duration: int, speed_factor=1):
+    async def simulate(self, duration: int, speed_factor=25):
         if self.is_running:
             return
         self.is_running = True
@@ -110,7 +110,6 @@ class BikeManager:
         print(f"Speed factor: {speed_factor}")
         print(f"End time: {end_time}")
         print(f"Bikes in simulation {len(self.bikes)} bikes")
-        print(self.bikes[0].count)
         tasks = [bike.simulate(end_time, speed_factor) for bike in self.bikes]
         try:
             await asyncio.gather(*tasks)
@@ -119,7 +118,7 @@ class BikeManager:
             print(f"Simulation ended")
             self.is_running = False
 
-    async def run(self, duration: int=30, speed_factor: int = 1):
+    async def run(self, duration: int=30, speed_factor: int = 25):
         await self.simulate(duration, speed_factor)
 
 if __name__ == "__main__":

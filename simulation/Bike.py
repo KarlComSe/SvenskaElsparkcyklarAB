@@ -45,11 +45,6 @@ class Bike:
                 'latitude': latitude,
                 'longitude': longitude
             })
-        self.count = self.count + 1
-        Bike.print_count = (Bike.print_count + 1) % 150
-        if Bike.print_count == 0:
-            print()
-
 
     @property
     def route(self):
@@ -63,11 +58,12 @@ class Bike:
         self.route = RouteGenerator.get_random_route()
         self.bike_route_index_position = random.randint(0, len(self.bike_route) - 1)
         while  datetime.datetime.now() < end_time:
+            await asyncio.sleep(random.randint(0,30)/10)
             current_route_point = self.bike_route[self.bike_route_index_position]
             self.move(current_route_point.longitude, current_route_point.latitude)
             self.bike_route_index_position = (self.bike_route_index_position + 1) % len(self.bike_route)
+            await asyncio.sleep(50/speed_factor)
             await self.update_bike_position()
-            await asyncio.sleep(random.randint(1, 6)/speed_factor)
 
     async def update_bike_position(self):
         url = f"{Config.API_BASE_URL}/bike/{self._id}"
@@ -77,9 +73,14 @@ class Bike:
         }
         try:
             async with self._session.patch(url, json=payload) as response:
+                if Bike.print_count == 0 and self.count > 0:
+                    print()
                 if response.status == 200:
                     print(f".", end="")
                 else:
                     print(f"Failed to update bike position. Status: {response.status}, Body: {await response.text()}")
         except Exception as e:
             print(f"Error while updating bike position: {e}")
+
+        Bike.print_count = (Bike.print_count + 1) % 150
+        self.count = self.count + 1
