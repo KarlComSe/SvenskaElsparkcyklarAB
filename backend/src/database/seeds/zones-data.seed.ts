@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import { Zone } from '../../zones/entities/zone';
 import { City } from '../../cities/entities/city.entity';
+import { CityName } from 'src/cities/types/city.enum';
 
 export default class ZoneSeeder {
   async run(connection: DataSource): Promise<void> {
@@ -10,14 +11,14 @@ export default class ZoneSeeder {
       const cityRepo = connection.getRepository(City);
 
       const cities = await Promise.all([
-        cityRepo.findOne({ where: { name: 'Göteborg' } }) ||
-          cityRepo.save(cityRepo.create({ name: 'Göteborg' })),
+        cityRepo.findOne({ where: { name: CityName.Göteborg } }) ||
+          cityRepo.save(cityRepo.create({ name: CityName.Göteborg })),
 
-        cityRepo.findOne({ where: { name: 'Karlshamn' } }) ||
-          cityRepo.save(cityRepo.create({ name: 'Karlshamn' })),
+        cityRepo.findOne({ where: { name: CityName.Karlshamn } }) ||
+          cityRepo.save(cityRepo.create({ name: CityName.Karlshamn })),
 
-        cityRepo.findOne({ where: { name: 'Jönköping' } }) ||
-          cityRepo.save(cityRepo.create({ name: 'Jönköping' })),
+        cityRepo.findOne({ where: { name: CityName.Jönköping } }) ||
+          cityRepo.save(cityRepo.create({ name: CityName.Jönköping })),
       ]);
 
       const [goteborg, karlshamn, jonkoping] = cities;

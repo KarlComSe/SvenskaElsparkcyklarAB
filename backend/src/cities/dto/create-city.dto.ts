@@ -1,16 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsNumber, IsEnum } from 'class-validator';
 import { City } from '../entities/city.entity';
+import { CityName } from '../types/city.enum';
 
 export class CreateCityDto {
   @ApiProperty({
-    description: 'City',
-    example: 'Göteborg',
-    enum: ['Göteborg', 'Jönköping', 'Karlshamn'],
-    required: true,
+    enum: CityName,
   })
-  @IsEnum(['Göteborg', 'Jönköping', 'Karlshamn'])
-  name: 'Göteborg' | 'Jönköping' | 'Karlshamn';
+  @IsEnum(CityName)
+  name: CityName;
 
   @ApiProperty({
     description: 'Latitude coordinate of the city center',

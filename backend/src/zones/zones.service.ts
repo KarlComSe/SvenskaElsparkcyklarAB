@@ -6,6 +6,7 @@ import { ZoneQuery } from './types/ZoneQuery';
 import { ZoneResponse } from './types/ZoneResponse';
 import { BicyclesService } from 'src/bicycles/bicycles.service';
 import { getDistance, positionInsidePolygon } from 'src/utils/geo.utils';
+import { CityName } from 'src/cities/types/city.enum';
 
 @Injectable()
 export class ZonesService {
@@ -21,7 +22,7 @@ export class ZonesService {
     });
   }
 
-  async findByCity(cityName: 'Göteborg' | 'Jönköping' | 'Karlshamn'): Promise<Zone[]> {
+  async findByCity(cityName: CityName): Promise<Zone[]> {
     return await this.zoneRepository.find({
       where: {
         city: {
@@ -92,7 +93,9 @@ export class ZonesService {
   }
 
   async pointInParkingZone(lat: number, lon: number): Promise<boolean> {
-    const zones = await this.findAll();
+    const zones = (await this.findAll()).filter((zone) => {
+      return zone.type === 'parking';
+    });
     return zones.some((zone) => {
       return positionInsidePolygon(lat, lon, zone.polygon);
     });
