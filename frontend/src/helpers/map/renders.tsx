@@ -3,6 +3,18 @@ import { Scooter, Zone } from './leaflet-types'
 import { LatLngTuple } from 'leaflet';
 import { iconStation } from '../config';
 
+const zoneColors = (zoneType: string) => {
+    switch(zoneType) {
+        case "speed":
+            return {color :"purple"}
+        case "parking":
+            return {color :"green"}
+        case "charging":
+            return {color :"blue"}
+        default:
+            return {color :"red"}
+    }
+}
 
 const renderScooterMarkers = (scooterData: Scooter[])=>   (
     scooterData?.map((scooter, index) => (
@@ -30,7 +42,7 @@ const renderStationMarkers  = (stationPositions: LatLngTuple[]) =>  (
 
 const renderPolygons = ( zoneData: Zone[] ) =>  (
     zoneData?.map((zone, index) => (
-        <Polygon pathOptions={{ color: "red "}} positions={zone.polygon.map(point => [point.lat, point.lng])} key={index}>
+        <Polygon pathOptions={zoneColors(zone.type)} positions={zone.polygon.map(point => [point.lat, point.lng])} key={index}>
             <Tooltip direction="bottom" offset={[0, 20]} opacity={1} >
                 <p>Id: {zone.id}</p>
                 <p>Type: {zone.type}</p>

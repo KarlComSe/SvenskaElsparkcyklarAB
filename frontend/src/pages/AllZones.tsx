@@ -7,6 +7,7 @@ import { Zone } from '../helpers/map/leaflet-types'
 import { RootState } from '../redux/store/store';
 import { useSelector } from 'react-redux';
 import { Label, Select, Button, Table, Badge } from "flowbite-react";
+import Map from '../components/Map';
 
 export default function AllZones() {
     const [city, setCity] = useState("Välj stad");
@@ -15,7 +16,6 @@ export default function AllZones() {
 
     const changeCity = (e: React.ChangeEvent<HTMLSelectElement>)=> {
         const selectedCity = e.target.value as "Göteborg" | "Jönköping" | "Karlshamn";
-        console.log(selectedCity);
         if (selectedCity === "Göteborg" || selectedCity === "Jönköping" || selectedCity === "Karlshamn") {
             setCity(selectedCity);
         }
@@ -37,15 +37,12 @@ export default function AllZones() {
 
     }
 
-
-  
     return (
             <>
                 <div className="flex justify-center items-center space-x-4">
                     <div className="mb-2 block">
                         <Label htmlFor="stad" value="Välj stad" />
                     </div>
-
                     <div className="mb-2 block">
                         <Select id="stad" value={city} onChange={(e) => changeCity(e)} required>
                         {city === "Välj stad" && <option value="Välj stad">Välj stad</option>}
@@ -61,6 +58,7 @@ export default function AllZones() {
                         </Button>
                     </div>
                 </div>
+                <Map city={city}/>
                 <div>
                     <h1>Parkeringszoner</h1>
                     {
