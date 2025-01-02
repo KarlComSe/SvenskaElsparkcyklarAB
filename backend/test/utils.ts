@@ -1,8 +1,13 @@
-import { CanActivate } from '@nestjs/common';
+import { CanActivate, ValidationPipe, VersioningType } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import { JwtPayload } from 'src/auth/types/jwt-payload.interface';
 import { AppModule } from './../src/app.module';
+import ZoneSeeder from 'src/database/seeds/zones-data.seed';
+import BicycleSeeder from 'src/database/seeds/bicycles-data.seed';
+import UserDataSeeder from 'src/database/seeds/user-data.seed';
+import TravelDataSeeder from 'src/database/seeds/travel-data.seed';
+import { DataSource } from 'typeorm';
 
 // is guarded is a copy from stackoverflow / stackexchange
 /**
@@ -76,29 +81,67 @@ function generateTestTokens() {
 }
 
 async function initTestApp() {
+
+  const originalEnv = process.env.NODE_ENV;
+  process.env.NODE_ENV = 'development';
+
   const moduleFixture = await Test.createTestingModule({
     imports: [AppModule],
   }).compile();
 
   const app = moduleFixture.createNestApplication();
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    })
+  );
+
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
   await app.init();
 
-  // Initialize test data
-  const userRepo = app.get('UserRepository');
-  await userRepo.save([
-    {
-      githubId: '12345',
-      username: 'testuser',
-      email: 'testuser@test.com',
-      roles: ['user'],
-    },
-    {
-      githubId: '67890',
-      username: 'adminuser',
-      email: 'admin@test.com',
-      roles: ['admin'],
-    },
-  ]);
+  
+  const dataSource = app.get(DataSource);
+  const userSeeder = new UserDataSeeder();
+  await userSeeder.run(dataSource);
+
+  const zoneSeeder = new ZoneSeeder();
+  await zoneSeeder.run(dataSource);
+
+  const bicycleSeeder = new BicycleSeeder();
+  await bicycleSeeder.run(dataSource);
+
+  const travelSeeder = new TravelDataSeeder();
+  await travelSeeder.run(dataSource);
+
+  // Restore original NODE_ENV
+  process.env.NODE_ENV = originalEnv;
+
+  // // Initialize test data
+  // const userRepo = app.get('UserRepository');
+  // await userRepo.save([
+  //   {
+  //     githubId: '12345',
+  //     username: 'testuser',
+  //     email: 'testuser@test.com',
+  //     roles: ['user'],
+  //   },
+  //   {
+  //     githubId: '67890',
+  //     username: 'adminuser',
+  //     email: 'admin@test.com',
+  //     roles: ['admin'],
+  //   },
+  // ]);
+
+
+  // // Run zone seeder
+  // const zoneSeeder = new ZoneSeeder();
+  // await zoneSeeder.run(dataSource);
 
   return app;
 }

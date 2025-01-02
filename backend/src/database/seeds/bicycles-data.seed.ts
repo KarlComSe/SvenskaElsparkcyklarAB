@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import { Bicycle } from '../../bicycles/entities/bicycle.entity';
 import { City } from '../../cities/entities/city.entity';
-import { CityName } from 'src/cities/types/city.enum';
+import { CityName } from '../../cities/types/city.enum';
 
 export default class BicycleSeeder {
   async run(connection: DataSource): Promise<void> {
