@@ -14,7 +14,7 @@ export class ZonesService {
     @InjectRepository(Zone)
     private readonly zoneRepository: Repository<Zone>,
     private readonly bicyclesService: BicyclesService,
-  ) {}
+  ) { }
 
   async findAll(): Promise<Zone[]> {
     return await this.zoneRepository.find({
@@ -24,30 +24,23 @@ export class ZonesService {
 
   async findByCity(cityName: CityName): Promise<Zone[]> {
     return await this.zoneRepository.find({
+      relations: ['city'],
       where: {
         city: {
           name: cityName,
         },
-      },
-      relations: ['city'],
+      }
     });
   }
-
-  async getZones(lat: number, lon: number): Promise<Zone[]> {
-    let zones = await this.findAll();
-    const point = {
-      type: 'Feature' as const,
-      properties: {},
-      geometry: {
-        type: 'Point' as const,
-        coordinates: [lon, lat],
-      },
-    };
-    zones = zones.filter((zone) => {
-      return positionInsidePolygon(lat, lon, zone.polygon);
-    });
-    return zones;
-  }
+  
+  // seems unused
+  // async getZones(lat: number, lon: number): Promise<Zone[]> {
+  //   let zones = await this.findAll();
+  //   zones = zones.filter((zone) => {
+  //     return positionInsidePolygon(lat, lon, zone.polygon);
+  //   });
+  //   return zones;
+  // }
 
   async getZonesByFilter(query: ZoneQuery): Promise<ZoneResponse> {
     const zones: ZoneResponse = {

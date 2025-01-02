@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import { Zone } from '../../zones/entities/zone';
 import { City } from '../../cities/entities/city.entity';
-import { CityName } from 'src/cities/types/city.enum';
+import { CityName } from '../../cities/types/city.enum';
 
 export default class ZoneSeeder {
   async run(connection: DataSource): Promise<void> {
