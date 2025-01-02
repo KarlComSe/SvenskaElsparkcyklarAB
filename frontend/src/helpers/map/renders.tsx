@@ -18,7 +18,7 @@ const zoneColors = (zoneType: string) => {
 
 const renderScooterMarkers = (scooterData: Scooter[])=>   (
     scooterData?.map((scooter, index) => (
-    <Marker key={index} position={[scooter.latitude, scooter.longitude]}>
+    <Marker key={index} position={[scooter.latitude+Math.random(), scooter.longitude+Math.random()]}>
         <Popup>
             <p className="my-0 py-0">id: {scooter.id}</p>
             <p className="my-0 py-0">batteryLevel: {scooter.batteryLevel}</p>

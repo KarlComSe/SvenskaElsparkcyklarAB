@@ -12,7 +12,7 @@ jest.mock("react-leaflet", () => ({
 
 describe('Map', () => {
   it('renders Map component', () => {
-    render(renderWithProviders(<Map/>));
+    render(renderWithProviders(<Map city={""} scooterData={[]} zoneData={[]}/>));
     expect(screen.getByTestId('map')).toBeInTheDocument(); // Find item by test-id
 });
 });

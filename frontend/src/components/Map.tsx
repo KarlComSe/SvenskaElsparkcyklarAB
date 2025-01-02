@@ -21,7 +21,7 @@ export default function Map({city, zoneData, scooterData} : propTypes) {
         if (city && cities[city]) {
             setStartPosition(cities[city]);
         }
-    }, [city]);
+    }, [city, zoneData, scooterData]);
     
   return (
     <div id="map-container">

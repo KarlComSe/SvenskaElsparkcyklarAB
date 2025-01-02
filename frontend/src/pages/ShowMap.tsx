@@ -2,26 +2,59 @@ import Map from '../components/Map';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
 import { API_URL} from '../helpers/config';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Scooter,  Zone } from '../helpers/map/leaflet-types'
+import { Label, ToggleSwitch } from 'flowbite-react';
 
 export default function ShowMap() {
     const { city }  = useParams();
     const [zoneData, setZoneData] = useState<Zone[]>([]);
     const [scooterData, setScooterData] = useState<Scooter[]>([]);
+    const [realTime, setRealTime] = useState(false);
+    const timerRef = useRef<null | number>(null);
+    const [trigger, setTrigger] = useState(0);
+  
+    const updateRealTime = () => {
+      setRealTime(!realTime);
+      if (realTime)
+      {
+        stopTimer();
+      } else {
+        startTimer();
+      }
+      
+    }
+
+    const startTimer = () => {
+      if (!timerRef.current)
+        {
+          timerRef.current = setInterval(() => {
+            setTrigger((prev) => prev + 1);
+          }, 1000);
+        }
+  };
+
+  const stopTimer = () => {
+      if (timerRef.current)
+        {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        }
+  };
     
     useEffect(() => {
       const fetchScooters = async() => {
       try {
               const response = await axios.get(`${API_URL}/bike/city/${city}`);
               setScooterData(response.data);
+              console.log(trigger)
           }
           catch(error)
           {
           }
     }
     fetchScooters();
-    },[])
+    },[city, trigger])
 
     useEffect(() => {
       const fetchZones = async() => {
@@ -29,18 +62,21 @@ export default function ShowMap() {
 
               const response = await axios.get(`${API_URL}/zone/city/${city}`);
               setZoneData(response.data);
+              console.log(trigger)
           }
           catch(error)
           {
           }
     }
     fetchZones();
-    },[city])
+    },[city, trigger])
 
 
   return (
     <>
       <div data-testid="show-map"><Map city={city ?? "Göteborg"} zoneData={zoneData} scooterData={scooterData}/></div>
+      <Label htmlFor="realtimetoggle">Vill du uppdatera kartan i realtid?</Label>
+      <ToggleSwitch id="realtimetoggle" checked={realTime} onChange={updateRealTime}>Uppdatera i realtid?</ToggleSwitch>
       <div id="scooter-list" className="mt-4 bg-gray-600 rounded">
       <h2 className="text-xl font-bold mb-2">Cyklar i {city}:</h2>
       {scooterData.length > 0 ? (
