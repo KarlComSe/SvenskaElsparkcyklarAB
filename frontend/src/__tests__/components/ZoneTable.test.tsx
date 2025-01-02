@@ -33,7 +33,7 @@ describe('ZoneTable', () => {
     }
   it('renders ZoneTable component', () => {
     render(renderWithProviders(<Router><ZoneTable zone={mockZone}/></Router>));
-    expect(screen.getByTestId("allzuns")).toBeInTheDocument();
+    expect(screen.getByTestId("zonetable")).toBeInTheDocument();
   });
 });
 

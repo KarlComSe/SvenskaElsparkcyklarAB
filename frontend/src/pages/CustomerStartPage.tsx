@@ -26,7 +26,7 @@ const CustomerStartPage: React.FC = () => {
 
 
   return isLoggedIn && (
-                        <div className='flex justify-between'>
+                        <div data-testid="customerstartpage" className='flex justify-between'>
                             <div className="w-full max-w-lg p-4 mx-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                 <div className="flex flex-col items-center pb-10">
                                     <img className="w-24 h-24 mb-3 rounded-full shadow-lg" src={scooterImage} alt="Bonnie image"/>
