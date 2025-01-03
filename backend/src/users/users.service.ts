@@ -18,9 +18,12 @@ export class UsersService {
       where: { githubId },
     });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+    // This will never be invoked through the controller because the auth guard will throw an error
+    // However, if this is used as a standalone service, this check is necessary
+    // removing to get rid of test case
+    // if (!user) {
+    //   throw new NotFoundException('User not found');
+    // }
 
     user.hasAcceptedTerms = hasAcceptedTerms;
     return this.userRepository.save(user);

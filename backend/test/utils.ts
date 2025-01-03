@@ -8,6 +8,7 @@ import BicycleSeeder from 'src/database/seeds/bicycles-data.seed';
 import UserDataSeeder from 'src/database/seeds/user-data.seed';
 import TravelDataSeeder from 'src/database/seeds/travel-data.seed';
 import { DataSource } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
 
 // is guarded is a copy from stackoverflow / stackexchange
 /**
@@ -44,39 +45,61 @@ function isGuarded(
   return true;
 }
 
-// sub: user.githubId,
-// username: user.username,
-// email: user.email,
-// roles: user.roles
-function generateToken(user: JwtPayload) {
-  const secret = process.env.JWT_SECRET || 'your-test-secret';
-  const jwtService = new JwtService({
-    secret: process.env.JWT_SECRET,
+async function generateTestTokens(dataSource: DataSource) {
+  const userRepository = dataSource.getRepository(User);
+  
+  const adminUser = await userRepository.findOne({
+    where: { username: 'Pbris' }
   });
-  const token = jwtService.sign(user);
-  return token;
-}
 
-const adminUser = {
-  sub: '67890',
-  username: 'adminuser',
-  email: 'admin@test.com',
-  roles: ['admin'],
-};
-const standardUser = {
-  sub: '12345',
-  username: 'testuser',
-  email: 'testuser@test.com',
-  roles: ['user'],
-};
+  // Find a regular user from our seed data
+  // From seed data we know 'bobsmith' is a regular user
+  const standardUser = await userRepository.findOne({
+    where: { username: 'bobsmith' }
+  });
 
-function generateTestTokens() {
-  const adminToken = generateToken(adminUser);
-  const userToken = generateToken(standardUser);
+  const fakeUser : User = {
+    ...standardUser,
+    githubId: 'fakeuser',
+    username: 'fakeuser',
+  } 
+
+  if (!adminUser || !standardUser) {
+    throw new Error('Test users not found in database. Ensure seeds have run.');
+  }
+
+  const jwtService = new JwtService({
+    secret: process.env.JWT_SECRET || 'your-test-secret'
+  });
+
+  const adminToken = jwtService.sign({
+    sub: adminUser.githubId,
+    username: adminUser.username,
+    email: adminUser.email,
+    roles: adminUser.roles
+  });
+
+  const userToken = jwtService.sign({
+    sub: standardUser.githubId,
+    username: standardUser.username,
+    email: standardUser.email,
+    roles: standardUser.roles
+  });
+
+  const fakeUserToken = jwtService.sign({
+    sub: fakeUser.githubId,
+    username: fakeUser.username,
+    email: fakeUser.email,
+    roles: fakeUser.roles
+  });
 
   return {
     adminToken,
     userToken,
+    adminUser,
+    standardUser,
+    fakeUserToken,
+    fakeUser
   };
 }
 
@@ -102,6 +125,7 @@ async function initTestApp() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
+
   await app.init();
 
   
@@ -121,33 +145,12 @@ async function initTestApp() {
   // Restore original NODE_ENV
   process.env.NODE_ENV = originalEnv;
 
-  // // Initialize test data
-  // const userRepo = app.get('UserRepository');
-  // await userRepo.save([
-  //   {
-  //     githubId: '12345',
-  //     username: 'testuser',
-  //     email: 'testuser@test.com',
-  //     roles: ['user'],
-  //   },
-  //   {
-  //     githubId: '67890',
-  //     username: 'adminuser',
-  //     email: 'admin@test.com',
-  //     roles: ['admin'],
-  //   },
-  // ]);
-
-
-  // // Run zone seeder
-  // const zoneSeeder = new ZoneSeeder();
-  // await zoneSeeder.run(dataSource);
-
-  return app;
+  const tokens = await generateTestTokens(dataSource);
+  return { app, tokens };
 }
 
 function removeTimestamps(users: any[]) {
   return users.map(({ createdAt, updatedAt, ...rest }) => rest);
 }
 
-export { isGuarded, generateToken, removeTimestamps, generateTestTokens, initTestApp };
+export { isGuarded, removeTimestamps, generateTestTokens, initTestApp };

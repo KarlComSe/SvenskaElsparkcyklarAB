@@ -45,7 +45,6 @@ export class UsersController {
     if (typeof updateTermsDto.hasAcceptedTerms !== 'boolean') {
       throw new BadRequestException('Invalid input');
     }
-    // console.log(req.user);
     return await this.usersService.updateTerms(req.user.githubId, updateTermsDto.hasAcceptedTerms);
   }
   // Fetch all customers
@@ -195,15 +194,22 @@ export class UsersController {
     status: 200,
     description: 'Account details retrieved successfully.',
   })
-  async getAccountDetails(@Param('githubId') githubId: string) {
+  async getAccountDetails(@Param('githubId') githubId: string, @Request() req: any,) {
     const user = await this.usersService.findById(githubId);
+    const authenticatedUser = req.user;
+
+    // Only allow if the user is an admin or viewing their own account
+    if (authenticatedUser.githubId !== githubId && !authenticatedUser.roles.includes('admin')) {
+      throw new ForbiddenException("You are not allowed to view other users' accounts.");
+    }
+
     return {
       balance: user.balance,
       accumulatedCost: user.accumulatedCost,
       isMonthlyPayment: user.isMonthlyPayment,
     };
   }
-  @Post(':githubId/adjust-funds')
+  @Patch(':githubId/adjust-funds')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
