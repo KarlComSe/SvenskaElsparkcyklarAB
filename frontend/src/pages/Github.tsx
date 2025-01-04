@@ -22,7 +22,7 @@ const Github: React.FC = () => {
 
     useEffect(() => {
 
-        if (isLoggedIn) { // Only in component (not from localStorage)
+        if (isLoggedIn) {
             // navigate('/');
             if (userRole === 'admin') {
                 navigate('/adminstartpage');
@@ -47,6 +47,12 @@ const Github: React.FC = () => {
                     dispatch(setCurrentUser(response.data.user.username));
                     dispatch(setLoggedInOut(true));
                     setisLoggedIn(true);
+                    if (response.data.user.roles.includes("admin")) {
+                        console.log("admin")
+                        dispatch(setRole("admin"));
+                    } else {
+                        dispatch(setRole("user"));
+                    }
                 }
                 
             catch(error)

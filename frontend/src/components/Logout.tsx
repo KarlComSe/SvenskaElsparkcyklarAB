@@ -1,8 +1,9 @@
 import { useDispatch } from 'react-redux';
 import { setLoggedInOut, setCurrentUser, setToken, setRole } from '../redux/slices/authLogin';
 import { useNavigate } from "react-router-dom";
+import { Button } from 'flowbite-react';
 
-export default function Logout() {
+export default function Logout(props: any) {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -17,7 +18,6 @@ export default function Logout() {
         console.log("Header here");
     }
   return (
-    <button data-testid="logoutbutton" type="button" className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-200 focus:ring-4
-focus:outline-none focus:ring-red-300 dark:bg-red-400 dark:hover:bg-red-700 dark:focus:ring-red-800" onClick={(e) => logOutUser(e)}>Logga ut</button>
+    <Button {...props} data-testid="logoutbutton" color="failure" onClick={(e) => logOutUser(e)}>Logga ut</Button>
   )
 }

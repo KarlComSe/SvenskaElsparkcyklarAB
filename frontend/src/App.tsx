@@ -11,21 +11,24 @@ import HomePage from './pages/HomePage';
 import Header from './components/Header';
 // import LoginOAuth from './pages/LoginOAuth.tsx';
 import Github from './pages/Github';
-import CustomerStartPage from './pages/CustomerStartPage';
-import AdminStartPage from './pages/AdminStartPage';
-import UserListPage from './pages/UserListPage';
-import UserInfoPage from './pages/UserInfoPage';
-import ShowMap from './pages/ShowMap';
-import AdminUserOverviewPage from './pages/AdminUserOverviewPage';
-import AdminMapNavigation from './pages/AdminMapNavigation';
-import AllBikes from './pages/AllBikes'
-import AllZones from './pages/AllZones';
+import CustomerStartPage from './pages/user/CustomerStartPage';
+import AdminStartPage from './pages/admin/AdminStartPage';
+import UserListPage from './pages/admin/UserListPage';
+import UserInfoPage from './pages/user/UserInfoPage';
+import ShowMap from './pages/admin/ShowMap';
+import AdminUserOverviewPage from './pages/admin/AdminUserOverviewPage';
+import AdminMapNavigation from './pages/admin/AdminMapNavigation';
+import AllBikes from './pages/admin/AllBikes'
+import AllZones from './pages/admin/AllZones';
+import { ToastContainer } from 'react-toastify';
 
 const App: React.FC = () => {
   return (
     <Router >
       <Header/>
+      <ToastContainer/>
         <Routes>
+        
           <Route path="/customerstartpage" element={<CustomerStartPage />} />
           <Route path="/adminstartpage" element={<AdminStartPage />} />
           <Route path="/userlistpage" element={<UserListPage />} />

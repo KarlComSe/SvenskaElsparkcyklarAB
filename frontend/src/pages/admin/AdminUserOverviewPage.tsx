@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { API_URL, getHeader } from '../helpers/config';
+import { API_URL, getHeader } from '../../helpers/config';
 import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store/store';
+import { RootState } from '../../redux/store/store';
 import axios, { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
 import { Button, ToggleSwitch, TextInput, Checkbox, Label, Card } from "flowbite-react";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import AdminGate from '../../components/AdminGate';
 
 
 
@@ -105,7 +106,7 @@ const AdminUserOverviewPage: React.FC = () => {
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-      <ToastContainer/>
+      <AdminGate/>
       {/* <h1 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">{user.username}</h1>
       <div className="space-y-4">
         <p className="text-gray-600 dark:text-gray-400">Email: <b>{user.email}</b></p>

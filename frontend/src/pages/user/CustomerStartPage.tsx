@@ -1,32 +1,19 @@
-import React, {useState} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../redux/store/store';
-import { GITHUB_URL } from '../helpers/config';
+import {  useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../../redux/store/store';
 import { Link } from 'react-router-dom';
-import { setLoggedInOut, setCurrentUser, setToken, setRole } from '../redux/slices/authLogin';
-import scooterImage from '../assets/images/scooter.jpg';
-import userImage from '../assets/images/user.jpg';
-import { useNavigate } from 'react-router-dom';
-import Logout from '../components/Logout';
-
+import scooterImage from '../../assets/images/scooter.jpg';
+import userImage from '../../assets/images/user.jpg';
+import Logout from '../../components/Logout';
+import CustomerGate from '../../components/CustomerGate';
 
 const CustomerStartPage: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const { role } = useSelector((state: RootState) =>  state.auth);
-  const { isLoggedIn } = useSelector((state: RootState) =>  state.auth);
-  const navigate = useNavigate();
-  const logout = async () => {
-    dispatch(setLoggedInOut(false));
-    dispatch(setCurrentUser(null));
-    dispatch(setToken(''));
-    dispatch(setRole('customer'));
-    navigate('/')
-    console.log("Header here");
-    }
 
+  const { isLoggedIn } = useSelector((state: RootState) =>  state.auth);
 
   return isLoggedIn && (
+
                         <div data-testid="customerstartpage" className='flex justify-between'>
+                            <CustomerGate/> 
                             <div className="w-full max-w-lg p-4 mx-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                 <div className="flex flex-col items-center pb-10">
                                     <img className="w-24 h-24 mb-3 rounded-full shadow-lg" src={scooterImage} alt="Bonnie image"/>
