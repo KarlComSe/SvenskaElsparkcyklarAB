@@ -2,6 +2,7 @@ import { Popup, Marker, Polygon, Tooltip} from 'react-leaflet';
 import { Scooter, Zone } from './leaflet-types'
 import { LatLngTuple } from 'leaflet';
 import { iconStation } from '../config';
+import { giveMarkerPin } from '../config';
 
 const zoneColors = (zoneType: string) => {
     switch(zoneType) {
@@ -18,7 +19,7 @@ const zoneColors = (zoneType: string) => {
 
 const renderScooterMarkers = (scooterData: Scooter[])=>   (
     scooterData?.map((scooter, index) => (
-    <Marker key={index} position={[scooter.latitude+Math.random(), scooter.longitude+Math.random()]}>
+    <Marker key={index} icon={giveMarkerPin(index)} position={[scooter.latitude, scooter.longitude]}>
         <Popup>
             <p className="my-0 py-0">id: {scooter.id}</p>
             <p className="my-0 py-0">batteryLevel: {scooter.batteryLevel}</p>
