@@ -188,5 +188,81 @@ describe('Bicycles module (e2e)', () => {
                     });
             });
         });
+
+        describe('POST /bike/create-many', () => {
+            it('should create multiple bicycles', () => {
+                const newBicycles = [
+                    {
+                        batteryLevel: 80,
+                        latitude: 57.70887,
+                        longitude: 11.97456,
+                        city: CityName.Göteborg,
+                        status: 'Available'
+                    },
+                    {
+                        batteryLevel: 60,
+                        latitude: 58.40887,
+                        longitude: 11.78456,
+                        city: CityName.Karlshamn,
+                        status: 'Available'
+                    },
+                    {
+                        batteryLevel: 90,
+                        latitude: 59.20887,
+                        longitude: 12.88456,
+                        city: CityName.Jönköping,
+                        status: 'Available'
+                    },
+                ];
+
+                return request(app.getHttpServer())
+                    .post('/v1/bike/create-many')
+                    .send(newBicycles)
+                    .expect(201)
+                    .then(response => {
+                        expect(Array.isArray(response.body)).toBeTruthy();
+                        expect(response.body.length).toBe(newBicycles.length);
+
+                        response.body.forEach((bike: any, index: number) => {
+                            expect(bike).toHaveProperty('id');
+                            expect(bike.batteryLevel).toBe(newBicycles[index].batteryLevel);
+                            expect(bike.latitude).toBe(newBicycles[index].latitude);
+                            expect(bike.longitude).toBe(newBicycles[index].longitude);
+                            expect(bike.status).toBe(newBicycles[index].status);
+                            expect(bike.city.name).toBe(newBicycles[index].city);
+                        });
+                    });
+            });
+
+            it('should return 400 if the request body is empty', () => {
+                return request(app.getHttpServer())
+                    .post('/v1/bike/create-many')
+                    .send([])
+                    .expect(400)
+                    .then(response => {
+                        expect(response.body.message).toContain('At least one bike is required');
+                    });
+            });
+
+            it('should return 400 for invalid data', () => {
+                const invalidData = [
+                    {
+                        batteryLevel: 80,
+                        latitude: 'invalid-latitude', // Invalid latitude
+                        longitude: 11.97456,
+                        city: CityName.Göteborg,
+                        status: 'Available'
+                    },
+                ];
+
+                return request(app.getHttpServer())
+                    .post('/v1/bike/create-many')
+                    .send(invalidData)
+                    .expect(400)
+                    .then(response => {
+                        expect(response.body.message).toBeDefined();
+                    });
+            });
+        });
     });
 });
