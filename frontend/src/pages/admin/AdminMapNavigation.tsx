@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import stockholmImage from '../assets/images/stockholm.jpg';
-import goteborgImage from '../assets/images/goteborg.jpg';
-import malmoImage from '../assets/images/malmo.jpg';
+import stockholmImage from '../../assets/images/stockholm.jpg';
+import goteborgImage from '../../assets/images/goteborg.jpg';
+import malmoImage from '../../assets/images/malmo.jpg';
+import AdminGate from '../../components/AdminGate';
 
 const AdminMapNavigation: React.FC = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const AdminMapNavigation: React.FC = () => {
 
   return (
     <div className="w-full max-w-5xl h-full mx-auto p-6">
+      <AdminGate/>
       <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
         Utforska Stadskartor
       </h1>

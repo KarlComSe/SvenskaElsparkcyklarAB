@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import {renderWithProviders } from '../../helpers/test-redux';
 import { MemoryRouter as Router } from "react-router-dom";
-import AllBikes from '../../pages/AllBikes';
+import AllBikes from '../../pages/admin/AllBikes';
 
 describe('AllBikes', () => {
   it('renders AllBikes component', () => {

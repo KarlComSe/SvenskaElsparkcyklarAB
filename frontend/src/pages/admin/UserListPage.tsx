@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../redux/store/store';
-import { API_URL, getHeader } from '../helpers/config';
+import { RootState, AppDispatch } from '../../redux/store/store';
+import { API_URL, getHeader } from '../../helpers/config';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import AdminGate from '../../components/AdminGate';
 
 interface User {
   githubId: string;
@@ -39,6 +40,7 @@ const UserListPage: React.FC = () => {
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <AdminGate/>
       <h1 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">Användarlista</h1>
       <div className="space-y-4">
         {users.map((user) => (

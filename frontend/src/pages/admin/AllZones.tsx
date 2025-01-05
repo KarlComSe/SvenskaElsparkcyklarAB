@@ -1,14 +1,14 @@
 
 import { useEffect, useState } from 'react';
 
-import { API_URL, getHeader} from '../helpers/config';
+import { API_URL, getHeader} from '../../helpers/config';
 import axios from 'axios';
-import { Zone, Scooter } from '../helpers/map/leaflet-types'
-import { RootState } from '../redux/store/store';
-import { useSelector } from 'react-redux';
+import { Zone, Scooter } from '../../helpers/map/leaflet-types'
+
 import { Label, Select, Button, Table, Badge } from "flowbite-react";
-import Map from '../components/Map';
-import ZoneTable from '../components/ZoneTable';
+import Map from '../../components/Map';
+import ZoneTable from '../../components/ZoneTable';
+import AdminGate from '../../components/AdminGate';
 
 export default function AllZones() {
     const [city, setCity] = useState("Välj stad");
@@ -53,6 +53,7 @@ export default function AllZones() {
 
     return (
             <div data-testid="allzones">
+                <AdminGate/>
                 <div className="flex justify-center items-center space-x-4">
                     <div className="mb-2 block">
                         <Label htmlFor="stad" value="Välj stad" />

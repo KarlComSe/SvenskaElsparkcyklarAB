@@ -1,11 +1,12 @@
 
 import { useEffect, useState } from 'react';
 
-import { API_URL, getHeader} from '../helpers/config';
+import { API_URL, getHeader} from '../../helpers/config';
 import axios from 'axios';
-import { Scooter,  Zone } from '../helpers/map/leaflet-types'
-import { RootState } from '../redux/store/store';
+import { Scooter,  Zone } from '../../helpers/map/leaflet-types'
+import { RootState } from '../../redux/store/store';
 import { useSelector } from 'react-redux';
+import AdminGate from '../../components/AdminGate';
 
 
 export default function AllBikes() {
@@ -28,6 +29,7 @@ export default function AllBikes() {
   
   return (
             <div data-testid="all-scooter-list" className="mt-4 bg-gray-600 rounded">
+                <AdminGate/>
                 <h2 className="text-xl font-bold mb-2">Alla cyklar</h2>
                 {scooterData.length > 0 ? (
                     <div>

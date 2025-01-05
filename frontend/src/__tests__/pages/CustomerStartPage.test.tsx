@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import CustomerStartPage from '../../pages/CustomerStartPage';
+import CustomerStartPage from '../../pages/user/CustomerStartPage';
 import {renderWithProviders } from '../../helpers/test-redux';
 import { MemoryRouter as Router } from "react-router-dom";
 

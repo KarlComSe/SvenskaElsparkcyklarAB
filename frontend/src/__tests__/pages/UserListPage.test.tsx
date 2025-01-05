@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import UserListPage from '../../pages/UserListPage';
+import UserListPage from '../../pages/admin/UserListPage';
 import {renderWithProviders } from '../../helpers/test-redux';
 import { MemoryRouter as Router } from "react-router-dom";
 

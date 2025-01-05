@@ -1,10 +1,11 @@
-import Map from '../components/Map';
+import Map from '../../components/Map';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-import { API_URL} from '../helpers/config';
+import { API_URL} from '../../helpers/config';
 import { useEffect, useState, useRef } from 'react';
-import { Scooter,  Zone } from '../helpers/map/leaflet-types'
+import { Scooter,  Zone } from '../../helpers/map/leaflet-types'
 import { Label, ToggleSwitch } from 'flowbite-react';
+import AdminGate from '../../components/AdminGate';
 
 export default function ShowMap() {
     const { city }  = useParams();
@@ -72,6 +73,7 @@ export default function ShowMap() {
 
   return (
     <>
+    <AdminGate/>
       <div data-testid="show-map"><Map city={city ?? "Göteborg"} zoneData={zoneData} scooterData={scooterData}/></div>
       <Label htmlFor="realtimetoggle">Vill du uppdatera kartan i realtid?</Label>
       <ToggleSwitch id="realtimetoggle" checked={realTime} onChange={updateRealTime}>Uppdatera i realtid?</ToggleSwitch>
