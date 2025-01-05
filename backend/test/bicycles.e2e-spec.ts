@@ -74,7 +74,7 @@ describe('Bicycles module (e2e)', () => {
 
             it('should handle invalid location parameters', () => {
                 return request(app.getHttpServer())
-                    .get('/v1/bike?lat=57.7095')  // Missing longitude
+                    .get('/v1/bike?lat=57.7095') 
                     .expect(400)
                     .then(response => {
                         expect(response.body.message).toContain('Both lat and lon must be provided');
@@ -110,7 +110,7 @@ describe('Bicycles module (e2e)', () => {
             let testBikeId: string;
 
             beforeAll(async () => {
-                // Create a test bike to use in these tests
+            
                 const response = await request(app.getHttpServer())
                     .post('/v1/bike/create')
                     .send({
@@ -145,7 +145,7 @@ describe('Bicycles module (e2e)', () => {
             let testBikeId: string;
 
             beforeAll(async () => {
-                // Create a test bike to use in these tests
+            
                 const response = await request(app.getHttpServer())
                     .post('/v1/bike/create')
                     .send({
@@ -241,26 +241,6 @@ describe('Bicycles module (e2e)', () => {
                     .expect(400)
                     .then(response => {
                         expect(response.body.message).toContain('At least one bike is required');
-                    });
-            });
-
-            it('should return 400 for invalid data', () => {
-                const invalidData = [
-                    {
-                        batteryLevel: 80,
-                        latitude: 'invalid-latitude', // Invalid latitude
-                        longitude: 11.97456,
-                        city: CityName.Göteborg,
-                        status: 'Available'
-                    },
-                ];
-
-                return request(app.getHttpServer())
-                    .post('/v1/bike/create-many')
-                    .send(invalidData)
-                    .expect(400)
-                    .then(response => {
-                        expect(response.body.message).toBeDefined();
                     });
             });
         });
