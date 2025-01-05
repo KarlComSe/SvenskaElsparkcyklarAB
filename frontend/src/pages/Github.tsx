@@ -26,7 +26,7 @@ const Github: React.FC = () => {
             // navigate('/');
             if (userRole === 'admin') {
                 navigate('/adminstartpage');
-            } else if (userRole === 'customer') {
+            } else if (userRole === 'user') {
                 navigate('/customerstartpage');
             } else if (userRole) {
                 console.error('Unexpected role:', userRole);

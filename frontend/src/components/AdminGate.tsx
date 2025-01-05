@@ -14,25 +14,24 @@ export default function AdminGate() {
 
     const [myAuthorizations, setMyAuthorizations] = useState<string[]>([])
 
-    useEffect(() => {
-        const getMyAuthorizations = async () => {
-            if (isLoggedIn) {
-                    try {
-                        const response = await axios.get(`${API_URL}/auth/me`, getHeader(token));
-                        setMyAuthorizations(response.data.roles);
-                    } catch (error) {
-                        const axiosError = error as AxiosError;
-                        toast.error(axiosError.message);
-                        setMyAuthorizations(['NotLoggedIn']);
-                    }
-                }  else {
+    const getMyAuthorizations = async () => {
+        if (isLoggedIn) {
+                try {
+                    const response = await axios.get(`${API_URL}/auth/me`, getHeader(token));
+                    setMyAuthorizations(response.data.roles);
+                } catch (error) {
+                    const axiosError = error as AxiosError;
+                    toast.error(axiosError.message);
                     setMyAuthorizations(['NotLoggedIn']);
                 }
+            }  else {
+                setMyAuthorizations(['NotLoggedIn']);
             }
-       
-
+        }
+   
+    useEffect(() => {
         getMyAuthorizations();
-    },[user, isLoggedIn, token])
+    }, [user, isLoggedIn, token])
 
     useEffect(() => {
         if (myAuthorizations.length < 1) 

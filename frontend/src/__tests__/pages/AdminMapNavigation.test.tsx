@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import {renderWithProviders } from '../../helpers/test-redux';
 import { MemoryRouter as Router } from "react-router-dom";
-import AdminMapNavigation from '../../pages/AdminMapNavigation';
+import AdminMapNavigation from '../../pages/admin/AdminMapNavigation';
 
 
 describe('AdminMapNavigation', () => {

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import {renderWithProviders } from '../../helpers/test-redux';
 import { MemoryRouter as Router } from "react-router-dom";
-import AllZones from '../../pages/AllZones';
+import AllZones from '../../pages/admin/AllZones';
 
 jest.mock("react-leaflet", () => ({
     ...jest.requireActual("react-leaflet"),

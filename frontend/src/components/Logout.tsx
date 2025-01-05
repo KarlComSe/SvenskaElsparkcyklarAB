@@ -13,9 +13,8 @@ export default function Logout(props: any) {
         dispatch(setLoggedInOut(false));
         dispatch(setCurrentUser(null));
         dispatch(setToken(''));
-        dispatch(setRole('customer'));
-        navigate('/')
-        console.log("Header here");
+        dispatch(setRole('guest'));
+        navigate('/');
     }
   return (
     <Button {...props} data-testid="logoutbutton" color="failure" onClick={(e) => logOutUser(e)}>Logga ut</Button>

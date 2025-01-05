@@ -2,14 +2,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 type AuthState = {
-  role: 'customer' | 'admin';
+  role: 'user' | 'admin' | 'guest';
   isLoggedIn: boolean,
   token: string
   user: string | null
 };
 
 const initialState: AuthState = {
-  role: 'customer',
+  role: 'guest',
   isLoggedIn: false,
   token: '',
   user: null

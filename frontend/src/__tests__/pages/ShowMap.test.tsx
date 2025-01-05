@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import ShowMap from "../../pages/ShowMap";
+import ShowMap from "../../pages/admin/ShowMap";
 import {renderWithProviders } from '../../helpers/test-redux';
+import { MemoryRouter as Router } from 'react-router-dom';
 jest.mock("react-leaflet", () => ({
   ...jest.requireActual("react-leaflet"),
   useMap: jest.fn(() => ({
@@ -11,7 +12,7 @@ jest.mock("react-leaflet", () => ({
 
 describe('ShowMap', () => {
   it('renders ShowMap component', () => {
-    render(renderWithProviders(<ShowMap/>));
+    render(renderWithProviders(<Router><ShowMap/></Router>));
     expect(screen.getByTestId("show-map")).toBeInTheDocument();
   });
 });

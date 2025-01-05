@@ -1,5 +1,4 @@
 import  { useEffect, useState } from 'react'
-
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store/store';
 import axios, { AxiosError } from 'axios';
@@ -7,8 +6,7 @@ import { API_URL, getHeader } from '../helpers/config';
 import { useNavigate } from "react-router-dom";
 import {  toast } from 'react-toastify';
 
-
-export default function CustomerGate() {
+export default function UserGate() {
     const {isLoggedIn, token, user } = useSelector((state: RootState) =>  state.auth);
     const navigate = useNavigate();
 

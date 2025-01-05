@@ -8,7 +8,7 @@ import { API_URL, getHeader } from '../../helpers/config';
 import { Button, ToggleSwitch, TextInput, Label } from "flowbite-react";
 import { useNavigate } from 'react-router-dom';
 import {  toast } from 'react-toastify';
-import CustomerGate from '../../components/CustomerGate';
+import UserGate from '../../components/UserGate';
 
 const UserInfoPage: React.FC = () => {
     const navigate = useNavigate();
@@ -27,7 +27,7 @@ const UserInfoPage: React.FC = () => {
           'balance': balance,
           };
         try {
-          const response = await axios.post(`${API_URL}/users/${githubId}/adjust-funds`, updatedData, getHeader(token));
+          const response = await axios.patch(`${API_URL}/users/${githubId}/adjust-funds`, updatedData, getHeader(token));
           console.log(response);
           toast.success("Payment was successful was updated");
           } catch(error)
@@ -60,7 +60,7 @@ const UserInfoPage: React.FC = () => {
 
 return (
     <div className="flex justify-center items-center min-h-screen" data-testid="user-info-page">
-        <CustomerGate/>
+        <UserGate/>
         <div className="block h-fit w-96 overflow-scroll p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 flex flex-col">
             <img className="w-24 h-24 mb-3 rounded-full shadow-lg object-contain" src={userImage} alt="User image" />
             
