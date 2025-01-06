@@ -11,7 +11,7 @@ export default {
     "!src/module_typings/**"
   ],
   "coverageDirectory": "coverage",
-  "coverageReporters": ["text", "lcov"],
+  "coverageReporters": ["text", "lcov","clover"],
   transformIgnorePatterns: ['/node_modules/(?!(react-leaflet|@react-leaflet|leaflet)/)'],
   moduleNameMapper: {
     "\\.(png|jpg|jpeg|gif|svg|webp)$": "<rootDir>/__mocks__/fileMock.js", // Mock images
