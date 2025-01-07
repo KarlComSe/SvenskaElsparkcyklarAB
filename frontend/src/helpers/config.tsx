@@ -7,6 +7,7 @@ const scope = 'user:email';
 import markerIcon from '../assets/images/station.png';
 export const GITHUB_URL = `${githubAuthUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
 import L from 'leaflet';
+import { Bounce, ToastOptions } from 'react-toastify';
 
 export const getHeader = (token: string, contentType?: string ) => {
     const config = {
@@ -27,3 +28,27 @@ export const getHeader = (token: string, contentType?: string ) => {
     shadowAnchor: [4, 62],  // the same for the shadow
     popupAnchor:  [-3, -76], // point from which the popup should open relative to the iconAnchor
 });
+
+export const toastOptionsSuccess: ToastOptions = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+};
+
+export const toastOptionsError: ToastOptions = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce
+}

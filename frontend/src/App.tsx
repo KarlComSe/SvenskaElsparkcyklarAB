@@ -20,6 +20,7 @@ import AdminUserOverviewPage from './pages/AdminUserOverviewPage';
 import AdminMapNavigation from './pages/AdminMapNavigation';
 import AllBikes from './pages/AllBikes'
 import AllZones from './pages/AllZones';
+import MyRentals from './pages/CustomerHistory';
 
 const App: React.FC = () => {
   return (
@@ -37,6 +38,7 @@ const App: React.FC = () => {
           <Route path="/adminmapnavigation" element={<AdminMapNavigation />} />
           <Route path="/allbikes" element={<AllBikes />} />
           <Route path="/allzones" element={<AllZones />} />
+          <Route path="/history" element={<MyRentals />} />
         </Routes>
         <div data-testid="app-test"></div>
     </Router>
