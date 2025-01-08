@@ -74,8 +74,8 @@ export default function AllZones() {
                     </div>
                 </div>
                 <Map city={city} zoneData={zoneDataTotal ?? []} scooterData={bikeTotal ?? []}/>
-                <div>
-                    <h1>Parkeringszoner i {stadTitel}</h1>
+                <div className="w-full text-center my-4">
+                    <h1 className="text-3xl font-bold">Parkeringszoner i {stadTitel}</h1>
                     {
                         zoneDataParking?.map((zone: Zone) => (
                             <div key={zone.id}>
@@ -91,8 +91,8 @@ export default function AllZones() {
                         </div>))
                         }
                 </div>
-                <div>
-                    <h1>Laddzoner i {stadTitel}</h1>
+                <div className="w-full text-center my-4">
+                    <h1 className="text-3xl font-bold">Laddzoner i {stadTitel}</h1>
                     {
                         zoneDataLoading?.map((zone: Zone) => (
                             <div key={zone.id}>

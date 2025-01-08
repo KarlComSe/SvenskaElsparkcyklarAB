@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Scooter,  Zone } from '../../helpers/map/leaflet-types'
 import { Label, ToggleSwitch } from 'flowbite-react';
 import AdminGate from '../../components/AdminGate';
+import { Badge } from 'flowbite-react';
 
 export default function ShowMap() {
     const { city }  = useParams();
@@ -75,27 +76,68 @@ export default function ShowMap() {
     <>
     <AdminGate/>
       <div data-testid="show-map"><Map city={city ?? "Göteborg"} zoneData={zoneData} scooterData={scooterData}/></div>
+      <div className="flex flex-col items-center justify-center my-2 py-2 bg-red-300 rounded-md w-full sm:max-w-xl mx-auto">
       <Label htmlFor="realtimetoggle">Vill du uppdatera kartan i realtid?</Label>
       <ToggleSwitch id="realtimetoggle" checked={realTime} onChange={updateRealTime}>Uppdatera i realtid?</ToggleSwitch>
-      <div id="scooter-list" className="mt-4 bg-gray-600 rounded">
-      <h2 className="text-xl font-bold mb-2">Cyklar i {city}:</h2>
+      </div>
+        <div id="scooter-list" className="p-4 flex flex-col justify-center w-full">
+          <div className="mx-auto">
+          <h2 className="text-4xl font-bold text-gray-900"> Cyklar i {city}: </h2>
+        </div>
       {scooterData.length > 0 ? (
-          <ul className="list-disc pl-6 list-none">
-              {scooterData.map((scooter) => (
-                  <li key={scooter.id} className="mb-2">
-                      <div className="mt-4 p-6 mx-auto w-1/2 hover:opacity-5 bg-gray-400 rounded text-center">
-                      <h2><span className="font-semibold">ID:</span> {scooter.id} -{" "}</h2>
-                      <span className="font-semibold">Batteri:</span> {scooter.batteryLevel}% -{" "}
-                      <span className="font-semibold">Status:</span> {scooter.status} -{" "}
-                      <span className="font-semibold">Longitud:</span> {scooter.longitude} -{" "}
-                      <span className="font-semibold">Latitud:</span> {scooter.latitude}
+        <>
+        <div className="mx-auto mb-5">
+        <h2>Antal cyklar: <b>{scooterData.length}</b> </h2>
+        </div>
+        <ul className="w-full sm:max-w-4xl mx-auto">
+            {scooterData.map((scooter) => (
+                    <li key={scooter.id} className="flex flex-col w-full flex-nowrap justify-between gap-4 p-4 mb-6 bg-gray-100 rounded-lg
+                    shadow-md dark:bg-gray-700 sm:flex-row sm:items-center">
+                    <div>
+                    <div className="flex items-center p-1 rounded-lg">
+                          <span className="font-semibold">id:</span>
+                          <Badge>{scooter.id}</Badge>
                       </div>
-                  </li>
-              ))}
-          </ul>
-      ) : (
-          <p>Inga cyklar tillgängliga i denna stad.</p>
-      )}
+
+                      <div className="flex items-center p-1 rounded-lg">
+                          <span className="font-semibold">createdAt:</span>
+                          <Badge>{scooter.createdAt}</Badge>
+                      </div>
+
+                      <div className="flex items-center p-1 rounded-lg">
+                          <span className="font-semibold">updatedAt:</span>
+                          <Badge>{scooter.updatedAt}</Badge>
+                      </div>
+                      </div>
+                      <div>
+
+                      <div className="flex items-center p-1 rounded-lg">
+                          <span className="font-semibold">batteryLevel:</span>
+                          <Badge>{scooter.batteryLevel}</Badge>
+                      </div>
+
+                      <div className="flex items-center p-1 rounded-lg">
+                          <span className="font-semibold">status:</span>
+                          <Badge>{scooter.status}</Badge>
+                      </div>
+
+                      <div className="flex items-center p-1 rounded-lg">
+                          <span className="font-semibold">longitude:</span>
+                          <Badge>{scooter.longitude}</Badge>
+                      </div>
+
+                      <div className="flex items-center p-1 rounded-lg">
+                          <span className="font-semibold">latitude:</span>
+                          <Badge>{scooter.latitude}</Badge>
+                      </div>
+                    </div>
+
+                </li>
+            ))}
+            </ul>
+        </>) : (
+        <p>Inga cyklar tillgängliga</p>
+    )}
     </div>
   </>
   )
