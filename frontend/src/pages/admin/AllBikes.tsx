@@ -7,6 +7,7 @@ import { Scooter,  Zone } from '../../helpers/map/leaflet-types'
 import { RootState } from '../../redux/store/store';
 import { useSelector } from 'react-redux';
 import AdminGate from '../../components/AdminGate';
+import { Badge } from 'flowbite-react';
 
 
 export default function AllBikes() {
@@ -28,29 +29,68 @@ export default function AllBikes() {
     
   
   return (
-            <div data-testid="all-scooter-list" className="mt-4 bg-gray-600 rounded">
+            <div data-testid="all-scooter-list" className="p-4 flex flex-col justify-center w-full">
                 <AdminGate/>
-                <h2 className="text-xl font-bold mb-2">Alla cyklar</h2>
+                <div className="mx-auto">
+                <h2 className="text-4xl font-bold text-gray-900"> Alla cyklar </h2>
+                </div>
                 {scooterData.length > 0 ? (
-                    <div>
-                    <h2>Antal cyklar: {scooterData.length} </h2>
-                    <ul className="list-disc pl-6 list-none">
+                    <>
+                    <div className="mx-auto mb-5">
+                    <h2>Antal cyklar: <b>{scooterData.length}</b> </h2>
+                    </div>
+                    <ul className="w-full sm:max-w-4xl mx-auto">
                         {scooterData.map((scooter) => (
-                            <li key={scooter.id} className="mb-2">
-                                <div className="mt-4 p-6 mx-auto w-1/2 hover:opacity-5 bg-gray-400 rounded text-center">
-                                <h2><span className="font-semibold">ID:</span> {scooter.id} -{" "}</h2>
-                                <span className="font-semibold">City:</span> {scooter.city} -{" "}
-                                <span className="font-semibold">createdAt:</span> {scooter.createdAt} -{" "}
-                                <span className="font-semibold">updatedAt:</span> {scooter.updatedAt} -{" "}
-                                <span className="font-semibold">Batteri:</span> {scooter.batteryLevel}% -{" "}
-                                <span className="font-semibold">Status:</span> {scooter.status} -{" "}
-                                <span className="font-semibold">Longitud:</span> {scooter.longitude} -{" "}
-                                <span className="font-semibold">Latitud:</span> {scooter.latitude}
+                                <li key={scooter.id} className="flex flex-col w-full flex-nowrap justify-between gap-4 p-4 mb-6 bg-gray-100 rounded-lg
+                                shadow-md dark:bg-gray-700 sm:flex-row sm:items-center">
+                                <div>
+                                <div className="flex items-center p-1 rounded-lg">
+                                    <span className="font-semibold">id:</span>
+                                    <Badge>{scooter.id}</Badge>
                                 </div>
+
+                                <div className="flex items-center p-1 rounded-lg">
+                                    <span className="font-semibold">city:</span>
+                                    <Badge>{scooter.city}</Badge>
+                                </div>
+
+                                <div className="flex items-center p-1 rounded-lg">
+                                    <span className="font-semibold">createdAt:</span>
+                                    <Badge>{scooter.createdAt}</Badge>
+                                </div>
+
+                                <div className="flex items-center p-1 rounded-lg">
+                                    <span className="font-semibold">updatedAt:</span>
+                                    <Badge>{scooter.updatedAt}</Badge>
+                                </div>
+                                </div>
+                                <div>
+
+                                <div className="flex items-center p-1 rounded-lg">
+                                    <span className="font-semibold">batteryLevel:</span>
+                                    <Badge>{scooter.batteryLevel}</Badge>
+                                </div>
+
+                                <div className="flex items-center p-1 rounded-lg">
+                                    <span className="font-semibold">status:</span>
+                                    <Badge>{scooter.status}</Badge>
+                                </div>
+
+                                <div className="flex items-center p-1 rounded-lg">
+                                    <span className="font-semibold">longitude:</span>
+                                    <Badge>{scooter.longitude}</Badge>
+                                </div>
+
+                                <div className="flex items-center p-1 rounded-lg">
+                                    <span className="font-semibold">latitude:</span>
+                                    <Badge>{scooter.latitude}</Badge>
+                                </div>
+                                </div>
+
                             </li>
                         ))}
                         </ul>
-                    </div>) : (
+                    </>) : (
                     <p>Inga cyklar tillgängliga</p>
                 )}
             </div>
