@@ -36,7 +36,7 @@ export const getHeader = (token: string, contentType?: string ) => {
     iconUrl: markerIcon,
     iconSize:     [38, 38], // size of the icon
     shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    iconAnchor:   [19, 38], // point of the icon which will correspond to marker's location
     shadowAnchor: [4, 62],  // the same for the shadow
     popupAnchor:  [-3, -76], // point from which the popup should open relative to the iconAnchor
 });

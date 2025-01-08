@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { allRentals } from '../../helpers/bike-functions';
 import ReturnRentButton from '../../components/ReturnRentButton';
 
-export default function MyRentals() {
+export default function CustomerHistory() {
   const { isLoggedIn, user, token } = useSelector((state: RootState) =>  state.auth);
   const [rentals, setRentals] = useState<any[]>([]);
   const navigate = useNavigate();
@@ -34,40 +34,53 @@ export default function MyRentals() {
     getRentals();
   }, [user, token, refreshTrigger]);
 
+  function formatTimestamp(isoString: string) {
+    const date = new Date(isoString);
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const hh = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    const ss = String(date.getSeconds()).padStart(2, '0');
+
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+}
 
 
   return (
-    <div className='p-1/2 flex flex-col items-center'>
+    <div className='p-4 flex flex-col justify-center items-center'>
       <div data-testid="my-rentals">
         <h2 className="text-2xl font-bold text-gray-900"> Mina resor </h2> 
         </div>
-      <ul>
+      <ul className="w-full sm:max-w-xl">
           { rentals.map((rental, index) => (
-          <li key={index} className="flex flex-col items-center gap-4 p-4 mb-6 bg-gray-100 rounded-lg shadow-2xl dark:bg-gray-700">
-          <div className="flex items-center bg-blue-300 p-2 rounded-lg">
-              <span className="font-semibold">Bike ID:</span>
+          <li key={index} className="flex flex-col flex-nowrap items-center justify-center gap-4 p-4 mb-6 bg-gray-100 rounded-lg shadow-md dark:bg-gray-700 sm:flex-row">
+          <div className="flex items-center bg-purple-100 p-1 rounded-lg">
+              <span className="font-semibold">id:</span>
               <span className="ml-2">{rental.id}</span>
           </div>
-          <div className="flex items-center flex-col">
-              <span className="font-semibold text-gray-600 dark:text-gray-300">Start time:</span>
-              <span className="text-gray-800 dark:text-white">{rental.startTime}</span>
+          <div className="flex items-center bg-green-100 p-1 rounded-lg">
+              <span className="font-semibold text-gray-600 dark:text-gray-300">Starttid</span>
+              <span className="ml-2 text-gray-800 dark:text-white">{formatTimestamp(rental.startTime)}</span>
           </div>
           {!rental.stopTime && 
-          <div className="flex items-center flex-col">
+          <div className="flex items-center">
               <ReturnRentButton tripID={rental.id}/>
-              </div>
+          </div>
           } 
-          {rental.stopTime && 
-          <div className="flex items-center flex-col">
-              <span className="font-semibold text-gray-600 dark:text-gray-300">Stop time:</span>
-              <span className="text-gray-800 dark:text-white">{rental.stopTime ?? "Still going"}</span>
-              <span className="mt-2 font-semibold text-gray-600 dark:text-gray-300"> Kostnad:</span>
-              {/* <span className="ml-2 text-gray-800 dark:text-white">{rental.cost} krosek</span> */}
-              <span className="text-gray-800 dark:text-white">
-              {parseFloat(rental.cost).toFixed(2)} kr
-          </span>
+          {rental.stopTime &&
+          <>
+          <div className="flex items-center bg-pink-100 p-1 rounded-lg">
+              <span className="font-semibold text-gray-600 dark:text-gray-300">Sluttid:</span>
+              <span className="ml-2 text-gray-800 dark:text-white">{formatTimestamp(rental.stopTime) ?? "Still going"}</span>
+              </div>
+          <div className="flex items-center bg-blue-100 p-1 rounded-lg">
+              <span className="font-semibold text-gray-600 dark:text-gray-300"> Kostnad:</span>
+              <span className="ml-2 text-gray-800 dark:text-white">{rental.cost.toFixed(2).replace('.', ',')} SEK</span>
+          
 
           </div>
+          </>
           }
           </li>
           )) }

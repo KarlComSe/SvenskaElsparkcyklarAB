@@ -17,10 +17,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
+/* 
 body {
   margin: 0;
-  display: flex;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -28,7 +27,7 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-}
+} */
 
 
 @media (prefers-color-scheme: light) {
