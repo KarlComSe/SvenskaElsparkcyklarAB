@@ -62,6 +62,27 @@ build:
             coverage:
               file: coverage-combined/clover.xml
               format: clover
+    frontend:
+      root_path: './frontend'
+      project_setup:
+        before:
+          - nvm install 17
+          - nvm use 17
+        override:
+          - npm install
+      tests:
+        override:
+          - js-scrutinizer-run
+          - command: npm run lint:report-checkstyle
+            analysis:
+              file: eslint-report.xml
+              format: eslint-checkstyle
+
+          # Run tests with coverage
+          - command: npm run test:coverage
+            coverage:
+              file: coverage/clover.xml
+              format: clover
 
 tools:
   eslint:
@@ -78,5 +99,10 @@ filter:
     - 'backend/coverage/**/*'
     - 'backend/coverage-e2e/**/*'
     - 'backend/coverage-combined/**/*'
+    - 'frontend/tests/**/*'
+    - 'frontend/node_modules/**/*'
+    - 'frontend/public/**/*'
+    - 'frontend/dist/**/*'
   paths:
     - 'backend/src/**/*'
+    - 'frontend/src/**/*'

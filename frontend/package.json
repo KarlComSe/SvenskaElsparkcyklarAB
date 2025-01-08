@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build-gör-inte-detta-än": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest --verbose=false",
-    "test-tsc": "tsc src/*.tsx --noEmit --jsx react-jsx"
+    "test:coverage": "jest --coverage",
+    "test-tsc": "tsc src/*.tsx --noEmit --jsx react-jsx",
+    "lint:report-checkstyle": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --format checkstyle --output-file eslint-report.xml"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
@@ -32,6 +33,7 @@
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.26.0",
     "@eslint/js": "^9.15.0",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@types/jest": "^29.5.14",
@@ -42,6 +44,7 @@
     "autoprefixer": "^10.4.20",
     "babel-jest": "^29.7.0",
     "eslint": "^9.15.0",
+    "eslint-formatter-checkstyle": "^8.40.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.12.0",
