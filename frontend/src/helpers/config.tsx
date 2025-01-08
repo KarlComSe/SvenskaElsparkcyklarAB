@@ -14,6 +14,7 @@ import markerorange from '../assets/images/marker-icon-2x-orange.png';
 import markerred from '../assets/images/marker-icon-2x-red.png';
 import markerviolet from '../assets/images/marker-icon-2x-violet.png';
 import markeryellow from '../assets/images/marker-icon-2x-yellow.png';
+import { Bounce, ToastOptions } from 'react-toastify';
 
 
 
@@ -63,4 +64,28 @@ export function giveMarkerPin(index: number) {
         shadowSize: [41, 41],        // Size of the shadow image
         shadowAnchor: [13, 41],  
     });
+}
+
+export const toastOptionsSuccess: ToastOptions = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce,
+};
+
+export const toastOptionsError: ToastOptions = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    transition: Bounce
 }
