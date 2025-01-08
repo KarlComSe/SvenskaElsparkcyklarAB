@@ -3,6 +3,7 @@ import { RootState } from '../../redux/store/store';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { allRentals } from '../../helpers/bike-functions';
+import UserGate from '../../components/UserGate';
 import ReturnRentButton from '../../components/ReturnRentButton';
 
 export default function CustomerHistory() {
@@ -16,7 +17,6 @@ export default function CustomerHistory() {
       navigate('/');
     }
   },[isLoggedIn, navigate]);
-
 
   useEffect(() => {
     const getRentals = async () => {
@@ -46,10 +46,10 @@ export default function CustomerHistory() {
     return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
 }
 
-
   return (
-    <div className='p-4 flex flex-col justify-center items-center'>
-      <div data-testid="my-rentals">
+    <div data-testid="my-rentals" className='p-4 flex flex-col justify-center items-center'>
+      <UserGate/>
+      <div>
         <h2 className="text-2xl font-bold text-gray-900"> Mina resor </h2> 
         </div>
       <ul className="w-full sm:max-w-xl">
@@ -77,8 +77,6 @@ export default function CustomerHistory() {
           <div className="flex items-center bg-blue-100 p-1 rounded-lg">
               <span className="font-semibold text-gray-600 dark:text-gray-300"> Kostnad:</span>
               <span className="ml-2 text-gray-800 dark:text-white">{rental.cost.toFixed(2).replace('.', ',')} SEK</span>
-          
-
           </div>
           </>
           }

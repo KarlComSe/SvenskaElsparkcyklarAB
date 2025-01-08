@@ -8,7 +8,7 @@ const HomePage: React.FC = () => {
   const { isLoggedIn } = useSelector((state: RootState) =>  state.auth);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen" data-testid="home-page">
+    <div className="flex flex-col items-center h-screen" data-testid="home-page">
         { isLoggedIn 
         ?
         (
@@ -18,12 +18,12 @@ const HomePage: React.FC = () => {
         )
         :
           (<>
-            <h1 className="text-2xl font-bold mb-4 text-green-500">Logga in via Guthub</h1>
-            <Login/>
+            <h1 className="text-2xl font-bold mb-4 text-green-500">Logga in via Github</h1>
+            <Login className="flex flex-row items-center gap-2 md:p-24 lg:p-24 p-8 text-base font-bold text-gray-900 rounded-lg bg-blue-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white"/>
           </>
           )
       }
-    </div>
+    </div>  
   );
 };
 
