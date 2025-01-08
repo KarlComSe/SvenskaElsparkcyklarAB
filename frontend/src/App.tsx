@@ -21,6 +21,7 @@ import AdminMapNavigation from './pages/admin/AdminMapNavigation';
 import AllBikes from './pages/admin/AllBikes'
 import AllZones from './pages/admin/AllZones';
 import { ToastContainer } from 'react-toastify';
+import MyRentals from './pages/user/CustomerHistory';
 
 const App: React.FC = () => {
   return (
@@ -40,6 +41,7 @@ const App: React.FC = () => {
           <Route path="/adminmapnavigation" element={<AdminMapNavigation />} />
           <Route path="/allbikes" element={<AllBikes />} />
           <Route path="/allzones" element={<AllZones />} />
+          <Route path="/history" element={<MyRentals />} />
         </Routes>
         <div data-testid="app-test"></div>
     </Router>
