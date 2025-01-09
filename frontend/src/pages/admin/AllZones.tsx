@@ -20,9 +20,13 @@ export default function AllZones() {
 
     const changeCity = (e: React.ChangeEvent<HTMLSelectElement>)=> {
         const selectedCity = e.target.value as "Göteborg" | "Jönköping" | "Karlshamn";
-        if (selectedCity === "Göteborg" || selectedCity === "Jönköping" || selectedCity === "Karlshamn") {
-            setCity(selectedCity);
-        }
+        // if (selectedCity === "Göteborg" || selectedCity === "Jönköping" || selectedCity === "Karlshamn") {
+        //     setCity(selectedCity);
+        // }
+        // if (["Göteborg", "Jönköping", "Karlshamn"].includes(selectedCity)) {
+        //     setCity(selectedCity);
+        // }
+        setCity(selectedCity);
     }
 
     const loadZoneData = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -77,37 +81,10 @@ export default function AllZones() {
                 <div className="w-full text-center my-4">
                     <h1 className="text-3xl font-bold">Parkeringszoner i {stadTitel}</h1>
                     <ZoneTables zoneData={zoneDataParking}/>
-                    {/* {
-                        zoneDataParking?.map((zone: Zone) => (
-                            <div key={zone.id}>
-
-                            <div  className="flex flex-wrap items-center gap-4 p-4 mb-4 bg-gray-50 rounded-lg shadow">
-                                <Badge color="info"><span className="font-bold text-xl">Name: {zone.name}</span></Badge>
-                                <Badge color="success"><span className="font-bold text-xl">id: {zone.id}</span></Badge>
-                                <Badge color="info"><span className="font-bold text-xl">Type: {zone.type}</span></Badge>
-                                <Badge color="warning"><span className="font-bold text-xl">Number of bikes: {zone.bikes?.length}</span></Badge>
-
-                            </div>
-                            <ZoneTable zone={zone}/>
-                        </div>))
-                    } */}
                 </div>
                 <div className="w-full text-center my-4">
                     <h1 className="text-3xl font-bold">Laddzoner i {stadTitel}</h1>
                     <ZoneTables zoneData={zoneDataLoading}/>
-                    {/* {
-                        zoneDataLoading?.map((zone: Zone) => (
-                            <div key={zone.id}>
-
-                            <div className="flex flex-wrap items-center gap-4 p-4 mb-4 bg-gray-50 rounded-lg shadow">
-                                <Badge color="info"><span className="font-bold text-xl">Name: {zone.name}</span></Badge>
-                                <Badge color="success"><span className="font-bold text-xl">id: {zone.id}</span></Badge>
-                                <Badge color="info"><span className="font-bold text-xl">Type: {zone.type}</span></Badge>
-                                <Badge color="warning"><span className="font-bold text-xl">Number of bikes: {zone.bikes?.length}</span></Badge>
-                            </div>
-                            <ZoneTable zone={zone}/>
-                        </div>))
-                        } */}
                 </div>
 
 
