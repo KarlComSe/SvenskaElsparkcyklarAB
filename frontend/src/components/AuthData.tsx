@@ -19,11 +19,9 @@ export default function AuthData() {
     }   
 
     return (
-        <>
-
-        <div className='w-full grid mb-10 mt-10 text-center 
+        <div className='w-full grid mb-10 text-center 
         bg-red-100 grid-cols-2 text-xs max-w-lg p-2
-        mx-6 border border-gray-200 rounded-lg shadow'>
+        mx-6 border border-gray-200 rounded-lg shadow' data-testid="authdata">
             <div className="my-auto">
                 <p className="text-gray-700 m-1">Logged In: <b>{isLoggedIn.toString()}</b></p>
                 <p className="text-gray-700 m-1">Role: <b>{role}</b></p>
@@ -38,6 +36,5 @@ export default function AuthData() {
                 <Button color="gray" className="p-0 m-1" size="xs" onClick={getAuthMe}>Prompt auth/me i console</Button>
                 </div>
         </div>
-        </>
       )
 };

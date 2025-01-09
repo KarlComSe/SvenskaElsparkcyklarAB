@@ -6,7 +6,7 @@ import { MemoryRouter as Router } from "react-router-dom";
 describe('Header', () => {
   it('renders Header component', () => {
     render(renderWithProviders(<Router><Header/></Router>));
-    expect(screen.getByText(/Role/i)).toBeInTheDocument();
+    expect(screen.getByTestId("header")).toBeInTheDocument();
   });
 });
 

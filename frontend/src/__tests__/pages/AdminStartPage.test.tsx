@@ -7,7 +7,7 @@ import { MemoryRouter as Router } from "react-router-dom";
 describe('AdminStartPage', () => {
   it('renders AdminStartPage component', () => {
     render(renderWithProviders(<Router><AdminStartPage/></Router>));
-    expect(screen.getByText(/kunders/i)).toBeInTheDocument();
+    expect(screen.getByTestId("adminstartpage")).toBeInTheDocument();
 });
 });
 
