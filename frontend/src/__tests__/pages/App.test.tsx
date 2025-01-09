@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
-import {renderWithProviders } from './helpers/test-redux';
-import { MemoryRouter as Router } from "react-router-dom";
+import App from '../../App';
+import {renderWithProviders } from '../../helpers/test-redux';
 
 describe('App', () => {
   it('renders UserListPage component', () => {
