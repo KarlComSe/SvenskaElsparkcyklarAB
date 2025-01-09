@@ -23,9 +23,10 @@ export default function AllZones() {
         // if (selectedCity === "Göteborg" || selectedCity === "Jönköping" || selectedCity === "Karlshamn") {
         //     setCity(selectedCity);
         // }
-        if (["Göteborg", "Jönköping", "Karlshamn"].includes(selectedCity)) {
-            setCity(selectedCity);
-        }
+        // if (["Göteborg", "Jönköping", "Karlshamn"].includes(selectedCity)) {
+        //     setCity(selectedCity);
+        // }
+        setCity(selectedCity);
     }
 
     const loadZoneData = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
