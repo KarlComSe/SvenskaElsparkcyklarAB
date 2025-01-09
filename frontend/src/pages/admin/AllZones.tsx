@@ -80,7 +80,7 @@ export default function AllZones() {
                         zoneDataParking?.map((zone: Zone) => (
                             <div key={zone.id}>
 
-                            <div  className="flex flex-wrap items-center gap-4 p-4 mb-4 bg-gray-50 rounded-lg shadow dark:bg-gray-700">
+                            <div  className="flex flex-wrap items-center gap-4 p-4 mb-4 bg-gray-50 rounded-lg shadow">
                                 <Badge color="info"><span className="font-bold text-xl">Name: {zone.name}</span></Badge>
                                 <Badge color="success"><span className="font-bold text-xl">id: {zone.id}</span></Badge>
                                 <Badge color="info"><span className="font-bold text-xl">Type: {zone.type}</span></Badge>
@@ -97,7 +97,7 @@ export default function AllZones() {
                         zoneDataLoading?.map((zone: Zone) => (
                             <div key={zone.id}>
 
-                            <div className="flex flex-wrap items-center gap-4 p-4 mb-4 bg-gray-50 rounded-lg shadow dark:bg-gray-700">
+                            <div className="flex flex-wrap items-center gap-4 p-4 mb-4 bg-gray-50 rounded-lg shadow">
                                 <Badge color="info"><span className="font-bold text-xl">Name: {zone.name}</span></Badge>
                                 <Badge color="success"><span className="font-bold text-xl">id: {zone.id}</span></Badge>
                                 <Badge color="info"><span className="font-bold text-xl">Type: {zone.type}</span></Badge>

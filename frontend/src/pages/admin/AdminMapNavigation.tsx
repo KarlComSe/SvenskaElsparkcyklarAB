@@ -17,7 +17,7 @@ const AdminMapNavigation: React.FC = () => {
   return (
     <div className="w-full max-w-5xl h-full mx-auto p-6">
       <AdminGate/>
-      <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
+      <h1 className="text-3xl font-bold text-center mb-8 text-gray-900">
         Utforska Stadskartor
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">

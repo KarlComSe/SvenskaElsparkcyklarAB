@@ -105,45 +105,20 @@ const AdminUserOverviewPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-full max-w-4xl mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow">
       <AdminGate/>
-      {/* <h1 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">{user.username}</h1>
-      <div className="space-y-4">
-        <p className="text-gray-600 dark:text-gray-400">Email: <b>{user.email}</b></p>
-        <p className="font-normal text-gray-700 dark:text-gray-400 p-2">Skapat: <b>{user.createdAt || "No User"}</b></p>
-        <p className="font-normal text-gray-700 dark:text-gray-400 p-2">Github Id: <b>{user.githubId || ":("}</b></p>
-        <p className="text-gray-600 dark:text-gray-400">Roller: <b>{user.roles.join(', ')}</b></p>
-        <p className="text-gray-600 dark:text-gray-400">
-          <b>{user.hasAcceptedTerms ? 'Godkänt användarvillkor' : 'Ej godkänt användarvillkor'}</b>
-        </p>
-        {user.avatarUrl && (
-          <img
-            src={user.avatarUrl}
-            alt={`${user.username}'s avatar`}
-            className="w-24 h-24 rounded-full mt-4"
-          />
-        )}
 
-
-        <p>
-            <Link to="/userlistpage" className="py-2 m-16 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                Gå tillbaka
-            </Link>
-        </p>
-      </div> */}
-
-
-      <section className="bg-white dark:bg-gray-900">
+      <section className="bg-white">
           <div className="max-w-2xl px-4 py-8 mx-auto lg:py-16">
-              <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Användare: { username } </h2>
+              <h2 className="mb-4 text-xl font-bold text-gray-900">Användare: { username } </h2>
               <form action="#" onSubmit={(e) => updateUserInfo(e)}>
-                  <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
-                      <div className="sm:col-span-2">
+                  <div className="grid gap-4 mb-4">
+                      <div className="">
                           <Label htmlFor="name">Användarnamn</Label>
                           <TextInput color="blue" id="name" type="text" value={username} onChange={ (e)=> setUsername(e.target.value) } placeholder="användarnamn" required/>
                       </div>
 
-                      <div className="sm:col-span-2">
+                      <div className="">
                           <Label htmlFor="created" >Registrerad(readonly)</Label>
                           <TextInput color="blue" id="created" type="text" value={createdAt} disabled required/>
                       </div>

@@ -92,7 +92,7 @@ export default function ShowMap() {
         <ul className="w-full sm:max-w-4xl mx-auto">
             {scooterData.map((scooter) => (
                     <li key={scooter.id} className="flex flex-col w-full flex-nowrap justify-between gap-4 p-4 mb-6 bg-gray-100 rounded-lg
-                    shadow-md dark:bg-gray-700 sm:flex-row sm:items-center">
+                    shadow-md sm:flex-row sm:items-center">
                     <div>
                     <div className="flex items-center p-1 rounded-lg">
                           <span className="font-semibold">id:</span>
