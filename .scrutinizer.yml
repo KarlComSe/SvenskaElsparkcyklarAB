@@ -57,11 +57,11 @@ build:
               file: eslint-report.xml
               format: eslint-checkstyle
 
-          # # Run tests with coverage
-          # - command: npm run test:full-cov
-          #   coverage:
-          #     file: coverage-combined/clover.xml
-          #     format: clover
+          # Run tests with coverage
+          - command: npm run test:full-cov
+            coverage:
+              file: coverage-combined/clover.xml
+              format: clover
     frontend:
       root_path: './frontend'
       project_setup:
@@ -78,11 +78,11 @@ build:
               file: eslint-report-frontend.xml
               format: eslint-checkstyle
 
-          # # Run tests with coverage
-          # - command: npm run test:coverage
-          #   coverage:
-          #     file: coverage/clover.xml
-          #     format: clover
+          # Run tests with coverage
+          - command: npm run test:coverage
+            coverage:
+              file: coverage/clover.xml
+              format: clover
 
 tools:
   eslint:
