@@ -7,13 +7,13 @@ import axios, {AxiosError} from 'axios';
 import { API_URL, getHeader } from '../../helpers/config';
 import { Button, ToggleSwitch, TextInput, Label } from "flowbite-react";
 import { useNavigate } from 'react-router-dom';
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import UserGate from '../../components/UserGate';
 
 const UserInfoPage: React.FC = () => {
     const navigate = useNavigate();
 
-    const { isLoggedIn, token, user, role } = useSelector((state: RootState) => state.auth);
+    const { isLoggedIn, token, role } = useSelector((state: RootState) => state.auth);
     const [userData, setUserData] = useState<any>(null);
     const [githubId, setGithubId] = useState("");
     const [isMonthlyPayment, setIsMonthlyPayment] = useState(false);
@@ -59,9 +59,9 @@ const UserInfoPage: React.FC = () => {
     },[]);
 
 return (
-    <div className="flex justify-center items-center min-h-screen" data-testid="user-info-page">
+    <div className="flex justify-center min-h-screen" data-testid="user-info-page">
         <UserGate/>
-        <div className="block h-fit w-96 overflow-scroll p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 flex flex-col">
+        <div className="block h-fit w-max-2xl p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 flex flex-col">
             <img className="w-24 h-24 mb-3 rounded-full shadow-lg object-contain" src={userImage} alt="User image" />
             
             <p className="font-normal text-gray-700 dark:text-gray-400 p-2">
@@ -88,10 +88,10 @@ return (
                       <div className="max-w-2xl px-4 py-8 mx-auto lg:py-16">
                           <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Betalning för <b>{ userData?.username || "No User" }</b> </h2>
                           <form action="#" onSubmit={(e) => updateUserPay(e)}>
-                              <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+                              <div className="grid gap-4 mb-4">
                                   <div className="flex items-center gap-2"> 
                                   <ToggleSwitch color="blue" checked={isMonthlyPayment} label="Månatlig betalning" onChange={() => setIsMonthlyPayment(!isMonthlyPayment)} />
-                                  </div>
+                                 </div>
                                   <div className="w-full">
                                       <Label htmlFor="ackkost" >Ackumulerad kostnad</Label>
                                       <TextInput color="blue" id="ackkost" type="text" value= {accumulatedCost} placeholder="" disabled/>

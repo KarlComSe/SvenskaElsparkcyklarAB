@@ -17,7 +17,7 @@ const AdminMapNavigation: React.FC = () => {
   return (
     <div className="w-full max-w-5xl h-full mx-auto p-6">
       <AdminGate/>
-      <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
+      <h1 className="text-3xl font-bold text-center mb-8 text-gray-900">
         Utforska Stadskartor
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -35,7 +35,12 @@ const AdminMapNavigation: React.FC = () => {
               />
             </div>
             <div className="absolute inset-0 bg-black bg-opacity-30 flex justify-center items-center">
-              <span className="text-white text-xl font-bold">{city.name}</span>
+              <span className="text-white text-xl font-bold"style={{
+                textShadow: "1px 1px 2px rgba(0, 0, 0, 1), 2px 2px 3px rgba(255, 255, 255, 0.7)"
+                }}>
+                {city.name}
+              </span>
+
             </div>
           </button>
         ))}

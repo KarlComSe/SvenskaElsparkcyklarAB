@@ -1,13 +1,13 @@
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { API_URL, getHeader} from '../../helpers/config';
+import { API_URL } from '../../helpers/config';
 import axios from 'axios';
 import { Zone, Scooter } from '../../helpers/map/leaflet-types'
 
-import { Label, Select, Button, Table, Badge } from "flowbite-react";
+import { Label, Select, Button, Badge } from "flowbite-react";
 import Map from '../../components/Map';
-import ZoneTable from '../../components/ZoneTable';
+import ZoneTables from '../../components/ZoneTables';
 import AdminGate from '../../components/AdminGate';
 
 export default function AllZones() {
@@ -74,13 +74,14 @@ export default function AllZones() {
                     </div>
                 </div>
                 <Map city={city} zoneData={zoneDataTotal ?? []} scooterData={bikeTotal ?? []}/>
-                <div>
-                    <h1>Parkeringszoner i {stadTitel}</h1>
-                    {
+                <div className="w-full text-center my-4">
+                    <h1 className="text-3xl font-bold">Parkeringszoner i {stadTitel}</h1>
+                    <ZoneTables zoneData={zoneDataParking}/>
+                    {/* {
                         zoneDataParking?.map((zone: Zone) => (
                             <div key={zone.id}>
 
-                            <div  className="flex flex-wrap items-center gap-4 p-4 mb-4 bg-gray-50 rounded-lg shadow dark:bg-gray-700">
+                            <div  className="flex flex-wrap items-center gap-4 p-4 mb-4 bg-gray-50 rounded-lg shadow">
                                 <Badge color="info"><span className="font-bold text-xl">Name: {zone.name}</span></Badge>
                                 <Badge color="success"><span className="font-bold text-xl">id: {zone.id}</span></Badge>
                                 <Badge color="info"><span className="font-bold text-xl">Type: {zone.type}</span></Badge>
@@ -89,15 +90,16 @@ export default function AllZones() {
                             </div>
                             <ZoneTable zone={zone}/>
                         </div>))
-                        }
+                    } */}
                 </div>
-                <div>
-                    <h1>Laddzoner i {stadTitel}</h1>
-                    {
+                <div className="w-full text-center my-4">
+                    <h1 className="text-3xl font-bold">Laddzoner i {stadTitel}</h1>
+                    <ZoneTables zoneData={zoneDataLoading}/>
+                    {/* {
                         zoneDataLoading?.map((zone: Zone) => (
                             <div key={zone.id}>
 
-                            <div className="flex flex-wrap items-center gap-4 p-4 mb-4 bg-gray-50 rounded-lg shadow dark:bg-gray-700">
+                            <div className="flex flex-wrap items-center gap-4 p-4 mb-4 bg-gray-50 rounded-lg shadow">
                                 <Badge color="info"><span className="font-bold text-xl">Name: {zone.name}</span></Badge>
                                 <Badge color="success"><span className="font-bold text-xl">id: {zone.id}</span></Badge>
                                 <Badge color="info"><span className="font-bold text-xl">Type: {zone.type}</span></Badge>
@@ -105,7 +107,7 @@ export default function AllZones() {
                             </div>
                             <ZoneTable zone={zone}/>
                         </div>))
-                        }
+                        } */}
                 </div>
 
 

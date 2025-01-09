@@ -20,8 +20,8 @@ export default function ZoneTable({zone}:{zone:Zone}) {
         </Table.Head>
         <Table.Body className="divide-y">
         { zone.bikes?.map((bike) => (
-        <Table.Row key={bike.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+        <Table.Row key={bike.id} className="bg-white">
+            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 ">
             {bike.id}
             </Table.Cell>
             <Table.Cell>{bike.batteryLevel}</Table.Cell>

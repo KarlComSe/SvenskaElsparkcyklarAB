@@ -39,22 +39,22 @@ const UserListPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-full max-w-4xl mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow">
       <AdminGate/>
-      <h1 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">Användarlista</h1>
+      <h1 className="text-2xl font-bold text-center mb-6 text-gray-900">Användarlista</h1>
       <div className="space-y-4">
         {users.map((user) => (
           <div
             key={user.githubId}
-            className="p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700">
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+            className="p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-sm">
+            <h2 className="text-lg font-semibold text-gray-800">
               <Link to={`/user/${user.githubId}`} className="text-blue-500 hover:underline">
                 {user.username}
               </Link>
               </h2>
-            <p className="text-gray-600 dark:text-gray-400">Email: {user.email}</p>
-            <p className="text-gray-600 dark:text-gray-400">Roller: {user.roles.join(', ')}</p>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600">Email: {user.email}</p>
+            <p className="text-gray-600">Roller: {user.roles.join(', ')}</p>
+            <p className="text-gray-600">
               {user.hasAcceptedTerms
                 ? 'Godkänt användarvillkor'
                 : 'Ej godkänt användarvillkor'}
