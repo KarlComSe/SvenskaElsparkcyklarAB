@@ -1,13 +1,13 @@
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { API_URL, getHeader} from '../../helpers/config';
+import { API_URL } from '../../helpers/config';
 import axios from 'axios';
 import { Zone, Scooter } from '../../helpers/map/leaflet-types'
 
-import { Label, Select, Button, Table, Badge } from "flowbite-react";
+import { Label, Select, Button, Badge } from "flowbite-react";
 import Map from '../../components/Map';
-import ZoneTable from '../../components/ZoneTable';
+import ZoneTables from '../../components/ZoneTables';
 import AdminGate from '../../components/AdminGate';
 
 export default function AllZones() {
@@ -76,7 +76,8 @@ export default function AllZones() {
                 <Map city={city} zoneData={zoneDataTotal ?? []} scooterData={bikeTotal ?? []}/>
                 <div className="w-full text-center my-4">
                     <h1 className="text-3xl font-bold">Parkeringszoner i {stadTitel}</h1>
-                    {
+                    <ZoneTables zoneData={zoneDataParking}/>
+                    {/* {
                         zoneDataParking?.map((zone: Zone) => (
                             <div key={zone.id}>
 
@@ -89,11 +90,12 @@ export default function AllZones() {
                             </div>
                             <ZoneTable zone={zone}/>
                         </div>))
-                        }
+                    } */}
                 </div>
                 <div className="w-full text-center my-4">
                     <h1 className="text-3xl font-bold">Laddzoner i {stadTitel}</h1>
-                    {
+                    <ZoneTables zoneData={zoneDataLoading}/>
+                    {/* {
                         zoneDataLoading?.map((zone: Zone) => (
                             <div key={zone.id}>
 
@@ -105,7 +107,7 @@ export default function AllZones() {
                             </div>
                             <ZoneTable zone={zone}/>
                         </div>))
-                        }
+                        } */}
                 </div>
 
 
