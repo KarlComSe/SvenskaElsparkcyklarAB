@@ -10,7 +10,7 @@
     "test": "jest --verbose=false",
     "test:coverage": "jest --coverage",
     "test-tsc": "tsc src/*.tsx --noEmit --jsx react-jsx",
-    "lint:report-checkstyle": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --format checkstyle --output-file eslint-report.xml"
+    "lint:report-checkstyle-frontend": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --format checkstyle --output-file eslint-report-frontend.xml"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",

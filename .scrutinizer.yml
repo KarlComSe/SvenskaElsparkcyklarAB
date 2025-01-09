@@ -73,9 +73,9 @@ build:
       tests:
         override:
           - js-scrutinizer-run
-          - command: npm run lint:report-checkstyle
+          - command: npm run lint:report-checkstyle-frontend
             analysis:
-              file: eslint-report.xml
+              file: eslint-report-frontend.xml
               format: eslint-checkstyle
 
           # Run tests with coverage
