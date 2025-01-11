@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../../redux/store/store';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/store';
 import { API_URL, getHeader } from '../../helpers/config';
 import axios from 'axios';
 import { Link } from 'react-router-dom';

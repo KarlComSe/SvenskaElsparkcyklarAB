@@ -1,7 +1,8 @@
 import { MapContainer, TileLayer} from 'react-leaflet';
 import { useEffect, useState } from 'react';
 import { LatLngExpression } from 'leaflet';
-import { Scooter,  Zone } from '../helpers/map/leaflet-types'
+import { Zone } from '../helpers/map/leaflet-types'
+import { Scooter } from '../helpers/bike-functions';
 import { cities } from '../helpers/map/cities';
 import MapCenter from './MapCenter';
 import { renderScooterMarkers, renderPolygons } from '../helpers/map/renders';

@@ -6,7 +6,6 @@ type Props = {
     zoneData? : Zone[];
 }
 
-
 export default function ZoneTables( {zoneData} : Props ) {
   return (
         <div data-testid="zonetables">

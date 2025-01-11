@@ -1,14 +1,14 @@
 import Map from '../../components/Map';
 import { useParams } from "react-router-dom";
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { API_URL} from '../../helpers/config';
 import { useEffect, useState, useRef } from 'react';
-import { Scooter,  Zone } from '../../helpers/map/leaflet-types'
-import { Label, ToggleSwitch } from 'flowbite-react';
+import { Zone } from '../../helpers/map/leaflet-types'
+import { Scooter } from '../../helpers/bike-functions';
 import AdminGate from '../../components/AdminGate';
-import { Badge } from 'flowbite-react';
 
 import BikeList from '../../components/BikeList';
+import RealTimeUpdate from '../../components/RealTimeUpdate';
 
 export default function ShowMap() {
     const { city }  = useParams();
@@ -18,33 +18,6 @@ export default function ShowMap() {
     const timerRef = useRef<null | number>(null);
     const [trigger, setTrigger] = useState(0);
   
-    const updateRealTime = () => {
-      setRealTime(!realTime);
-      if (realTime)
-      {
-        stopTimer();
-      } else {
-        startTimer();
-      }
-      
-    }
-
-    const startTimer = () => {
-      if (!timerRef.current)
-        {
-          timerRef.current = setInterval(() => {
-            setTrigger((prev) => prev + 1);
-          }, 1000);
-        }
-  };
-
-  const stopTimer = () => {
-      if (timerRef.current)
-        {
-          clearInterval(timerRef.current);
-          timerRef.current = null;
-        }
-  };
     
     useEffect(() => {
       const fetchScooters = async() => {
@@ -54,13 +27,15 @@ export default function ShowMap() {
           }
           catch(error)
           {
+            const axiosError = error as AxiosError;
+            console.log(axiosError?.response?.data);
           }
     }
     fetchScooters();
     },[city, trigger])
 
     useEffect(() => {
-      const fetchZones = async() => {
+      const fetchZones = async () => {
       try {
 
               const response = await axios.get(`${API_URL}/zone/city/${city}`);
@@ -68,6 +43,8 @@ export default function ShowMap() {
           }
           catch(error)
           {
+            const axiosError = error as AxiosError;
+            console.log(axiosError?.response?.data);
           }
     }
     fetchZones();
@@ -79,8 +56,9 @@ export default function ShowMap() {
     <AdminGate/>
       <div data-testid="show-map" className="mx-auto sm:max-w-4xl"><Map city={city ?? "Göteborg"} zoneData={zoneData} scooterData={scooterData}/></div>
       <div className="flex flex-col items-center justify-center my-2 py-2 bg-red-100 rounded-md w-full sm:max-w-xl mx-auto">
-      <Label htmlFor="realtimetoggle">Vill du uppdatera kartan i realtid?</Label>
-      <ToggleSwitch id="realtimetoggle" checked={realTime} onChange={updateRealTime}>Uppdatera i realtid?</ToggleSwitch>
+      {/* <Label htmlFor="realtimetoggle">Vill du uppdatera kartan i realtid?</Label>
+      <ToggleSwitch id="realtimetoggle" checked={realTime} onChange={updateRealTime}>Uppdatera i realtid?</ToggleSwitch> */}
+      <RealTimeUpdate timerRef={timerRef} realTime={realTime} setRealTime={setRealTime} setTrigger={setTrigger}/>
       </div>
         <div id="scooter-list" className="p-4 flex flex-col justify-center w-full">
           <div className="mx-auto">

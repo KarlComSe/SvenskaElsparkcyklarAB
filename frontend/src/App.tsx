@@ -1,15 +1,8 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
 import './App.css'
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-// import LoginPage from './pages/LoginPage';
-// import RegisterPage from './pages/RegisterPage';
-
 import Header from './components/Header';
-// import LoginOAuth from './pages/LoginOAuth.tsx';
 import Github from './pages/Github';
 import CustomerStartPage from './pages/user/CustomerStartPage';
 import AdminStartPage from './pages/admin/AdminStartPage';

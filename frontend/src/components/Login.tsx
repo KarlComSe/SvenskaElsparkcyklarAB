@@ -1,7 +1,7 @@
-import { Button } from 'flowbite-react';
+import { Button, ButtonProps } from 'flowbite-react';
 import { GITHUB_URL } from '../helpers/config';
 
-export default function Login(props: any) {
+export default function Login(props: ButtonProps) {
 
   const loginUser = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();

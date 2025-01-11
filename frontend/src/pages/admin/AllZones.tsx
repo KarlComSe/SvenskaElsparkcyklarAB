@@ -3,9 +3,9 @@ import { useState } from 'react';
 
 import { API_URL } from '../../helpers/config';
 import axios from 'axios';
-import { Zone, Scooter } from '../../helpers/map/leaflet-types'
-
-import { Label, Select, Button, Badge } from "flowbite-react";
+import { Zone } from '../../helpers/map/leaflet-types'
+import { Scooter } from '../../helpers/bike-functions';
+import { Label, Select, Button } from "flowbite-react";
 import Map from '../../components/Map';
 import ZoneTables from '../../components/ZoneTables';
 import AdminGate from '../../components/AdminGate';
@@ -20,13 +20,8 @@ export default function AllZones() {
 
     const changeCity = (e: React.ChangeEvent<HTMLSelectElement>)=> {
         const selectedCity = e.target.value as "Göteborg" | "Jönköping" | "Karlshamn";
-        // if (selectedCity === "Göteborg" || selectedCity === "Jönköping" || selectedCity === "Karlshamn") {
-        //     setCity(selectedCity);
-        // }
-        // if (["Göteborg", "Jönköping", "Karlshamn"].includes(selectedCity)) {
-        //     setCity(selectedCity);
-        // }
-        setCity(selectedCity);
+
+            setCity(selectedCity);
     }
 
     const loadZoneData = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

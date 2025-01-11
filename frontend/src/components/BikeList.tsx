@@ -1,4 +1,4 @@
-import { Scooter } from '../helpers/map/leaflet-types'
+import { Scooter } from '../helpers/bike-functions';
 import { Badge } from 'flowbite-react'
 
 type Props = {

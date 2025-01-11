@@ -1,7 +1,7 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { API_URL, getHeader } from '../helpers/config';
 import { toast } from 'react-toastify';
-import { toastOptionsError, toastOptionsSuccess } from '../helpers/config';
+import { toastOptionsError } from '../helpers/config';
 
 
 export type City = {
@@ -24,16 +24,30 @@ export type BikeStatus = {
     updatedAt: string; // ISO timestamp as a string
 };
 
-type bikeArray = {
-    [key: string] : any;
+export type Scooter = {
+    id: string;
+    batteryLevel: number;
+    latitude: number;
+    longitude: number;
+    status: string;
+    city: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+
+export type Rental = {
+        
+          id: number | string,
+          startTime: string,
+          latStart: number,
+          longStart: number,
+          startZoneType: string,
+          endZoneType: string,
+          cost: number
+          stopTime?: string,
 }
 
-type RentBikeResponse = Array<{
-    id: number;
-    [key: string]: any; // Allow additional unknown keys
-  }>;
-
-export const bikePerCity = async (city: string, token: string, status = '') : Promise<any> =>
+export const bikePerCity = async (city: string, token: string, status = '') : Promise<BikeStatus[]> =>
 {
     let data;
     
@@ -46,31 +60,34 @@ export const bikePerCity = async (city: string, token: string, status = '') : Pr
                 data = response.data.filter((item : BikeStatus) => item.status === status);
             }
     }
-    catch(error: any) {
-        toast.error(error.response.data.message, toastOptionsError)
+    catch(error) {
+        const err = error as AxiosError<{message: string}>;
+        toast.error(err?.response?.data.message, toastOptionsError)
 
     }
     console.log(data);
     return data;
 }
 
-export const allBikes = async ( token:string ) : Promise<any> =>
+  
+export const allBikes = async ( token:string ) : Promise<Scooter[]> =>
 {
         let data;
         try {
                 const response = await axios.get(`${API_URL}/bike`, getHeader(token));
                 data = response.data;
         }
-        catch(error: any) {
-            toast.error(error.response.data.message, toastOptionsError)
+        catch(error) {
+            const err = error as AxiosError<{ message: string }>;
+            toast.error(err.response?.data?.message, toastOptionsError)
 
         }
         return data;
 }
 
-export const rentBike = async (bikeId: string, token: string) : Promise<RentBikeResponse | any> =>
+export const rentBike = async (bikeId: string, token: string) : Promise<AxiosResponse> =>
 {
-        let data: RentBikeResponse | any;
+        let data: AxiosResponse["data"];
         try
         {
             const response = await axios.post(`${API_URL}/rental/bike/${bikeId}`, {}, getHeader(token));
@@ -79,63 +96,71 @@ export const rentBike = async (bikeId: string, token: string) : Promise<RentBike
 
                 
         }
-        catch(error: any) {
-            toast.error(error.response.data.message,toastOptionsError)
-            data = error.response.data;
+        catch(error) {
+            const err = error as AxiosError<{message: string}>;
+            toast.error(err?.response?.data.message, toastOptionsError)
+            data = err?.response?.data;
         }
         return data;
 }
 
-export const returnBike = async (tripID: string | null, token: string) : Promise<any> =>
+export const returnBike = async (tripID: string | number | null, token: string) : Promise<AxiosResponse["data"]> =>
 {
-        let data: RentBikeResponse | any;
+        let data: AxiosResponse["data"];
+
 
             try {
                     const response = await axios.post(`${API_URL}/rental/${tripID}/end`, {}, getHeader(token));
                     data = {... response.data, "statusCode": 200 };
             }
-            catch(error: any) {
+            catch(error) {
 
-                toast.error(error.response.data.message, toastOptionsError)
-                data = error.response.data;
+                const err = error as AxiosError<{message: string}>;
+                toast.error(err?.response?.data.message, toastOptionsError)
+                data = err?.response?.data;
             }
             return data;
 }
 
 
-export const allRentals = async (token: string): Promise<any> => {
-    let data = {};
+export const allRentals = async (token: string): Promise<Rental[]> => {
+    let data = [];
     try {
-        let me = await axios.get(`${API_URL}/auth/me`, getHeader(token));
-        let userId = me.data.githubId;
+        const me = await axios.get(`${API_URL}/auth/me`, getHeader(token));
+        const userId = me.data.githubId;
         const response = await axios.get(`${API_URL}/rental/customer/${userId}`, getHeader(token));
         data = response.data;
+        console.log(data)
     } catch(error)
     {
         console.log(`No rentals found for user`);
+        if (error instanceof AxiosError && error.response?.data?.message) {
+            console.log(`Rentals error: ${error.response.data.message}`);
+        }
     }
     return data;
 }
 
 
-export const bikeIdByFive = async (bikeIdFive: string | null, token: string): Promise<string> => {
+export const bikeIdByFive = async (bikeIdFive: string, token: string): Promise<string | undefined> => {
     const data = await allBikes(token);
-    const bike = data.find((item: bikeArray) => item.id.startsWith(bikeIdFive?.toLowerCase()));
+    const bike = data.find((item: Scooter) => item.id.startsWith(bikeIdFive.toLowerCase()));
 
-    return bike.id;
+    return bike?.id;
 }
 
-export const returnAllRentals = async (token: string): Promise<any> => {
+export const returnAllRentals = async (token: string): Promise<AxiosResponse | undefined> => {
+    let data;
     try {
-        let me = await axios.get(`${API_URL}/auth/me`, getHeader(token));
-        let userId = me.data.githubId;
-        const data = await axios.post(`${API_URL}/rental/${userId}/end-all-travels`,{}, getHeader(token));
-        return data
+        const me = await axios.get(`${API_URL}/auth/me`, getHeader(token));
+        const userId = me.data.githubId;
+        data = await axios.post(`${API_URL}/rental/${userId}/end-all-travels`,{}, getHeader(token));
+        
     } catch(error)
     {  
-        
         if (error instanceof AxiosError && error.response?.data?.message) {
             toast.error(`Rentals were not returned: ${error.response.data.message}`, toastOptionsError);
         }
     }
+    return data
 }

@@ -1,8 +1,6 @@
 import { Table } from "flowbite-react";
 import { Zone } from '../helpers/map/leaflet-types'
 
-
-
 export default function ZoneTable({zone}:{zone:Zone}) {
   return (
      <Table data-testid="zonetable">

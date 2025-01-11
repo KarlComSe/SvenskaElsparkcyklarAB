@@ -1,5 +1,3 @@
-
-
 type Cities = {
     [key: string]: [number, number];
 };

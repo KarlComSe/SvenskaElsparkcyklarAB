@@ -2,15 +2,16 @@ import { useState, useEffect } from 'react';
 import { RootState } from '../../redux/store/store';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { allRentals } from '../../helpers/bike-functions';
+import { allRentals, Rental } from '../../helpers/bike-functions';
 import UserGate from '../../components/UserGate';
 import ReturnRentButton from '../../components/ReturnRentButton';
+import { formatTimestamp } from '../../helpers/other-functions';
 
 export default function CustomerHistory() {
   const { isLoggedIn, user, token } = useSelector((state: RootState) =>  state.auth);
-  const [rentals, setRentals] = useState<any[]>([]);
+  const [rentals, setRentals] = useState<Rental[]>([]);
   const navigate = useNavigate();
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [refreshTrigger] = useState(0);
 
   useEffect(() => {
     if(!isLoggedIn) {
@@ -34,17 +35,6 @@ export default function CustomerHistory() {
     getRentals();
   }, [user, token, refreshTrigger]);
 
-  function formatTimestamp(isoString: string) {
-    const date = new Date(isoString);
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const dd = String(date.getDate()).padStart(2, '0');
-    const hh = String(date.getHours()).padStart(2, '0');
-    const min = String(date.getMinutes()).padStart(2, '0');
-    const ss = String(date.getSeconds()).padStart(2, '0');
-
-    return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
-}
 
   return (
     <div data-testid="my-rentals" className='p-4 flex flex-col justify-center items-center'>
@@ -64,9 +54,7 @@ export default function CustomerHistory() {
               <span className="ml-2 text-gray-800 dark:text-white">{formatTimestamp(rental.startTime)}</span>
           </div>
           {!rental.stopTime && 
-          <div className="flex items-center">
               <ReturnRentButton tripID={rental.id}/>
-          </div>
           } 
           {rental.stopTime &&
           <>

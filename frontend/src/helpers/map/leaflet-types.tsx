@@ -1,13 +1,4 @@
-export type Scooter = {
-    id: string;
-    batteryLevel: number;
-    latitude: number;
-    longitude: number;
-    status: string;
-    city: string;
-    createdAt: string;
-    updatedAt: string;
-  };
+import { Scooter } from "../bike-functions";
 
 export type PolygonPoint = {
     lat: number;

@@ -2,14 +2,12 @@
 import { useEffect, useState } from 'react';
 
 import { API_URL, getHeader} from '../../helpers/config';
-import axios from 'axios';
-import { Scooter } from '../../helpers/map/leaflet-types'
+import axios, {AxiosError} from 'axios';
+import { Scooter } from '../../helpers/bike-functions';
 import { RootState } from '../../redux/store/store';
 import { useSelector } from 'react-redux';
 import AdminGate from '../../components/AdminGate';
-import { Badge } from 'flowbite-react';
 import BikeList from '../../components/BikeList';
-
 
 export default function AllBikes() {
     const [scooterData, setScooterData] = useState<Scooter[]>([]);
@@ -22,11 +20,14 @@ export default function AllBikes() {
                 setScooterData(response.data);
             }
             catch(error)
-            {
+            { 
+                if (error instanceof AxiosError && error.response?.data?.message) {
+                    console.log(error.response?.data?.messag)
+                }
             }
       }
       fetchScooters();
-      },[])
+      },[token])
     
   
   return (

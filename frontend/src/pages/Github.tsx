@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Spinner from '../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../redux/store/store';
+import { RootState } from '../redux/store/store';
 import { setLoggedInOut, setCurrentUser, setToken, setRole } from '../redux/slices/authLogin';
-// import userRole from './HomePage';
-
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { API_URL } from '../helpers/config';
 import axios from 'axios';
-// import HomePage from './HomePage';
+
 
 const Github: React.FC = () => {
 
-    const [ searchParams, setsearchParams] = useSearchParams();
+    const [ searchParams ] = useSearchParams();
     const [isLoggedIn, setisLoggedIn] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -23,7 +21,6 @@ const Github: React.FC = () => {
     useEffect(() => {
 
         if (isLoggedIn) {
-            // navigate('/');
             if (userRole === 'admin') {
                 navigate('/adminstartpage');
             } else if (userRole === 'user') {
@@ -63,7 +60,7 @@ const Github: React.FC = () => {
         }
         backendAuth();
 
-    }, [searchParams, isLoggedIn]); 
+    }, [searchParams, isLoggedIn, userRole, dispatch, navigate]); 
 
     return (
         <div className="flex flex-col items-center justify-center h-screen" data-testid="github-test">
