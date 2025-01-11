@@ -25,6 +25,8 @@ import { Bicycle } from './entities/bicycle.entity';
 import { BicycleResponse } from './types/bicycle-response.interface';
 import { CreateBicycleDto } from './dto/create-bicycle.dto';
 import { CityName } from 'src/cities/types/city.enum';
+import { BatchUpdateBicyclePositionsDto, BicycleBatchResponseDto, BicyclePositionDto } from './dto/batch-update.dto';
+import { BicycleBatchResponse } from './types/BicycleBatchResponse';
 
 const BIKE_ID = 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464';
 const BIKE_STATUS_AVAILABLE = 'Available';
@@ -193,6 +195,29 @@ export class BicyclesController {
   })
   async updateBicycle(@Param('bikeId') bikeId: string, @Body() updateBicycleDto: UpdateBicycleDto) {
     return this.bicyclesService.update(bikeId, updateBicycleDto);
+  }
+
+  @Patch('/batch/positions')
+  @ApiOperation({ summary: 'Update multiple bicycle positions' })
+  @ApiResponse({
+    status: 200,
+    description: 'Bicycle positions updated successfully',
+    type: BicycleBatchResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Error: Bad Request (Invalid request payload)',
+  })
+  async updateBatchPositions(
+    @Body() dto: BatchUpdateBicyclePositionsDto
+  ): Promise<BicycleBatchResponseDto> {
+    const results = await this.bicyclesService.updatePositionsParallel(dto.updates);
+    return {
+      results,
+      totalCount: results.length,
+      successCount: results.filter(r => r.success).length,
+      failureCount: results.filter(r => !r.success).length,
+    };
   }
 
   @Get('city/:cityName')

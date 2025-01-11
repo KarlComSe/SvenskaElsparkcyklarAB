@@ -9,15 +9,48 @@ import { getDistance } from 'src/utils/geo.utils';
 import { CreateBicycleDto } from './dto/create-bicycle.dto';
 import { City } from 'src/cities/entities/city.entity';
 import { CityName } from 'src/cities/types/city.enum';
+import { BicyclePositionDto } from './dto/batch-update.dto';
+import { BicycleBatchResponse } from './types/BicycleBatchResponse';
 
 @Injectable()
 export class BicyclesService {
+
+  async updatePositionsParallel(updates: BicyclePositionDto[]): Promise<BicycleBatchResponse[]> {
+    const updatePromises = updates.map(async (update) => {
+      try {
+        const bicycle = await this.bicycleRepository.findOne({
+          where: { id: update.id }
+        });
+
+        if (!bicycle) {
+          return {
+            id: update.id,
+            success: false,
+            error: `Bicycle with id ${update.id} not found`
+          };
+        }
+
+        await this.bicycleRepository.update(
+          update.id,
+          {
+            latitude: update.latitude,
+            longitude: update.longitude,
+          }
+        );
+        return { id: update.id, success: true };
+      } catch (error) {
+        return { id: update.id, success: false, error: error.message };
+      }
+    });
+
+    return await Promise.all(updatePromises);
+  }
   constructor(
     @InjectRepository(Bicycle)
     private readonly bicycleRepository: Repository<Bicycle>,
     @InjectRepository(City)
     private cityRepository: Repository<City>,
-  ) {}
+  ) { }
 
   async findAll(): Promise<Bicycle[]> {
     const bikes = await this.bicycleRepository.find({
