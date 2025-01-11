@@ -1,12 +1,12 @@
 import Map from '../../components/Map';
 import { useParams } from "react-router-dom";
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { API_URL} from '../../helpers/config';
 import { useEffect, useState, useRef } from 'react';
-import { Scooter,  Zone } from '../../helpers/map/leaflet-types'
+import { Zone } from '../../helpers/map/leaflet-types'
+import { Scooter } from '../../helpers/bike-functions';
 import { Label, ToggleSwitch } from 'flowbite-react';
 import AdminGate from '../../components/AdminGate';
-import { Badge } from 'flowbite-react';
 
 import BikeList from '../../components/BikeList';
 
@@ -54,13 +54,15 @@ export default function ShowMap() {
           }
           catch(error)
           {
+            const axiosError = error as AxiosError;
+            console.log(axiosError?.response?.data);
           }
     }
     fetchScooters();
     },[city, trigger])
 
     useEffect(() => {
-      const fetchZones = async() => {
+      const fetchZones = async () => {
       try {
 
               const response = await axios.get(`${API_URL}/zone/city/${city}`);
@@ -68,6 +70,8 @@ export default function ShowMap() {
           }
           catch(error)
           {
+            const axiosError = error as AxiosError;
+            console.log(axiosError?.response?.data);
           }
     }
     fetchZones();

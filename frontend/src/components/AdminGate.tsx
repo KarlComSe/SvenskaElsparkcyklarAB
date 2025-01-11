@@ -14,6 +14,9 @@ export default function AdminGate() {
 
     const [myAuthorizations, setMyAuthorizations] = useState<string[]>([])
 
+   
+    useEffect(() => {
+        
     const getMyAuthorizations = async () => {
         if (isLoggedIn) {
                 try {
@@ -28,10 +31,8 @@ export default function AdminGate() {
                 setMyAuthorizations(['NotLoggedIn']);
             }
         }
-   
-    useEffect(() => {
         getMyAuthorizations();
-    }, [user, isLoggedIn, token])
+    }, [user, token, isLoggedIn])
 
     useEffect(() => {
         if (myAuthorizations.length < 1) 
@@ -42,6 +43,6 @@ export default function AdminGate() {
             navigate("/");
         } 
    
-    }, [myAuthorizations]);
+    }, [myAuthorizations, navigate]);
   return null;
 }

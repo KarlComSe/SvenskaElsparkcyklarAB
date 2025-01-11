@@ -3,7 +3,7 @@ import {  useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/store';
 import { Link } from 'react-router-dom';
 import userImage from '../../assets/images/user.jpg';
-import axios, {AxiosError} from 'axios';
+import axios, {AxiosError, AxiosResponse} from 'axios';
 import { API_URL, getHeader } from '../../helpers/config';
 import { Button, ToggleSwitch, TextInput, Label } from "flowbite-react";
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ const UserInfoPage: React.FC = () => {
     const navigate = useNavigate();
 
     const { isLoggedIn, token, role } = useSelector((state: RootState) => state.auth);
-    const [userData, setUserData] = useState<any>(null);
+    const [userData, setUserData] = useState<AxiosResponse["data"]>(null);
     const [githubId, setGithubId] = useState("");
     const [isMonthlyPayment, setIsMonthlyPayment] = useState(false);
     const [accumulatedCost, setAccumulatedCost] = useState(0);
@@ -56,7 +56,7 @@ const UserInfoPage: React.FC = () => {
                 }
             };
         getAuthMe();
-    },[]);
+    },[token, isLoggedIn, navigate]);
 
 return (
     <div className="flex justify-center min-h-screen" data-testid="user-info-page">
@@ -107,7 +107,7 @@ return (
                                     Fyll på eller uppdatera!
                                   </Button>
                                   <Button color="light">
-                                    <Link to="/userlistpage">Gå tillbaka</Link>
+                                    <Link to="/customerstartpage">Gå tillbaka</Link>
                                   </Button>
                               </div>
                           </form>

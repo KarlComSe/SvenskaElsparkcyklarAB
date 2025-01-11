@@ -12,7 +12,7 @@ export default function Header() {
     const {isLoggedIn, role} = useSelector((state: RootState) =>  state.auth);
 
     return (
-        <Navbar className="bg-purple-100 max-w-4xl px-2 py-2.5 sm:px-4 rounded mx-auto md:mb-10 md:pb-5 md:pt-5" data-testid="header"fluid rounded>
+        <Navbar className="bg-purple-100 max-w-4xl px-2 py-2.5 sm:px-4 rounded mx-auto md:mb-10 md:pb-5 md:pt-5" data-testid="header" fluid rounded>
         
         <Navbar.Brand as={Link} to="/">
                 <img src={logo} className="h-8" alt="Logo" />
@@ -28,12 +28,12 @@ export default function Header() {
             { isLoggedIn && 
                 <>
                     <Navbar.Link as={Link} to="/customerstartpage">Kundsida</Navbar.Link>
-                    <Logout className="px-1 py-0.5" size="xs"></Logout>
+                    <Logout className="p-0" size="xs"></Logout>
                 </>
             }
             {
                 !isLoggedIn &&
-                <Login className="px-1 py-0.5" size="xs"/>
+                <Login className="p-0" size="xs"/>
             }
             </Navbar.Collapse>
         </Navbar>

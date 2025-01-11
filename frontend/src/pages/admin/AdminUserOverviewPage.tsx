@@ -94,7 +94,7 @@ const AdminUserOverviewPage: React.FC = () => {
     if (githubId) {
       getUserInfo();
     }
-  }, [githubId]);
+  }, [githubId, token]);
 
   if (loading) {
     return <div data-testid="admin-user-overview-page">Laddar användardata...</div>;

@@ -41,6 +41,6 @@ export default function UserGate() {
             navigate("/");
         } 
    
-    }, [myAuthorizations]);
+    }, [myAuthorizations, navigate]);
   return null;
 }

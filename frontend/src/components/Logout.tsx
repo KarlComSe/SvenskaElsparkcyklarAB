@@ -1,9 +1,9 @@
 import { useDispatch } from 'react-redux';
 import { setLoggedInOut, setCurrentUser, setToken, setRole } from '../redux/slices/authLogin';
 import { useNavigate } from "react-router-dom";
-import { Button } from 'flowbite-react';
+import { Button, ButtonProps } from 'flowbite-react';
 
-export default function Logout(props: any) {
+export default function Logout(props: ButtonProps) {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();

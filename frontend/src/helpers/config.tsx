@@ -1,11 +1,9 @@
 export const API_URL = "http://localhost:3535/v1";
-
 const githubAuthUrl = 'https://github.com/login/oauth/authorize';
 const clientId = 'Ov23liY1kaJ2acYLtBhq';
 const redirectUri = 'http://localhost:5173/github/callback';
 const scope = 'user:email';
 import markerIcon from '../assets/images/station.png';
-import pinShadow from '../assets/images/marker-shadow.png';
 import markerblack from '../assets/images/marker-icon-2x-black.png';
 import markerblue from '../assets/images/marker-icon-2x-blue.png';
 import markergreen from '../assets/images/marker-icon-2x-green.png';
