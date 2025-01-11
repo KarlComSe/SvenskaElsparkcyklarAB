@@ -4,7 +4,7 @@ import { RootState } from '../redux/store/store';
 import { toastOptionsError, toastOptionsSuccess } from '../helpers/config';
 import { returnBike } from '../helpers/bike-functions';
 import { toast } from 'react-toastify';
-import { formatTimestamp } from '../helpers/bike-functions';
+import { formatTimestamp } from '../helpers/other-functions';
 
 function ReturnRentButton( {tripID}  : {tripID: number | string}) {
 

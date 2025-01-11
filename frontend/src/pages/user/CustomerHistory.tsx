@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { allRentals, Rental } from '../../helpers/bike-functions';
 import UserGate from '../../components/UserGate';
 import ReturnRentButton from '../../components/ReturnRentButton';
-import { formatTimestamp } from '../../helpers/bike-functions';
+import { formatTimestamp } from '../../helpers/other-functions';
 
 export default function CustomerHistory() {
   const { isLoggedIn, user, token } = useSelector((state: RootState) =>  state.auth);
