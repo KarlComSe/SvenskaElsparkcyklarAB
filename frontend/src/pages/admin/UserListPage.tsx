@@ -47,9 +47,11 @@ const UserListPage: React.FC = () => {
           <div
             key={user.githubId}
             className="p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-sm">
+
             <h2 className="text-lg font-semibold text-gray-800">
               <Link to={`/user/${user.githubId}`} className="text-blue-500 hover:underline">
-                {user.username}
+                {user.username}              {user?.roles?.includes("inactive") &&
+              <span className="text-red-600 text-xl">(AVAKTIVERAD)</span>}
               </Link>
               </h2>
             <p className="text-gray-600">Email: {user.email}</p>
@@ -63,7 +65,7 @@ const UserListPage: React.FC = () => {
               <img
                 src={user.avatarUrl}
                 alt={`${user.username}'s avatar`}
-                className="w-16 h-16 rounded-full mt-4"
+                className="flex mx-auto w-16 h-16 rounded-full mt-4"
               />
             )}
           </div>
