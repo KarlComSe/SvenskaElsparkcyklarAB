@@ -6,6 +6,7 @@ import { setLoggedInOut, setCurrentUser, setToken, setRole } from '../redux/slic
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { API_URL } from '../helpers/config';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const Github: React.FC = () => {
@@ -54,7 +55,9 @@ const Github: React.FC = () => {
                 
             catch(error)
             {
+                toast.error("There was an error, contact the admin");
                 console.log(error);
+                navigate('/');
             }
             
         }

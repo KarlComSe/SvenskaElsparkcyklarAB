@@ -9,8 +9,6 @@ import { Button, ToggleSwitch, TextInput, Checkbox, Label, Card } from "flowbite
 import { toast } from 'react-toastify';
 import AdminGate from '../../components/AdminGate';
 
-
-
 type User = {
   githubId: string;
   username: string;
@@ -30,6 +28,7 @@ const AdminUserOverviewPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isKund, setIsKund] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
   const [createdAt, setCreatedAt] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -40,14 +39,15 @@ const AdminUserOverviewPage: React.FC = () => {
   const [balance, setBalance] = useState(0);
 
 
+
   const updateUserInfo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const updatedData = {
       'githubId': githubId,
       'username': username,
       'email': email,
-      'roles': [isAdmin && "admin", isKund && "user"].filter(Boolean),
-      'hasAcceptedTerms' :hasAcceptedTerms,
+      'roles': [isAdmin && "admin", isKund && "user",  isDeleted && "inactive"].filter(Boolean),
+      'hasAcceptedTerms': hasAcceptedTerms,
       'avatarUrl': avatarUrl,
       'isMonthlyPayment': isMonthlyPayment,
       'accumulatedCost': accumulatedCost,
@@ -75,6 +75,7 @@ const AdminUserOverviewPage: React.FC = () => {
         const user = response.data;
         setIsKund(user.roles.includes("user"));
         setIsAdmin(user.roles.includes("admin"));
+        setIsDeleted(user.roles.includes("inactive"));
         setUsername(user.username);
         setEmail(user.email);
         setCreatedAt(user.createdAt);
@@ -110,7 +111,10 @@ const AdminUserOverviewPage: React.FC = () => {
 
       <section className="bg-white">
           <div className="max-w-2xl px-4 py-8 mx-auto lg:py-16">
-              <h2 className="mb-4 text-xl font-bold text-gray-900">Användare: { username } </h2>
+              <h2 className="mb-4 text-xl font-bold text-gray-900">Användare: { username }
+              {isDeleted &&
+              <span className="text-red-600 text-xl">(AVAKTIVERAD)</span>}
+              </h2>
               <form action="#" onSubmit={(e) => updateUserInfo(e)}>
                   <div className="grid gap-4 mb-4">
                       <div className="">
@@ -150,6 +154,10 @@ const AdminUserOverviewPage: React.FC = () => {
                         <Checkbox id="admin" color="blue" checked={isAdmin} onChange={()=>setIsAdmin(!isAdmin)} />
                         <Label htmlFor="admin">Adminbehörighet</Label>
                       </div>
+                      <div className="flex items-center gap-2">
+                        <Checkbox id="delete" color="red" checked={isDeleted} onChange={()=>setIsDeleted(!isDeleted)} />
+                        <Label htmlFor="delete" className="text-red-600 font-bold">Avaktiverad</Label>
+                      </div>
                       <div className="flex items-center gap-2"> 
                       <ToggleSwitch color="blue" checked={isMonthlyPayment} label="Månatlig betalning" onChange={() => setIsMonthlyPayment(!isMonthlyPayment)} />
                       <ToggleSwitch color="teal" checked={hasAcceptedTerms} label="Godkända användarvillkor" onChange={() => setHasAcceptedTerms(!hasAcceptedTerms)} />
@@ -169,9 +177,6 @@ const AdminUserOverviewPage: React.FC = () => {
                   <div className="flex items-center space-x-4">
                       <Button type="submit" color="blue">
                         Uppdatera
-                      </Button>
-                      <Button color="failure">
-                        Radera (inte implementerad än)
                       </Button>
                       <Button color="light">
                         <Link to="/userlistpage">Gå tillbaka</Link>
