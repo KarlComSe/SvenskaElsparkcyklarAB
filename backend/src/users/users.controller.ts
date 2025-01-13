@@ -242,4 +242,25 @@ export class UsersController {
 
     return await this.usersService.adjustFunds(githubId, adjustFundsDto);
   }
+
+  @Patch(':githubId/soft-delete')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Soft delete a user (Only for admin - set user role to inactive)' })
+  @ApiResponse({
+    status: 200,
+    description: 'User soft-deleted successfully',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden. Admin access required',
+  })
+  async softDeleteUser(@Param('githubId') githubId: string) {
+    return await this.usersService.softDeleteUser(githubId);
+  }
+
 }
