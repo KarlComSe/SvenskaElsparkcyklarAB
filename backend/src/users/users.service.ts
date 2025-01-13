@@ -64,4 +64,17 @@ export class UsersService {
 
     return this.userRepository.save(user);
   }
+
+  async softDeleteUser(githubId: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { githubId } });
+  
+    if (!user) {
+      throw new NotFoundException(`User with GitHub ID ${githubId} not found.`);
+    }
+  
+    // Update the roles to include "inactive"
+    user.roles = ['inactive'];
+    return this.userRepository.save(user);
+  }
+  
 }
