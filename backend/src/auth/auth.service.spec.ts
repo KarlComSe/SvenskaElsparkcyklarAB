@@ -1,3 +1,4 @@
+import { ForbiddenException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { Repository } from 'typeorm';
@@ -20,8 +21,14 @@ describe('AuthService', () => {
       githubId: 'github-123',
       username: 'testuser',
       email: 'testuser@example.com',
-      avatarUrl: 'http://avatar.example.com',
       roles: ['user'],
+      hasAcceptedTerms: true,
+    } as User,
+    {
+      githubId: 'github-456',
+      username: 'inactiveuser',
+      email: 'inactiveuser@example.com',
+      roles: ['inactive'],
       hasAcceptedTerms: true,
     } as User,
   ];
@@ -49,7 +56,16 @@ describe('AuthService', () => {
           provide: HttpService,
           useValue: {
             post: jest.fn().mockReturnValue(of({ data: { access_token: 'mock-token' } })),
-            get: jest.fn().mockReturnValue(of({ data: { id: 'github-123', login: 'testuser', email: 'testuser@example.com', avatar_url: 'http://avatar.example.com' } })),
+            get: jest.fn().mockReturnValue(
+              of({
+                data: {
+                  id: 'github-123',
+                  login: 'testuser',
+                  email: 'testuser@example.com',
+                  avatar_url: 'http://avatar.example.com',
+                },
+              }),
+            ),
           },
         },
         {
@@ -76,17 +92,11 @@ describe('AuthService', () => {
     it('should exchange code and return a token and user', async () => {
       const result = await service.exchangeGithubCode('valid-code');
       expect(result.access_token).toBe('token-for-testuser');
-      expect(result.user).toEqual({
-        githubId: 'github-123',
-        username: 'testuser',
-        email: 'testuser@example.com',
-        roles: ['user'],
-        hasAcceptedTerms: true,
-      });
+      expect(result.user).toEqual(mockUsers[0]);
     });
 
     it('should create a new user if not found', async () => {
-      jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(null); // Simulate no user found
+      jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(null);
       const result = await service.exchangeGithubCode('new-user-code');
       expect(userRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -95,6 +105,13 @@ describe('AuthService', () => {
         }),
       );
       expect(result.access_token).toBe('token-for-testuser');
+    });
+
+    it('should throw an error if the user is inactive', async () => {
+      jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(mockUsers[1]); // Simulate inactive user
+      await expect(service.exchangeGithubCode('inactive-code')).rejects.toThrow(
+        ForbiddenException,
+      );
     });
   });
 
@@ -109,6 +126,11 @@ describe('AuthService', () => {
       const user = await service.validateUserById('nonexistent-id');
       expect(user).toBeNull();
     });
+
+    it('should return null if the user is inactive', async () => {
+      const user = await service.validateUserById('github-456');
+      expect(user).toBeNull();
+    });
   });
 
   describe('getStatus', () => {
@@ -116,15 +138,10 @@ describe('AuthService', () => {
       const status = await service.getStatus(mockUsers[0]);
       expect(status).toEqual({
         isAuthenticated: true,
-        user: {
-          githubId: 'github-123',
-          username: 'testuser',
-          email: 'testuser@example.com',
-          roles: ['user'],
-          hasAcceptedTerms: true,
-        },
+        user: mockUsers[0],
       });
     });
+
   });
 
   describe('private methods', () => {
@@ -165,6 +182,15 @@ describe('AuthService', () => {
         expect.objectContaining({
           githubId: 'github-999',
           username: 'newuser',
+        }),
+      );
+      expect(user).toEqual(
+        expect.objectContaining({
+          githubId: 'github-999',
+          username: 'newuser',
+          email: 'newuser@example.com',
+          avatarUrl: 'http://avatar.example.com',
+          roles: ['user'], // Default role for new users
         }),
       );
     });
