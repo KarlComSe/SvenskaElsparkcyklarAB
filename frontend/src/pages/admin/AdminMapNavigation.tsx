@@ -1,17 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import stockholmImage from '../../assets/images/stockholm.jpg';
+import jonkopingImage from '../../assets/images/jönköping.jpg';
 import goteborgImage from '../../assets/images/goteborg.jpg';
-import malmoImage from '../../assets/images/malmo.jpg';
+import karlshamnImage from '../../assets/images/karlshamn.jpg';
 import AdminGate from '../../components/AdminGate';
 
 const AdminMapNavigation: React.FC = () => {
   const navigate = useNavigate();
 
   const cities = [
-    { name: 'Jönköping', imageUrl: stockholmImage, route: '/map/Jönköping' },
+    { name: 'Jönköping', imageUrl: jonkopingImage, route: '/map/Jönköping' },
     { name: 'Göteborg', imageUrl: goteborgImage, route: '/map/Göteborg' },
-    { name: 'Karlshamn', imageUrl: malmoImage, route: '/map/Karlshamn' },
+    { name: 'Karlshamn', imageUrl: karlshamnImage, route: '/map/Karlshamn' },
   ];
 
   return (
