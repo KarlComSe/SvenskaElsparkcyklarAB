@@ -199,23 +199,6 @@ describe('Users Module Integration', () => {
           .set('Authorization', `Bearer ${userToken}`)
           .expect(403);
       });
-
-      // it('should block inactive users from accessing account info', async () => {
-      //   const response = await request(app.getHttpServer())
-      //     .get(`/v1/users/${standardUser.githubId}/account`)
-      //     .set('Authorization', `Bearer ${fakeUserToken}`)
-      //     .expect(403);
-      
-      //   expect(response.body.message).toBe('Your account is inactive.');
-      // });
-
-      // it('should not allow inactive users to log in', async () => {
-      //   await request(app.getHttpServer())
-      //     .post('/v1/auth/login')
-      //     .send({ githubId: fakeUser.githubId })
-      //     .expect(403);
-      // });
-      
       
     });
 
