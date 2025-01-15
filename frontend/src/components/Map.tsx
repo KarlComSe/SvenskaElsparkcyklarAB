@@ -11,9 +11,10 @@ type propTypes = {
     city: string;
     zoneData: Zone[];
     scooterData: Scooter[]
+    isLowRes?: boolean
 }
 
-export default function Map({city, zoneData, scooterData} : propTypes) {
+export default function Map({city, zoneData, scooterData, isLowRes=false} : propTypes) {
 
     const [startPosition, setStartPosition] = useState<LatLngExpression>([-48.876667, -123.393333]);
     const zoom = 11;
@@ -38,7 +39,7 @@ export default function Map({city, zoneData, scooterData} : propTypes) {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                     <MapCenter center={startPosition} zoom={zoom} />
-                    {renderScooterMarkers(scooterData)}
+                    {renderScooterMarkers(scooterData, isLowRes)}
                     {renderPolygons(zoneData)}
                 </MapContainer>
             </div>

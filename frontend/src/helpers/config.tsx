@@ -41,15 +41,19 @@ export const getHeader = (token: string, contentType?: string ) => {
 
 
 export function giveMarkerPin(index: number) {
+    // const markers = [
+    //     markeryellow,
+    //     markerblack,
+    //     markerblue,
+    //     markergreen,
+    //     markergrey,
+    //     markerorange,
+    //     markerred,
+    //     markerviolet ]
+    
     const markers = [
         markeryellow,
-        markerblack,
-        markerblue,
-        markergreen,
-        markergrey,
-        markerorange,
-        markerred,
-        markerviolet ]
+        markerblack]
 
     const marker = markers[index % markers.length];
 
@@ -63,6 +67,26 @@ export function giveMarkerPin(index: number) {
         shadowAnchor: [13, 41],  
     });
 }
+
+
+export function giveColor(index: number) {
+    // const colorArray = [
+    //     "green",
+    //     "blue",
+    //     "orange",
+    //     "purple",
+    //     "pink",
+    //     "brown",
+    //     "black",
+    //     ]
+    const colorArray = [
+        "yellow",
+        "black"
+    ]
+    return colorArray[index % 9 - 1]
+
+}
+
 
 export const toastOptionsSuccess: ToastOptions = {
     position: "top-right",

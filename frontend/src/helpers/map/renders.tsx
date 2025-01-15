@@ -1,9 +1,9 @@
-import { Popup, Marker, Polygon, Tooltip} from 'react-leaflet';
+import { Popup, Marker, Polygon, Tooltip, Circle, CircleMarker} from 'react-leaflet';
 import { Zone } from './leaflet-types'
 import { Scooter } from '../bike-functions';
 import { LatLngTuple } from 'leaflet';
 import { iconStation } from '../config';
-import { giveMarkerPin } from '../config';
+import { giveMarkerPin, giveColor } from '../config';
 
 const zoneColors = (zoneType: string) => {
     switch(zoneType) {
@@ -18,19 +18,33 @@ const zoneColors = (zoneType: string) => {
     }
 }
 
-const renderScooterMarkers = (scooterData: Scooter[])=>   (
-    scooterData?.map((scooter, index) => (
-    <Marker key={index} icon={giveMarkerPin(index)} position={[scooter.latitude, scooter.longitude]}>
-        <Popup>
-            <p className="my-0 py-0">id: {scooter.id}</p>
-            <p className="my-0 py-0">batteryLevel: {scooter.batteryLevel}</p>
-            <p className="my-0 py-0">status: {scooter.status}</p>
-            <p className="my-0 py-0">longitude: {scooter.longitude}</p>
-            <p className="my-0 py-0">latitude: {scooter.latitude}</p>
-            <p className="my-0 py-0">updatedAt: {scooter.updatedAt}</p>
-            <p className="my-0 py-0">createdAt: {scooter.createdAt}</p>
-        </Popup>
-    </Marker>))
+const renderScooterMarkers = (scooterData: Scooter[], isLowRes=false)=>   (
+    isLowRes ? 
+        scooterData?.map((scooter, index) => (
+            <CircleMarker key={index} center={[scooter.latitude, scooter.longitude]} radius={2} color={giveColor(index)} fillColor={giveColor(index-2)} fillOpacity={1}>
+                    <Popup>
+                        <p className="my-0 py-0">id: {scooter.id}</p>
+                        <p className="my-0 py-0">batteryLevel: {scooter.batteryLevel}</p>
+                        <p className="my-0 py-0">status: {scooter.status}</p>
+                        <p className="my-0 py-0">longitude: {scooter.longitude}</p>
+                        <p className="my-0 py-0">latitude: {scooter.latitude}</p>
+                        <p className="my-0 py-0">updatedAt: {scooter.updatedAt}</p>
+                        <p className="my-0 py-0">createdAt: {scooter.createdAt}</p>
+                    </Popup>
+            </CircleMarker>))
+    :
+        scooterData?.map((scooter, index) => (  
+            <Marker key={index} icon={giveMarkerPin(index)} position={[scooter.latitude, scooter.longitude]}>
+                <Popup>
+                    <p className="my-0 py-0">id: {scooter.id}</p>
+                    <p className="my-0 py-0">batteryLevel: {scooter.batteryLevel}</p>
+                    <p className="my-0 py-0">status: {scooter.status}</p>
+                    <p className="my-0 py-0">longitude: {scooter.longitude}</p>
+                    <p className="my-0 py-0">latitude: {scooter.latitude}</p>
+                    <p className="my-0 py-0">updatedAt: {scooter.updatedAt}</p>
+                    <p className="my-0 py-0">createdAt: {scooter.createdAt}</p>
+                </Popup>
+            </Marker>))
     );
 
 const renderStationMarkers  = (stationPositions: LatLngTuple[]) =>  (

@@ -17,8 +17,7 @@ export default function ShowMap() {
     const [realTime, setRealTime] = useState(false);
     const timerRef = useRef<null | number>(null);
     const [trigger, setTrigger] = useState(0);
-  
-    
+
     useEffect(() => {
       const fetchScooters = async() => {
       try {
@@ -48,16 +47,14 @@ export default function ShowMap() {
           }
     }
     fetchZones();
-    },[city, trigger])
-
+    },[city]);
+  
 
   return (
     <>
     <AdminGate/>
-      <div data-testid="show-map" className="mx-auto sm:max-w-4xl"><Map city={city ?? "Göteborg"} zoneData={zoneData} scooterData={scooterData}/></div>
+      <div data-testid="show-map" className="mx-auto sm:max-w-4xl"><Map city={city ?? "Göteborg"} zoneData={zoneData} scooterData={scooterData} isLowRes={realTime}/></div>
       <div className="flex flex-col items-center justify-center my-2 py-2 bg-red-100 rounded-md w-full sm:max-w-xl mx-auto">
-      {/* <Label htmlFor="realtimetoggle">Vill du uppdatera kartan i realtid?</Label>
-      <ToggleSwitch id="realtimetoggle" checked={realTime} onChange={updateRealTime}>Uppdatera i realtid?</ToggleSwitch> */}
       <RealTimeUpdate timerRef={timerRef} realTime={realTime} setRealTime={setRealTime} setTrigger={setTrigger}/>
       </div>
         <div id="scooter-list" className="p-4 flex flex-col justify-center w-full">
@@ -69,7 +66,8 @@ export default function ShowMap() {
         <div className="mx-auto mb-5">
         <h2>Antal cyklar: <b>{scooterData.length}</b> </h2>
         </div>
-        <BikeList scooterData={scooterData} isCityList={false}/>
+        <BikeList scooterData={scooterData} isCityList={false} isLowRes={realTime}/>
+        
         </>) : (
                 <div className="mx-auto mb-5">
                     <p>Inga cyklar tillgängliga</p>

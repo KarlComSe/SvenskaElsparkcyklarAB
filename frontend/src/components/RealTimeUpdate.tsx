@@ -1,4 +1,5 @@
 import { Label, ToggleSwitch } from 'flowbite-react';
+import { toast } from 'react-toastify';
 
 type Props = {
     timerRef: React.MutableRefObject<number | null>;
@@ -14,8 +15,11 @@ export default function RealTimeUpdate({timerRef, realTime, setRealTime, setTrig
         if (realTime)
         {
           stopTimer();
+          toast.info("Real Time Tracking initiated, switching back to higher resolution")
         } else {
+
           startTimer();
+          toast.info("Real Time Tracking stopped, switching to low resolution to save resources")
         }
       }
 
@@ -39,9 +43,9 @@ export default function RealTimeUpdate({timerRef, realTime, setRealTime, setTrig
     
 
   return (
-    <div>
+    <div className="">
         <Label htmlFor="realtimetoggle">Vill du uppdatera kartan i realtid?</Label>
-        <ToggleSwitch id="realtimetoggle" data-testid="realtimeupdate" checked={realTime} onChange={updateRealTime}>Uppdatera i realtid?</ToggleSwitch>
+        <ToggleSwitch id="realtimetoggle" className='mx-auto' data-testid="realtimeupdate" checked={realTime} onChange={updateRealTime}>Uppdatera i realtid?</ToggleSwitch>
     </div>
   )
 }
