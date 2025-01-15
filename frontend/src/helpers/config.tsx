@@ -5,12 +5,12 @@ const redirectUri = 'http://localhost:5173/github/callback';
 const scope = 'user:email';
 import markerIcon from '../assets/images/station.png';
 import markerblack from '../assets/images/marker-icon-2x-black.png';
-import markerblue from '../assets/images/marker-icon-2x-blue.png';
-import markergreen from '../assets/images/marker-icon-2x-green.png';
-import markergrey from '../assets/images/marker-icon-2x-grey.png';
-import markerorange from '../assets/images/marker-icon-2x-orange.png';
-import markerred from '../assets/images/marker-icon-2x-red.png';
-import markerviolet from '../assets/images/marker-icon-2x-violet.png';
+// import markerblue from '../assets/images/marker-icon-2x-blue.png';
+// import markergreen from '../assets/images/marker-icon-2x-green.png';
+// import markergrey from '../assets/images/marker-icon-2x-grey.png';
+// import markerorange from '../assets/images/marker-icon-2x-orange.png';
+// import markerred from '../assets/images/marker-icon-2x-red.png';
+// import markerviolet from '../assets/images/marker-icon-2x-violet.png';
 import markeryellow from '../assets/images/marker-icon-2x-yellow.png';
 import { Bounce, ToastOptions } from 'react-toastify';
 
@@ -41,15 +41,19 @@ export const getHeader = (token: string, contentType?: string ) => {
 
 
 export function giveMarkerPin(index: number) {
+    // const markers = [
+    //     markeryellow,
+    //     markerblack,
+    //     markerblue,
+    //     markergreen,
+    //     markergrey,
+    //     markerorange,
+    //     markerred,
+    //     markerviolet ]
+    
     const markers = [
         markeryellow,
-        markerblack,
-        markerblue,
-        markergreen,
-        markergrey,
-        markerorange,
-        markerred,
-        markerviolet ]
+        markerblack]
 
     const marker = markers[index % markers.length];
 
@@ -63,6 +67,26 @@ export function giveMarkerPin(index: number) {
         shadowAnchor: [13, 41],  
     });
 }
+
+
+export function giveColor(index: number) {
+    // const colorArray = [
+    //     "green",
+    //     "blue",
+    //     "orange",
+    //     "purple",
+    //     "pink",
+    //     "brown",
+    //     "black",
+    //     ]
+    const colorArray = [
+        "yellow",
+        "black"
+    ]
+    return colorArray[index % 9 - 1]
+
+}
+
 
 export const toastOptionsSuccess: ToastOptions = {
     position: "top-right",
