@@ -5,12 +5,12 @@ const redirectUri = 'http://localhost:5173/github/callback';
 const scope = 'user:email';
 import markerIcon from '../assets/images/station.png';
 import markerblack from '../assets/images/marker-icon-2x-black.png';
-import markerblue from '../assets/images/marker-icon-2x-blue.png';
-import markergreen from '../assets/images/marker-icon-2x-green.png';
-import markergrey from '../assets/images/marker-icon-2x-grey.png';
-import markerorange from '../assets/images/marker-icon-2x-orange.png';
-import markerred from '../assets/images/marker-icon-2x-red.png';
-import markerviolet from '../assets/images/marker-icon-2x-violet.png';
+// import markerblue from '../assets/images/marker-icon-2x-blue.png';
+// import markergreen from '../assets/images/marker-icon-2x-green.png';
+// import markergrey from '../assets/images/marker-icon-2x-grey.png';
+// import markerorange from '../assets/images/marker-icon-2x-orange.png';
+// import markerred from '../assets/images/marker-icon-2x-red.png';
+// import markerviolet from '../assets/images/marker-icon-2x-violet.png';
 import markeryellow from '../assets/images/marker-icon-2x-yellow.png';
 import { Bounce, ToastOptions } from 'react-toastify';
 

@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Scooter } from '../helpers/bike-functions';
 import { Badge } from 'flowbite-react'
-
+import RealTimeContext from '../helpers/RealTimeContext';
+import { formatTimestamp } from '../helpers/other-functions';
 
 type Props = {
     scooterData: Scooter[];
@@ -9,21 +10,15 @@ type Props = {
     isLowRes?: boolean
 }
 
-export default function BikeList( {scooterData, isCityList, isLowRes=false} : Props) {
-    const [noChange, setNoChange] = useState(false);
+export default function BikeList( {scooterData, isCityList} : Props) {
+
     const [scootersString, setScootersString] = useState("")
-    const [time, setTime] = useState("");
-    
+    const { isLowRes } = useContext(RealTimeContext);
+
     useEffect(() => {
-        setTime(new Date().toISOString());
         const scooterDataString = scooterData.map(scooter => 
         Object.values(scooter).filter(value => typeof value !== 'object').join(' | ')
-        ).join('<br />');
-        setNoChange(false);
-        if (scooterDataString === scootersString)
-        {
-        setNoChange(true);
-        }
+            ).join('<br />');
         setScootersString(scooterDataString);
     },[scooterData]);
     
@@ -45,12 +40,12 @@ export default function BikeList( {scooterData, isCityList, isLowRes=false} : Pr
                     }
                     <div className="flex items-center p-1 rounded-lg">
                         <span className="font-semibold">createdAt:</span>
-                        <Badge>{scooter.createdAt}</Badge>
+                        <Badge>{formatTimestamp(scooter.createdAt)}</Badge>
                     </div>
 
                     <div className="flex items-center p-1 rounded-lg">
                         <span className="font-semibold">updatedAt:</span>
-                        <Badge>{scooter.updatedAt}</Badge>
+                        <Badge>{formatTimestamp(scooter.updatedAt)}</Badge>
                     </div>
                 </div>
 

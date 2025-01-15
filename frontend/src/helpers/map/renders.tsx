@@ -1,4 +1,4 @@
-import { Popup, Marker, Polygon, Tooltip, Circle, CircleMarker} from 'react-leaflet';
+import { Popup, Marker, Polygon, Tooltip, CircleMarker} from 'react-leaflet';
 import { Zone } from './leaflet-types'
 import { Scooter } from '../bike-functions';
 import { LatLngTuple } from 'leaflet';
