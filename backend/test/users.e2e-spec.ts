@@ -199,6 +199,56 @@ describe('Users Module Integration', () => {
           .set('Authorization', `Bearer ${userToken}`)
           .expect(403);
       });
+      
+    });
+
+    describe('User Deletion', () => {
+      it('should allow admins to soft delete a user', async () => {
+        // First verify the user exists and is active
+        const initialResponse = await request(app.getHttpServer())
+          .get(`/v1/users/${standardUser.githubId}`)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200);
+        
+        expect(initialResponse.body.roles).not.toContain('inactive');
+    
+        // Perform soft delete
+        const deleteResponse = await request(app.getHttpServer())
+          .patch(`/v1/users/${standardUser.githubId}/soft-delete`)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200);
+    
+        expect(deleteResponse.body.roles).toEqual(['inactive']);
+    
+        // Verify the user is now marked as inactive
+        const finalResponse = await request(app.getHttpServer())
+          .get(`/v1/users/${standardUser.githubId}`)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200);
+    
+        expect(finalResponse.body.roles).toEqual(['inactive']);
+      });
+    
+      it('should return 404 when trying to soft delete non-existent user', async () => {
+        await request(app.getHttpServer())
+          .patch('/v1/users/nonexistentuser/soft-delete')
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(404);
+      });
+    
+      it('should prevent soft-deleted users from accessing protected routes', async () => {
+        // First soft delete the user
+        await request(app.getHttpServer())
+          .patch(`/v1/users/${standardUser.githubId}/soft-delete`)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200);
+    
+        // Try to access a protected route
+        await request(app.getHttpServer())
+          .get(`/v1/users/${standardUser.githubId}/account`)
+          .set('Authorization', `Bearer ${userToken}`)
+          .expect(401);
+      });
     });
   });
 });
