@@ -1,0 +1,6 @@
+[submodule "FramtidshjulAB"]
+	path = FramtidshjulAB
+	url = git@github.com:KarlComSe/FramtidshjulAB.git
+[submodule "Vteam_Kundapp"]
+	path = Vteam_Kundapp
+	url = git@github.com:airhelios/Vteam_Kundapp.git
