@@ -1,3 +1,13 @@
+## Update submodules
+
+This repo has submodules.  
+
+**To clone including submodules:**
+- git clone --recursive git@github.com:KarlComSe/SvenskaElsparkcyklarAB.git
+
+**To update submodules:**
+- git submodule update --remote
+
 # Hello World Docker Test
 
 This repository will be connected to a main vteam repo. This repository only contains the initial Dockerfile test for setting up the development environment.
