@@ -1,0 +1,64 @@
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.demo
+    ports:
+      - "3535:3535"
+    env_file:
+      - ./backend/.env
+    environment:
+      - NODE_ENV=development
+      - PORT=3535
+    volumes:
+      - ./backend/data:/app/data
+    networks:
+      - app-network
+    command: npm run start:prod
+    restart: unless-stopped
+
+  bike-app:
+    build:
+      context: ./FramtidshjulAB
+      dockerfile: Dockerfile.demo
+    ports:
+      - "5174:5174"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+    command: npm run preview -- --host 0.0.0.0 --port 5174
+    depends_on:
+      - backend
+
+  customer-app:
+    build:
+      context: ./Vteam_Kundapp
+      dockerfile: Dockerfile.demo
+    ports:
+      - "1337:1337"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+    command: npm run dev -- --host 0.0.0.0 --port 1337
+    depends_on:
+      - backend
+
+  admin-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.demo
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+    depends_on:
+      - backend
+
+networks:
+  app-network:
+    driver: bridge
