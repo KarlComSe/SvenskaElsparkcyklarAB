@@ -21,6 +21,7 @@ import {
   TravelResponseDto,
   EndTravelDto,
 } from './dto/renting.dto';
+import { Travel } from './entities/travel.entity';
 
 @ApiTags('Bike Rentals')
 @Controller({ path: 'rental', version: '1' })
@@ -164,6 +165,11 @@ export class TravelController {
 
   // Fetch one travel by ID
   @Get(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'Travel found',
+    type: TravelResponseDto,
+  })
   async getTravelById(@Param('id') id: number) {
     return await this.travelService.findById(id);
   }
