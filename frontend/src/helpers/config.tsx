@@ -9,7 +9,7 @@ import markerblack from '../assets/images/marker-icon-2x-black.png';
 // import markergreen from '../assets/images/marker-icon-2x-green.png';
 // import markergrey from '../assets/images/marker-icon-2x-grey.png';
 // import markerorange from '../assets/images/marker-icon-2x-orange.png';
-// import markerred from '../assets/images/marker-icon-2x-red.png';
+import markerred from '../assets/images/marker-icon-2x-red.png';
 // import markerviolet from '../assets/images/marker-icon-2x-violet.png';
 import markeryellow from '../assets/images/marker-icon-2x-yellow.png';
 import { Bounce, ToastOptions } from 'react-toastify';
@@ -53,7 +53,8 @@ export function giveMarkerPin(index: number) {
     
     const markers = [
         markeryellow,
-        markerblack]
+        markerblack,
+        markerred]
 
     const marker = markers[index % markers.length];
 
@@ -81,9 +82,10 @@ export function giveColor(index: number) {
     //     ]
     const colorArray = [
         "yellow",
-        "black"
+        "black",
+        "red"
     ]
-    return colorArray[index % 9 - 1]
+    return colorArray[index % colorArray.length]
 
 }
 
