@@ -3,6 +3,7 @@ import { BicyclesController } from './bicycles.controller';
 import { BicyclesService } from './bicycles.service';
 import { BadRequestException } from '@nestjs/common';
 import { CityName } from '../cities/types/city.enum';
+import { BatchUpdateBicyclePositionsDto } from './dto/batch-update.dto';
 
 describe('BicyclesController', () => {
   let controller: BicyclesController;
@@ -31,6 +32,7 @@ describe('BicyclesController', () => {
     createBike: jest.fn((dto) => Promise.resolve(mockBicycleResponse[0])),
     createManyBikes: jest.fn((dtos) => Promise.resolve(mockBicycleResponse)),
     update: jest.fn((id, dto) => Promise.resolve(mockBicycleResponse[0])),
+    updatePositionsParallel: jest.fn(), // Add this mock
   };
 
   beforeEach(async () => {
@@ -110,6 +112,34 @@ describe('BicyclesController', () => {
       const result = await controller.updateBicycle('1', dto);
       expect(result).toEqual(mockBicycleResponse[0]);
       expect(service.update).toHaveBeenCalledWith('1', dto);
+    });
+  });
+
+  describe('updateBatchPositions', () => {
+    it('should update multiple bicycle positions', async () => {
+      const updateDto: BatchUpdateBicyclePositionsDto = {
+        updates: [
+          { id: '1', latitude: 57.70887, longitude: 11.97456 },
+          { id: '2', latitude: 57.70888, longitude: 11.97457 }
+        ]
+      };
+
+      const mockResults = [
+        { id: '1', success: true },
+        { id: '2', success: false, error: 'Bicycle not found' }
+      ];
+
+      mockBicyclesService.updatePositionsParallel.mockResolvedValue(mockResults);
+
+      const result = await controller.updateBatchPositions(updateDto);
+
+      expect(service.updatePositionsParallel).toHaveBeenCalledWith(updateDto.updates);
+      expect(result).toEqual({
+        results: mockResults,
+        totalCount: 2,
+        successCount: 1,
+        failureCount: 1
+      });
     });
   });
 });
