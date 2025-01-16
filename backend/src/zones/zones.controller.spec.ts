@@ -34,15 +34,23 @@ describe('ZonesController', () => {
     },
   };
 
+  const mockZoneResponse = {
+    filters: {
+      lat: 59.3293,
+      lon: 18.0686,
+      type: ['speed'],
+      includes: [],
+      city: ['Jönköping'],
+      rad: 3,
+    },
+    zones: [mockZone]
+  };
+
   const query: ZoneFilterQueryDto = {
     lat: 59.3293,
-
     lon: 18.0686,
-
     type: 'speed',
-
     city: 'Jönköping',
-
     rad: 3,
   };
 
@@ -54,6 +62,7 @@ describe('ZonesController', () => {
           provide: ZonesService,
           useValue: {
             findAll: jest.fn().mockResolvedValue([mockZone]),
+            getZonesByFilter: jest.fn().mockResolvedValue({ zones: [mockZone] })
           },
         },
       ],
@@ -67,20 +76,22 @@ describe('ZonesController', () => {
   });
 
   afterEach(async () => {
-    jest.clearAllMocks(); // Clear mock calls to ensure a fresh start for each test
-    jest.resetModules(); // Reset module registry to avoid cached modules
+    jest.clearAllMocks();
+    jest.resetModules();
   });
 
   describe('getAllZones', () => {
-    it('should return an array of zones', async () => {
+    it('should return zones with filters', async () => {
       const result = await controller.getAllZones(query);
-      expect(result).toEqual([mockZone]);
+      expect(result).toHaveProperty('filters');
+      expect(result).toHaveProperty('zones');
+      expect(result.zones).toEqual([mockZone]);
     });
 
-    it('should call zonesService.findAll', async () => {
-      const findAllSpy = jest.spyOn(zonesService, 'findAll');
+    it('should call zonesService.getZonesByFilter', async () => {
+      const getZonesByFilterSpy = jest.spyOn(zonesService, 'getZonesByFilter');
       await controller.getAllZones(query);
-      expect(findAllSpy).toHaveBeenCalled();
+      expect(getZonesByFilterSpy).toHaveBeenCalled();
     });
   });
 });
