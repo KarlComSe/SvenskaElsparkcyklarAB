@@ -17,12 +17,21 @@ The frontend solution is deeply connected to the [backend](https://github.com/Ka
 # Manual
 ## Admin
 **Get token to interact with API, directly**
-![Auth Token for API](repo_images/admin-sida.png)
+
+<img src="repo_images/admin-sida.png" alt="Auth Token for API" style="max-width:800px;">
+
 **Get lists over all bikes and zones in all cities**
-![All Bikes](repo_images/alla-cyklar.png)
-![All Zones](repo_images/alla-zoner.png)
+
+<img src="repo_images/alla-cyklar.png" alt="All Bikes" style="max-width:800px;">
+
+<img src="repo_images/alla-zoner.png" alt="All Zones" style="max-width:800px;">
+
 **Get all bikes and zones drawn out on maps and track all bikes in real time**
-![All Bikes and Zones for certain City and real time update of map](repo_images/karta.png)
+
+<img src="repo_images/karta.png" alt="All Bikes and Zones for certain City and real time update of map" style="max-width:800px;">
+
 **Get lists of and manage users**
-![All Users](repo_images/alla-användare.png)
-![Specific User](repo_images/enskild-användare.png)
+
+<img src="repo_images/alla-användare.png" alt="All Users" style="max-width:800px;">
+
+<img src="repo_images/enskild-användare.png" alt="Specific User" style="max-width:800px;">
