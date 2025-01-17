@@ -1,3 +1,18 @@
+# To demo app
+
+Build images:
+```
+docker compose -f docker-compose-demo.yml build --no-cache 
+# or
+docker compose -f docker-compose-demo.yml build
+```
+
+Start containers:
+```
+docker compose -f docker-compose-demo.yml up'
+```
+
+
 ## Update submodules
 
 This repo has submodules.  

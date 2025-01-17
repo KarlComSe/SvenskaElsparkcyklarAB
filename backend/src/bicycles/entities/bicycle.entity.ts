@@ -15,7 +15,7 @@ export class Bicycle {
   @ApiProperty({
     description: 'Unique identifier of the bicycle',
     example: '123e4567-e89b-12d3-a456-426614174000',
-    format: 'uuid'
+    format: 'uuid',
   })
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -24,7 +24,7 @@ export class Bicycle {
     description: 'Battery level of the bicycle (0-100)',
     example: 100,
     default: 100,
-    type: Number
+    type: Number,
   })
   @Column({ type: 'int', default: 100 })
   batteryLevel: number;
@@ -34,7 +34,7 @@ export class Bicycle {
     example: 57.70887,
     required: false,
     nullable: true,
-    type: Number
+    type: Number,
   })
   @Column('float', { nullable: true })
   latitude?: number;
@@ -44,7 +44,7 @@ export class Bicycle {
     example: 11.97456,
     required: false,
     nullable: true,
-    type: Number
+    type: Number,
   })
   @Column('float', { nullable: true })
   longitude?: number;
@@ -53,7 +53,7 @@ export class Bicycle {
     description: 'Current status of the bicycle',
     enum: ['Rented', 'Available', 'Service'],
     default: 'Available',
-    example: 'Available'
+    example: 'Available',
   })
   @Column({
     type: 'simple-enum',
@@ -66,7 +66,7 @@ export class Bicycle {
     description: 'City where the bicycle is located',
     type: () => City,
     required: false,
-    nullable: true
+    nullable: true,
   })
   @ManyToOne(() => City, { nullable: true })
   @JoinColumn()
@@ -75,16 +75,15 @@ export class Bicycle {
   @ApiProperty({
     description: 'Creation timestamp',
     example: '2025-01-02T12:10:00Z',
-    nullable: true
+    nullable: true,
   })
-
   @CreateDateColumn({ nullable: true })
   createdAt: Date;
 
   @ApiProperty({
     description: 'Last update timestamp',
     example: '2025-01-02T12:10:00Z',
-    nullable: true
+    nullable: true,
   })
   @UpdateDateColumn({ nullable: true })
   updatedAt: Date;

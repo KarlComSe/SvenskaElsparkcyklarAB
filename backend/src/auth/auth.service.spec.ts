@@ -40,9 +40,11 @@ describe('AuthService', () => {
         {
           provide: getRepositoryToken(User),
           useValue: {
-            findOne: jest.fn().mockImplementation(({ where }) =>
-              Promise.resolve(mockUsers.find((user) => user.githubId === where.githubId)),
-            ),
+            findOne: jest
+              .fn()
+              .mockImplementation(({ where }) =>
+                Promise.resolve(mockUsers.find((user) => user.githubId === where.githubId)),
+              ),
             save: jest.fn().mockImplementation((user) => Promise.resolve({ ...user, id: '2' })),
           },
         },
@@ -109,9 +111,7 @@ describe('AuthService', () => {
 
     it('should throw an error if the user is inactive', async () => {
       jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(mockUsers[1]); // Simulate inactive user
-      await expect(service.exchangeGithubCode('inactive-code')).rejects.toThrow(
-        ForbiddenException,
-      );
+      await expect(service.exchangeGithubCode('inactive-code')).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -141,7 +141,6 @@ describe('AuthService', () => {
         user: mockUsers[0],
       });
     });
-
   });
 
   describe('private methods', () => {

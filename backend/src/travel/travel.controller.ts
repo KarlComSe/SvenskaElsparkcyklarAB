@@ -1,26 +1,9 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Post,
-  Body,
-  UseGuards,
-  Req,
-} from '@nestjs/common';
-import {
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiParam,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Controller, Get, Param, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { TravelService } from './travel.service';
-import {
-  StartRentingDto,
-  TravelResponseDto,
-  EndTravelDto,
-} from './dto/renting.dto';
+import { StartRentingDto, TravelResponseDto, EndTravelDto } from './dto/renting.dto';
+import { Travel } from './entities/travel.entity';
 
 @ApiTags('Bike Rentals')
 @Controller({ path: 'rental', version: '1' })
@@ -82,7 +65,7 @@ export class TravelController {
   async endActiveBikeTravel(@Param('bikeId') bikeId: string) {
     return await this.travelService.endActiveTravelForBike(bikeId);
   }
-  
+
   @Post(':githubId/end-all-travels')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -106,7 +89,6 @@ export class TravelController {
   async endAllTravelsForCustomer(@Param('githubId') githubId: string) {
     return await this.travelService.endAllTravelsForCustomer(githubId);
   }
-
 
   // Start a bike rental
   @Post('bike/:id')
@@ -143,8 +125,7 @@ export class TravelController {
   // @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'End a bike travel',
-    description:
-      'Ends the travel, calculates cost, and makes the bike available again',
+    description: 'Ends the travel, calculates cost, and makes the bike available again',
   })
   @ApiResponse({
     status: 201,
@@ -164,6 +145,11 @@ export class TravelController {
 
   // Fetch one travel by ID
   @Get(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'Travel found',
+    type: TravelResponseDto,
+  })
   async getTravelById(@Param('id') id: number) {
     return await this.travelService.findById(id);
   }

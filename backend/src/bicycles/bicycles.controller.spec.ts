@@ -62,13 +62,16 @@ describe('BicyclesController', () => {
     });
 
     it('should throw BadRequestException if only latitude is provided', async () => {
-      await expect(controller.getAllBicycles('57.70887')).rejects.toThrow(
-        BadRequestException,
-      );
+      await expect(controller.getAllBicycles('57.70887')).rejects.toThrow(BadRequestException);
     });
 
     it('should return bicycles filtered by city', async () => {
-      const result = await controller.getAllBicycles(undefined, undefined, undefined, CityName.Göteborg);
+      const result = await controller.getAllBicycles(
+        undefined,
+        undefined,
+        undefined,
+        CityName.Göteborg,
+      );
       expect(result).toEqual(mockBicycleResponse);
       expect(service.findByCity).toHaveBeenCalledWith(CityName.Göteborg);
     });
@@ -76,11 +79,7 @@ describe('BicyclesController', () => {
     it('should return bicycles filtered by location', async () => {
       const result = await controller.getAllBicycles('57.70887', '11.97456');
       expect(result).toEqual(mockBicycleResponse);
-      expect(service.findByLocation).toHaveBeenCalledWith(
-        57.70887,
-        11.97456,
-        3000,
-      );
+      expect(service.findByLocation).toHaveBeenCalledWith(57.70887, 11.97456, 3000);
     });
   });
 

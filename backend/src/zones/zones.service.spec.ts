@@ -82,12 +82,12 @@ describe('ZonesService', () => {
   const mockBicycles = [
     {
       id: 'bike-1',
-      latitude: 57.7090,
-      longitude: 11.9730,
+      latitude: 57.709,
+      longitude: 11.973,
     },
     {
       id: 'bike-2',
-      latitude: 56.1710,
+      latitude: 56.171,
       longitude: 14.8635,
     },
   ];
@@ -102,7 +102,7 @@ describe('ZonesService', () => {
             find: jest.fn().mockImplementation((query) => {
               if (query.where?.city?.name) {
                 return Promise.resolve(
-                  mockZones.filter(zone => zone.city.name === query.where.city.name)
+                  mockZones.filter((zone) => zone.city.name === query.where.city.name),
                 );
               }
               return Promise.resolve(mockZones);
@@ -148,7 +148,7 @@ describe('ZonesService', () => {
       const result = await service.findByCity(CityName.Göteborg);
       console.log(result);
       expect(result.length).toBeGreaterThan(0);
-      expect(result.every(zone => zone.city.name === CityName.Göteborg)).toBeTruthy();
+      expect(result.every((zone) => zone.city.name === CityName.Göteborg)).toBeTruthy();
     });
 
     it('should return empty array for city with no zones', async () => {
@@ -163,14 +163,14 @@ describe('ZonesService', () => {
       const result = await service.getZonesByFilter({
         type: ['parking'],
       });
-      expect(result.zones.every(zone => zone.type === 'parking')).toBeTruthy();
+      expect(result.zones.every((zone) => zone.type === 'parking')).toBeTruthy();
     });
 
     it('should filter by city', async () => {
       const result = await service.getZonesByFilter({
         city: [CityName.Göteborg],
       });
-      expect(result.zones.every(zone => zone.city.name === CityName.Göteborg)).toBeTruthy();
+      expect(result.zones.every((zone) => zone.city.name === CityName.Göteborg)).toBeTruthy();
     });
 
     it('should filter by location and radius', async () => {
@@ -196,12 +196,15 @@ describe('ZonesService', () => {
         city: [CityName.Göteborg],
         includes: ['bikes'],
       });
-      
-      expect(result.zones.every(zone => 
-        zone.type === 'parking' && 
-        zone.city.name === CityName.Göteborg &&
-        zone.hasOwnProperty('bikes')
-      )).toBeTruthy();
+
+      expect(
+        result.zones.every(
+          (zone) =>
+            zone.type === 'parking' &&
+            zone.city.name === CityName.Göteborg &&
+            zone.hasOwnProperty('bikes'),
+        ),
+      ).toBeTruthy();
     });
   });
 
@@ -213,7 +216,7 @@ describe('ZonesService', () => {
     });
 
     it('should return false when point is outside parking zones', async () => {
-      const result = await service.pointInParkingZone(57.0000, 11.0000);
+      const result = await service.pointInParkingZone(57.0, 11.0);
       expect(result).toBeFalsy();
     });
   });

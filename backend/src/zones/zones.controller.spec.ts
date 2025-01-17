@@ -43,7 +43,7 @@ describe('ZonesController', () => {
       city: ['Jönköping'],
       rad: 3,
     },
-    zones: [mockZone]
+    zones: [mockZone],
   };
 
   const query: ZoneFilterQueryDto = {
@@ -62,7 +62,7 @@ describe('ZonesController', () => {
           provide: ZonesService,
           useValue: {
             findAll: jest.fn().mockResolvedValue([mockZone]),
-            getZonesByFilter: jest.fn().mockResolvedValue({ zones: [mockZone] })
+            getZonesByFilter: jest.fn().mockResolvedValue({ zones: [mockZone] }),
           },
         },
       ],

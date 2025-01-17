@@ -47,50 +47,50 @@ function isGuarded(
 
 async function generateTestTokens(dataSource: DataSource) {
   const userRepository = dataSource.getRepository(User);
-  
+
   const adminUser = await userRepository.findOne({
-    where: { username: 'Pbris' }
+    where: { username: 'Pbris' },
   });
 
   // Find a regular user from our seed data
   // From seed data we know 'bobsmith' is a regular user
   const standardUser = await userRepository.findOne({
-    where: { username: 'bobsmith' }
+    where: { username: 'bobsmith' },
   });
 
-  const fakeUser : User = {
+  const fakeUser: User = {
     ...standardUser,
     githubId: 'fakeuser',
     username: 'fakeuser',
-  } 
+  };
 
   if (!adminUser || !standardUser) {
     throw new Error('Test users not found in database. Ensure seeds have run.');
   }
 
   const jwtService = new JwtService({
-    secret: process.env.JWT_SECRET || 'your-test-secret'
+    secret: process.env.JWT_SECRET || 'your-test-secret',
   });
 
   const adminToken = jwtService.sign({
     sub: adminUser.githubId,
     username: adminUser.username,
     email: adminUser.email,
-    roles: adminUser.roles
+    roles: adminUser.roles,
   });
 
   const userToken = jwtService.sign({
     sub: standardUser.githubId,
     username: standardUser.username,
     email: standardUser.email,
-    roles: standardUser.roles
+    roles: standardUser.roles,
   });
 
   const fakeUserToken = jwtService.sign({
     sub: fakeUser.githubId,
     username: fakeUser.username,
     email: fakeUser.email,
-    roles: fakeUser.roles
+    roles: fakeUser.roles,
   });
 
   return {
@@ -99,12 +99,11 @@ async function generateTestTokens(dataSource: DataSource) {
     adminUser,
     standardUser,
     fakeUserToken,
-    fakeUser
+    fakeUser,
   };
 }
 
 async function initTestApp() {
-
   const originalEnv = process.env.NODE_ENV;
   process.env.NODE_ENV = 'development';
 
@@ -119,7 +118,7 @@ async function initTestApp() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
-    })
+    }),
   );
 
   app.enableVersioning({
@@ -128,7 +127,6 @@ async function initTestApp() {
 
   await app.init();
 
-  
   const dataSource = app.get(DataSource);
   const userSeeder = new UserDataSeeder();
   await userSeeder.run(dataSource);

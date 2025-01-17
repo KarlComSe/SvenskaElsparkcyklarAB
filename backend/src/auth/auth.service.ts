@@ -27,7 +27,7 @@ export class AuthService {
     const githubUser = await this.getGithubUser(githubToken);
     const user = await this.findOrCreateUser(githubUser);
 
-      // Check if the user's account is inactive
+    // Check if the user's account is inactive
     if (user.roles.includes('inactive')) {
       throw new ForbiddenException('Your account is inactive.');
     }
@@ -107,15 +107,14 @@ export class AuthService {
 
   async validateUserById(githubId: string): Promise<User | null> {
     const user = await this.userRepository.findOne({ where: { githubId } });
-  
+
     // Check if the user is inactive
     if (user && user.roles.includes('inactive')) {
       return null; // Treat inactive users as non-existent
     }
-  
+
     return user;
   }
-  
 
   async getStatus(user: User) {
     return {

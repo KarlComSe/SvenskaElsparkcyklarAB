@@ -35,4 +35,3 @@ const context = createContext({
 reporters.forEach((reporter) => {
   create(reporter, {}).execute(context);
 });
-

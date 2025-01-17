@@ -14,7 +14,7 @@ export class ZonesService {
     @InjectRepository(Zone)
     private readonly zoneRepository: Repository<Zone>,
     private readonly bicyclesService: BicyclesService,
-  ) { }
+  ) {}
 
   async findAll(): Promise<Zone[]> {
     return await this.zoneRepository.find({
@@ -29,10 +29,10 @@ export class ZonesService {
         city: {
           name: cityName,
         },
-      }
+      },
     });
   }
-  
+
   // seems unused
   // async getZones(lat: number, lon: number): Promise<Zone[]> {
   //   let zones = await this.findAll();

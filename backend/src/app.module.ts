@@ -51,15 +51,17 @@ export class AppModule implements OnModuleInit {
   constructor(private dataSource: DataSource) {}
 
   async onModuleInit() {
-    if (process.env.NODE_ENV === 'development') {
-      const userSeeder = new UserDataSeeder();
-      await userSeeder.run(this.dataSource);
-      const bicycleSeeder = new BicycleSeeder();
-      await bicycleSeeder.run(this.dataSource);
-      const zoneSeeder = new ZoneSeeder();
-      await zoneSeeder.run(this.dataSource);
-      const travelSeeder = new TravelSeeder();
-      await travelSeeder.run(this.dataSource);
-    }
+    await this.runSeeders();
+  }
+
+  private async runSeeders() {
+    const userSeeder = new UserDataSeeder();
+    await userSeeder.run(this.dataSource);
+    const bicycleSeeder = new BicycleSeeder();
+    await bicycleSeeder.run(this.dataSource);
+    const zoneSeeder = new ZoneSeeder();
+    await zoneSeeder.run(this.dataSource);
+    const travelSeeder = new TravelSeeder();
+    await travelSeeder.run(this.dataSource);
   }
 }

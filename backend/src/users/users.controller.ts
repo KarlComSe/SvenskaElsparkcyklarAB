@@ -194,7 +194,7 @@ export class UsersController {
     status: 200,
     description: 'Account details retrieved successfully.',
   })
-  async getAccountDetails(@Param('githubId') githubId: string, @Request() req: any,) {
+  async getAccountDetails(@Param('githubId') githubId: string, @Request() req: any) {
     const user = await this.usersService.findById(githubId);
     const authenticatedUser = req.user;
 
@@ -262,5 +262,4 @@ export class UsersController {
   async softDeleteUser(@Param('githubId') githubId: string) {
     return await this.usersService.softDeleteUser(githubId);
   }
-
 }
