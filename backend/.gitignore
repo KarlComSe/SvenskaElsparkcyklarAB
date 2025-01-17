@@ -2,6 +2,7 @@
 # Dependencies
 node_modules/
 dist/
+data/
 
 # Environment variables
 .env
