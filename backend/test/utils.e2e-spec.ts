@@ -9,7 +9,7 @@ describe('Utils', () => {
       @UseGuards(JwtAuthGuard)
       @Controller('test')
       class TestController {}
-      
+
       expect(() => {
         isGuarded(TestController, JwtAuthGuard);
       }).not.toThrow();
@@ -18,7 +18,7 @@ describe('Utils', () => {
     it('should throw error if no guard is present', () => {
       @Controller('test')
       class TestController {}
-      
+
       expect(() => {
         isGuarded(TestController, JwtAuthGuard);
       }).toThrow('No guard');
@@ -26,13 +26,15 @@ describe('Utils', () => {
 
     it('should throw error if wrong guard is present', () => {
       class OtherGuard {
-        canActivate() { return true; }
+        canActivate() {
+          return true;
+        }
       }
-      
+
       @UseGuards(OtherGuard)
       @Controller('test')
       class TestController {}
-      
+
       expect(() => {
         isGuarded(TestController, JwtAuthGuard);
       }).toThrow('to be protected with JwtAuthGuard');

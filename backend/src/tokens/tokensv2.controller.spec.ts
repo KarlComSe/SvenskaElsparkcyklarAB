@@ -18,7 +18,7 @@ describe('TokensV2Controller', () => {
     updatedAt: new Date(),
     isMonthlyPayment: true,
     accumulatedCost: 0,
-    balance: 100
+    balance: 100,
   };
 
   const mockToken = {
@@ -76,7 +76,9 @@ describe('TokensV2Controller', () => {
         token: mockToken.id,
         remainingUses: mockToken.remainingUses - 1,
         expiresAt: mockToken.expiresAt,
-        message: expect.stringContaining('This is a v2 response: Here\'s a quote from Theodore Roosevelt:')
+        message: expect.stringContaining(
+          "This is a v2 response: Here's a quote from Theodore Roosevelt:",
+        ),
       });
       // Verify it includes a Roosevelt quote
       expect(result.message).toContain('Do what you can, with what you have, where you are');

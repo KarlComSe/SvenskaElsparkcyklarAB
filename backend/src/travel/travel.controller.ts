@@ -1,26 +1,8 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Post,
-  Body,
-  UseGuards,
-  Req,
-} from '@nestjs/common';
-import {
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiParam,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Controller, Get, Param, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { TravelService } from './travel.service';
-import {
-  StartRentingDto,
-  TravelResponseDto,
-  EndTravelDto,
-} from './dto/renting.dto';
+import { StartRentingDto, TravelResponseDto, EndTravelDto } from './dto/renting.dto';
 import { Travel } from './entities/travel.entity';
 
 @ApiTags('Bike Rentals')
@@ -83,7 +65,7 @@ export class TravelController {
   async endActiveBikeTravel(@Param('bikeId') bikeId: string) {
     return await this.travelService.endActiveTravelForBike(bikeId);
   }
-  
+
   @Post(':githubId/end-all-travels')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -107,7 +89,6 @@ export class TravelController {
   async endAllTravelsForCustomer(@Param('githubId') githubId: string) {
     return await this.travelService.endAllTravelsForCustomer(githubId);
   }
-
 
   // Start a bike rental
   @Post('bike/:id')
@@ -144,8 +125,7 @@ export class TravelController {
   // @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'End a bike travel',
-    description:
-      'Ends the travel, calculates cost, and makes the bike available again',
+    description: 'Ends the travel, calculates cost, and makes the bike available again',
   })
   @ApiResponse({
     status: 201,

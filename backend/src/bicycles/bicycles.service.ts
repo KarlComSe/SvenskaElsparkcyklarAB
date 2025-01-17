@@ -14,16 +14,13 @@ import { BicycleBatchResponse } from './types/BicycleBatchResponse';
 
 @Injectable()
 export class BicyclesService {
-
   // ai generated code, asked to update previous function which was very inefficient
   async updatePositionsParallel(updates: BicyclePositionDto[]): Promise<BicycleBatchResponse[]> {
     try {
-      const latitudeCases = updates
-        .map(u => `WHEN id = '${u.id}' THEN ${u.latitude}`)
-        .join(' ');
-      
+      const latitudeCases = updates.map((u) => `WHEN id = '${u.id}' THEN ${u.latitude}`).join(' ');
+
       const longitudeCases = updates
-        .map(u => `WHEN id = '${u.id}' THEN ${u.longitude}`)
+        .map((u) => `WHEN id = '${u.id}' THEN ${u.longitude}`)
         .join(' ');
 
       await this.bicycleRepository
@@ -31,20 +28,20 @@ export class BicyclesService {
         .update()
         .set({
           latitude: () => `CASE ${latitudeCases} ELSE latitude END`,
-          longitude: () => `CASE ${longitudeCases} ELSE longitude END`
+          longitude: () => `CASE ${longitudeCases} ELSE longitude END`,
         })
-        .whereInIds(updates.map(update => update.id))
+        .whereInIds(updates.map((update) => update.id))
         .execute();
 
-      return updates.map(update => ({
+      return updates.map((update) => ({
         id: update.id,
-        success: true
+        success: true,
       }));
     } catch (error) {
-      return updates.map(update => ({
+      return updates.map((update) => ({
         id: update.id,
         success: false,
-        error: error.message
+        error: error.message,
       }));
     }
   }
@@ -54,7 +51,7 @@ export class BicyclesService {
     private readonly bicycleRepository: Repository<Bicycle>,
     @InjectRepository(City)
     private cityRepository: Repository<City>,
-  ) { }
+  ) {}
 
   async findAll(): Promise<Bicycle[]> {
     const bikes = await this.bicycleRepository.find({
@@ -114,13 +111,13 @@ export class BicyclesService {
 
   async createManyBikes(createBicycleDto: CreateBicycleDto[]): Promise<Bicycle[]> {
     const defaultCity = await this.cityRepository.findOne({
-      where: { name: CityName.Göteborg }
+      where: { name: CityName.Göteborg },
     });
     const Karlshamn = await this.cityRepository.findOne({
-      where: { name: CityName.Karlshamn }
+      where: { name: CityName.Karlshamn },
     });
     const Jönköping = await this.cityRepository.findOne({
-      where: { name: CityName.Jönköping }
+      where: { name: CityName.Jönköping },
     });
 
     const bikes = createBicycleDto.map((bike) => {

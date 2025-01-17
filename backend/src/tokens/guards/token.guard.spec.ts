@@ -57,9 +57,9 @@ describe('TokenGuard', () => {
         }),
       };
 
-      await expect(guard.canActivate(context as ExecutionContext))
-        .rejects
-        .toThrow(UnauthorizedException);
+      await expect(guard.canActivate(context as ExecutionContext)).rejects.toThrow(
+        UnauthorizedException,
+      );
       expect(tokensService.consume).not.toHaveBeenCalled();
     });
 
@@ -74,12 +74,11 @@ describe('TokenGuard', () => {
         }),
       };
 
-      jest.spyOn(tokensService, 'consume')
-        .mockRejectedValueOnce(new Error('Invalid token'));
+      jest.spyOn(tokensService, 'consume').mockRejectedValueOnce(new Error('Invalid token'));
 
-      await expect(guard.canActivate(context as ExecutionContext))
-        .rejects
-        .toThrow(UnauthorizedException);
+      await expect(guard.canActivate(context as ExecutionContext)).rejects.toThrow(
+        UnauthorizedException,
+      );
       expect(tokensService.consume).toHaveBeenCalledWith('invalid-token');
     });
   });

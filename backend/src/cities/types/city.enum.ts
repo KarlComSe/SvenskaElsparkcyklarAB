@@ -1,5 +1,5 @@
 export enum CityName {
-    Göteborg = 'Göteborg',
-    Jönköping = 'Jönköping',
-    Karlshamn = 'Karlshamn',
+  Göteborg = 'Göteborg',
+  Jönköping = 'Jönköping',
+  Karlshamn = 'Karlshamn',
 }

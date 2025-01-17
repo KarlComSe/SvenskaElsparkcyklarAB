@@ -20,7 +20,7 @@ describe('TokensController', () => {
     updatedAt: new Date(),
     isMonthlyPayment: true,
     accumulatedCost: 0,
-    balance: 100
+    balance: 100,
   };
 
   const mockToken = {
@@ -111,14 +111,14 @@ describe('TokensController', () => {
     it('should return a message for protected route', async () => {
       const result = await controller.someProtectedRoute();
       expect(result.message).toContain('Access granted');
-      expect(result.message).toContain('Here\'s a life insight for you:');
+      expect(result.message).toContain("Here's a life insight for you:");
     });
 
     it('should verify guard presence on protected routes', () => {
-      expect(Reflect.getMetadata('__guards__', controller.create))
-        .toContain(JwtAuthGuard);
-      expect(Reflect.getMetadata('__guards__', controller.someProtectedRoute))
-        .toContain(TokenGuard);
+      expect(Reflect.getMetadata('__guards__', controller.create)).toContain(JwtAuthGuard);
+      expect(Reflect.getMetadata('__guards__', controller.someProtectedRoute)).toContain(
+        TokenGuard,
+      );
     });
   });
 });

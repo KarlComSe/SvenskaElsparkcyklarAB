@@ -28,7 +28,7 @@ describe('Travel module (e2e)', () => {
         status: 'Available',
         latitude: 57.70887,
         longitude: 11.97456,
-        batteryLevel: 100
+        batteryLevel: 100,
       });
 
     testBikeId = bikeResponse.body.id;
@@ -43,23 +43,19 @@ describe('Travel module (e2e)', () => {
       return request(app.getHttpServer())
         .get('/v1/rental')
         .expect(200)
-        .then(response => {
+        .then((response) => {
           expect(Array.isArray(response.body)).toBeTruthy();
         });
     });
 
     it('should return 404 for non-existent travel ID', () => {
-      return request(app.getHttpServer())
-        .get('/v1/rental/99999')
-        .expect(404);
+      return request(app.getHttpServer()).get('/v1/rental/99999').expect(404);
     });
   });
 
   describe('Single Rental Flow', () => {
     it('should fail to start rental without auth token', () => {
-      return request(app.getHttpServer())
-        .post(`/v1/rental/bike/${testBikeId}`)
-        .expect(401);
+      return request(app.getHttpServer()).post(`/v1/rental/bike/${testBikeId}`).expect(401);
     });
 
     it('should start renting a bike', async () => {
@@ -71,7 +67,7 @@ describe('Travel module (e2e)', () => {
       expect(response.body).toHaveProperty('id');
       expect(response.body).toHaveProperty('startTime');
       expect(response.body.customer.githubId).toBe(standardUser.githubId);
-      
+
       testTravelId = response.body.id;
     });
 
@@ -92,7 +88,7 @@ describe('Travel module (e2e)', () => {
 
       expect(Array.isArray(response.body)).toBeTruthy();
       expect(response.body.length).toBeGreaterThan(0);
-      const activeTravel = response.body.find(travel => travel.id === testTravelId);
+      const activeTravel = response.body.find((travel) => travel.id === testTravelId);
       expect(activeTravel).toBeTruthy();
       expect(activeTravel.customer.githubId).toBe(standardUser.githubId);
     });
@@ -118,7 +114,7 @@ describe('Travel module (e2e)', () => {
           status: 'Available',
           latitude: 57.70887,
           longitude: 11.97456,
-          batteryLevel: 100
+          batteryLevel: 100,
         });
 
       secondBikeId = bikeResponse.body.id;

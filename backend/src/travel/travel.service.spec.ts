@@ -29,7 +29,7 @@ describe('TravelService', () => {
             create: jest.fn(),
             manager: {
               getRepository: jest.fn().mockReturnValue({
-                save: jest.fn(),  // Mock the save method of User repository
+                save: jest.fn(), // Mock the save method of User repository
               }),
             },
           },
@@ -49,9 +49,9 @@ describe('TravelService', () => {
           },
         },
         {
-          provide: UsersService,  // Mock UsersService correctly
+          provide: UsersService, // Mock UsersService correctly
           useValue: {
-            save: jest.fn(),  // Explicitly mock the save method
+            save: jest.fn(), // Explicitly mock the save method
           },
         },
       ],
@@ -61,7 +61,7 @@ describe('TravelService', () => {
     travelRepository = module.get(getRepositoryToken(Travel));
     bicyclesService = module.get(BicyclesService);
     zonesService = module.get(ZonesService);
-    usersService = module.get(UsersService);  // Get the UsersService mock
+    usersService = module.get(UsersService); // Get the UsersService mock
   });
 
   it('should be defined', () => {
@@ -167,7 +167,9 @@ describe('TravelService', () => {
       expect(bicyclesService.update).toHaveBeenCalledWith(mockBike.id, { status: 'Available' });
 
       // Ensure the travel record is saved
-      expect(travelRepository.save).toHaveBeenCalledWith(expect.objectContaining({ stopTime: expect.any(Date) }));
+      expect(travelRepository.save).toHaveBeenCalledWith(
+        expect.objectContaining({ stopTime: expect.any(Date) }),
+      );
     });
 
     it('should throw NotFoundException when travel not found', async () => {
