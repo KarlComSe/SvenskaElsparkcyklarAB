@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Bicycle } from './entities/bicycle.entity';
 import { NotFoundException } from '@nestjs/common';
 import { UpdateBicycleDto } from './dto/update-bicycle.dto';
@@ -15,36 +15,40 @@ import { BicycleBatchResponse } from './types/BicycleBatchResponse';
 @Injectable()
 export class BicyclesService {
 
+  // ai generated code, asked to update previous function which was very inefficient
   async updatePositionsParallel(updates: BicyclePositionDto[]): Promise<BicycleBatchResponse[]> {
-    const updatePromises = updates.map(async (update) => {
-      try {
-        const bicycle = await this.bicycleRepository.findOne({
-          where: { id: update.id }
-        });
+    try {
+      const latitudeCases = updates
+        .map(u => `WHEN id = '${u.id}' THEN ${u.latitude}`)
+        .join(' ');
+      
+      const longitudeCases = updates
+        .map(u => `WHEN id = '${u.id}' THEN ${u.longitude}`)
+        .join(' ');
 
-        if (!bicycle) {
-          return {
-            id: update.id,
-            success: false,
-            error: `Bicycle with id ${update.id} not found`
-          };
-        }
+      await this.bicycleRepository
+        .createQueryBuilder()
+        .update()
+        .set({
+          latitude: () => `CASE ${latitudeCases} ELSE latitude END`,
+          longitude: () => `CASE ${longitudeCases} ELSE longitude END`
+        })
+        .whereInIds(updates.map(update => update.id))
+        .execute();
 
-        await this.bicycleRepository.update(
-          update.id,
-          {
-            latitude: update.latitude,
-            longitude: update.longitude,
-          }
-        );
-        return { id: update.id, success: true };
-      } catch (error) {
-        return { id: update.id, success: false, error: error.message };
-      }
-    });
-
-    return await Promise.all(updatePromises);
+      return updates.map(update => ({
+        id: update.id,
+        success: true
+      }));
+    } catch (error) {
+      return updates.map(update => ({
+        id: update.id,
+        success: false,
+        error: error.message
+      }));
+    }
   }
+
   constructor(
     @InjectRepository(Bicycle)
     private readonly bicycleRepository: Repository<Bicycle>,
