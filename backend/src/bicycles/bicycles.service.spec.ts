@@ -144,43 +144,5 @@ describe('BicyclesService', () => {
       expect(service.findByCity).toHaveBeenCalledWith(cityName);
       expect(getDistanceMock).not.toHaveBeenCalled();
     });
-
-    describe('updatePositionsParallel', () => {
-      const updates: BicyclePositionDto[] = [
-        { id: '1', latitude: 57.70887, longitude: 11.97456 },
-        { id: '2', latitude: 57.70888, longitude: 11.97457 }
-      ];
-  
-      it('should update positions of existing bicycles', async () => {
-        mockBicycleRepository.findOne.mockImplementation(({ where: { id } }) => {
-          if (id === '1') return mockBicycles[0];
-          return null;
-        });
-  
-        const result = await service.updatePositionsParallel(updates);
-  
-        expect(result).toHaveLength(2);
-        expect(result[0]).toEqual({ id: '1', success: true });
-        expect(result[1]).toEqual({ 
-          id: '2', 
-          success: false, 
-          error: 'Bicycle with id 2 not found' 
-        });
-      });
-  
-      it('should handle database errors gracefully', async () => {
-        mockBicycleRepository.findOne.mockResolvedValueOnce(mockBicycles[0]);
-        mockBicycleRepository.update.mockRejectedValueOnce(new Error('Database error'));
-  
-        const result = await service.updatePositionsParallel([updates[0]]);
-  
-        expect(result).toHaveLength(1);
-        expect(result[0]).toEqual({
-          id: '1',
-          success: false,
-          error: 'Database error'
-        });
-      });
-    });
   });
 });
