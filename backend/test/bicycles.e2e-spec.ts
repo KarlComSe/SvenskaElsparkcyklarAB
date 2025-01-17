@@ -3,6 +3,8 @@ import { initTestApp, generateTestTokens } from './utils';
 import * as request from 'supertest';
 import { CityName } from '../src/cities/types/city.enum';
 import { User } from '../src/users/entities/user.entity';
+import { Bicycle } from 'src/bicycles/entities/bicycle.entity';
+import { BatchUpdateBicyclePositionsDto } from 'src/bicycles/dto/batch-update.dto';
 
 describe('Bicycles module (e2e)', () => {
   describe('Bicycles Module Integration', () => {
@@ -236,6 +238,65 @@ describe('Bicycles module (e2e)', () => {
           .then((response) => {
             expect(response.body.message).toContain('At least one bike is required');
           });
+      });
+    });
+    describe('PATCH /v1/bike/batch/positions', () => {
+      let testBike: any;
+
+      beforeAll(async () => {
+        const newBike = {
+          batteryLevel: 80,
+          latitude: 57.70887,
+          longitude: 11.97456,
+          city: CityName.Göteborg,
+          status: 'Available',
+        };
+
+        const response = await request(app.getHttpServer())
+          .post('/v1/bike/create')
+          .send(newBike)
+          .expect(201);
+
+        testBike = response.body;
+      });
+
+      it('should successfully update bike position and return success response', async () => {
+        const updatedLatitude = 57.71;
+        const updatedLongitude = 11.98;
+
+        const requestBody = {
+          updates: [
+            {
+              id: testBike.id,
+              latitude: updatedLatitude,
+              longitude: updatedLongitude,
+            },
+          ],
+        };
+
+        const response = await request(app.getHttpServer())
+          .patch('/v1/bike/batch/positions')
+          .send(requestBody)
+          .expect(200);
+
+        expect(response.body).toEqual({
+          results: [
+            {
+              id: testBike.id,
+              success: true,
+            },
+          ],
+          totalCount: 1,
+          successCount: 1,
+          failureCount: 0,
+        });
+
+        const updatedBike = await request(app.getHttpServer())
+          .get(`/v1/bike/${testBike.id}`)
+          .expect(200);
+
+        expect(updatedBike.body.latitude).toBe(updatedLatitude);
+        expect(updatedBike.body.longitude).toBe(updatedLongitude);
       });
     });
   });
