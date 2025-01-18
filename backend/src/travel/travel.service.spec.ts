@@ -164,7 +164,7 @@ describe('TravelService', () => {
       expect(result.stopTime).toBeDefined();
 
       // Ensure bicycle status is updated
-      expect(bicyclesService.update).toHaveBeenCalledWith(mockBike.id, { status: 'Available' });
+      expect(bicyclesService.update).toHaveBeenCalledWith(mockBike.id, { status: 'Service' });
 
       // Ensure the travel record is saved
       expect(travelRepository.save).toHaveBeenCalledWith(
