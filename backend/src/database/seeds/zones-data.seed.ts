@@ -5,7 +5,7 @@ import { CityName } from '../../cities/types/city.enum';
 
 export default class ZoneSeeder {
   async run(connection: DataSource): Promise<void> {
-    if (process.env.NODE_ENV !== 'production') {
+    if (true) {//process.env.NODE_ENV !== 'production') {
       const zoneRepo = connection.getRepository(Zone);
 
       const cityRepo = connection.getRepository(City);
