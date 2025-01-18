@@ -5,7 +5,7 @@ import { User } from '../../users/entities/user.entity';
 
 export default class TravelDataSeeder {
   async run(connection: DataSource): Promise<void> {
-    if (process.env.NODE_ENV !== 'production') {
+    if (true) {//process.env.NODE_ENV !== 'production') {
       const travelRepository = connection.getRepository(Travel);
       const bikeRepository = connection.getRepository(Bicycle);
       const userRepository = connection.getRepository(User);
