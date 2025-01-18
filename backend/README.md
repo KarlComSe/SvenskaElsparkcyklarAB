@@ -1,6 +1,6 @@
 # Coverage
-<!-- Main branch: ![Coverage Badge](../../blob/badges/backend/coverage/badges-main.svg) -->
-Development branch: ![Coverage Badge](../../blob/badges/backend/coverage/badges-development.svg)
+![Coverage Badge](../../blob/badges/backend/backend/coverage/badges.svg)
+(Generated with Github actions!)
 
 # Backend
 
