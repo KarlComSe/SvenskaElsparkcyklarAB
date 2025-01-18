@@ -1,6 +1,6 @@
 # Coverage
-![Coverage Badge](../../blob/badges/backend/backend/coverage/badges.svg)
-(Generated with Github actions!)
+![Coverage Badge](https://raw.githubusercontent.com/KarlComSe/SvenskaElsparkcyklarAB/badges/backend/backend/coverage/badge.svg)
+*(Generated with GitHub Actions!)*
 
 # Backend
 

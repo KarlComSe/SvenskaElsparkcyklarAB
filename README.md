@@ -86,6 +86,11 @@ Code quality has primarily been a focus for the backend (incl. API). The reason 
 
 [![Build Status](https://scrutinizer-ci.com/g/KarlComSe/SvenskaElsparkcyklarAB/badges/build.png?b=development)](https://scrutinizer-ci.com/g/KarlComSe/SvenskaElsparkcyklarAB/build-status/development)
 
+### Code coverage badge for backend (API)
+
+![Coverage Badge](https://raw.githubusercontent.com/KarlComSe/SvenskaElsparkcyklarAB/badges/backend/backend/coverage/badge.svg)
+*(Generated with GitHub Actions!)*
+
 # Other remarks
 
 The API doesn't implement fully protected end points. Thus, please don't use it in a production environment. 
