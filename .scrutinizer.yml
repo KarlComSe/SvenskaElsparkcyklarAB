@@ -41,7 +41,8 @@ checks:
 
 build:
   environment:
-    image: node:18
+    node: 
+      version: 18
   nodes:
     backend:
       root_path: './backend'
