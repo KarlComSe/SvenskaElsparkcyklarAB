@@ -107,8 +107,8 @@ export class TravelService {
     travel.endZoneType = endZoneType;
     travel.cost = cost;
 
-    // Update bike status to available
-    await this.bicyclesService.update(bike.id, { status: 'Available' });
+    const newStatus = endZoneType === 'Parking' ? 'Service' : 'Available';
+    await this.bicyclesService.update(bike.id, { status: newStatus });
 
     // Update user account
     const customer = travel.customer;
