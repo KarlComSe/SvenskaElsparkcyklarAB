@@ -34,6 +34,9 @@ jobs:
       - name: Generate coverage report and run all tests
         run: npm run test:full-cov
        
+      - name: List coverage files
+        run: ls -la ./coverage-combined
+
       - name: Checkout badges branch
         run: |
           git fetch origin badges || true
@@ -42,8 +45,8 @@ jobs:
       - name: Generate coverage badges
         uses: jaywcjlove/coverage-badges-cli@main
         with:
-          source: coverage-combined/coverage-final.json
-          output: coverage/badge.svg
+          source: backend/coverage-combined/coverage-final.json
+          output: backend/coverage/badge.svg
           
       - name: Commit and push badge to badges branch
         run: |
