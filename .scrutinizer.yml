@@ -41,7 +41,7 @@ checks:
 
 build:
   environment:
-    - image: node:18
+    image: node:18
   nodes:
     backend:
       root_path: './backend'
