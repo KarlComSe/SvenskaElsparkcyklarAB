@@ -31,18 +31,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
-
-      - name: Run e2e tests
-        run: npm run test:e2e
-
-      - name: Generate coverage report
+      - name: Generate coverage report and run all tests
         run: npm run test:full-cov
         
       - name: Save coverage report
         run: |
-          cp coverage-combined/coverage-final.json ../coverage-final.json
+          cp backend/coverage-combined/coverage-final.json ../coverage-final.json
           
       - name: Checkout badges branch
         run: |
