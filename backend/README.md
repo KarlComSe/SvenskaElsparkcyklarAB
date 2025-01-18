@@ -55,6 +55,10 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+### On .env
+
+See parent-folder README for .env considerations.
+
 ## Run tests
 
 ```bash
