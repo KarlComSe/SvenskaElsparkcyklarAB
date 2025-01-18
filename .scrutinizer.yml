@@ -40,16 +40,18 @@ checks:
     no_alert: true
 
 build:
+  environment:
+    - image: node:18
   nodes:
     backend:
       root_path: './backend'
       project_setup:
-        before:
-          - nvm install 17
-          - nvm use 17
+        # before:
+        #   - nvm install 17
+        #   - nvm use 17
         override:
           - npm install
-          - npm install sqlite3
+          # - npm install sqlite3
       tests:
         override:
           - js-scrutinizer-run
@@ -66,9 +68,9 @@ build:
     frontend:
       root_path: './frontend'
       project_setup:
-        before:
-          - nvm install 17
-          - nvm use 17
+        # before:
+        #   - nvm install 17
+        #   - nvm use 17
         override:
           - npm install
       tests:
