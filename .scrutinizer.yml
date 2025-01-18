@@ -40,19 +40,17 @@ checks:
     no_alert: true
 
 build:
-  environment:
-    node: 
-      version: 18
   nodes:
     backend:
       root_path: './backend'
       project_setup:
-        # before:
-        #   - nvm install 17
-        #   - nvm use 17
+        before:
+          - nvm install 17
+          - nvm use 17
+          - apt-get update 
+          - apt-get install -y python make g++ sqlite3 libsqlite3-dev
         override:
           - npm install
-          # - npm install sqlite3
       tests:
         override:
           - js-scrutinizer-run
@@ -69,9 +67,9 @@ build:
     frontend:
       root_path: './frontend'
       project_setup:
-        # before:
-        #   - nvm install 17
-        #   - nvm use 17
+        before:
+          - nvm install 17
+          - nvm use 17
         override:
           - npm install
       tests:
