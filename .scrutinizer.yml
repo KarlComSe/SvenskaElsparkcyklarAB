@@ -47,9 +47,11 @@ build:
         before:
           - nvm install 17
           - nvm use 17
+          - sudo apt-get update 
+          - sudo apt-get install -y python make g++ sqlite3 libsqlite3-dev
         override:
           - npm install
-          - npm install sqlite3
+          - npm install sqlite3@5.0.2 --save
       tests:
         override:
           - js-scrutinizer-run
