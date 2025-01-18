@@ -1,6 +1,6 @@
 # Coverage
-<!-- Main branch: ![Coverage Badge](../../blob/badges/backend/coverage/badges-main.svg) -->
-Development branch: ![Coverage Badge](../../blob/badges/backend/coverage/badges-development.svg)
+![Coverage Badge](https://raw.githubusercontent.com/KarlComSe/SvenskaElsparkcyklarAB/badges/backend/backend/coverage/badge.svg)
+*(Generated with GitHub Actions!)*
 
 # Backend
 
