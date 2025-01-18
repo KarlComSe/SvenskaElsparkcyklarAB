@@ -2,12 +2,14 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsUUID, ValidateNested, IsArray } from 'class-validator';
 import { Type } from 'class-transformer';
 import { UpdateBicycleDto } from './update-bicycle.dto';
-import { BicycleBatchResponse } from '../types/BicycleBatchResponse';
+
+const UUID_EXAMPLE = '123e4567-e89b-12d3-a456-426614174000';
+const UUID_DESCRIPTION = 'Unique identifier of the bicycle';
 
 export class UpdateBicycleWithIdDto extends UpdateBicycleDto {
   @ApiProperty({
-    description: 'Unique identifier of the bicycle',
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    description: UUID_DESCRIPTION,
+    example: UUID_EXAMPLE,
     required: true,
   })
   @IsUUID()
@@ -16,8 +18,8 @@ export class UpdateBicycleWithIdDto extends UpdateBicycleDto {
 
 export class BicyclePositionDto {
   @ApiProperty({
-    description: 'Unique identifier of the bicycle',
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    description: UUID_DESCRIPTION,
+    example: UUID_EXAMPLE,
     required: true,
   })
   @IsUUID()
@@ -56,8 +58,8 @@ export class BatchUpdateBicyclePositionsDto {
 
 export class BicycleBatchResponseItem {
   @ApiProperty({
-    description: 'Unique identifier of the bicycle',
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    description: UUID_DESCRIPTION,
+    example: UUID_EXAMPLE,
   })
   id: string;
 

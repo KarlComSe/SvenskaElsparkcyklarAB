@@ -112,11 +112,11 @@ describe('Travel module (e2e)', () => {
         .set('Authorization', `Bearer ${adminToken}`)
         .send({
           status: 'Available',
-          latitude: 57.70000,
-          longitude: 11.97000,
+          latitude: 57.7,
+          longitude: 11.97,
           batteryLevel: 100,
         });
-  
+
       secondBikeId = bikeResponse.body.id;
     });
 
@@ -126,7 +126,7 @@ describe('Travel module (e2e)', () => {
         .patch(`/v1/bike/${testBikeId}`)
         .set('Authorization', `Bearer ${adminToken}`)
         .send({ status: 'Available' });
-  
+
       await request(app.getHttpServer())
         .patch(`/v1/bike/${secondBikeId}`)
         .set('Authorization', `Bearer ${adminToken}`)

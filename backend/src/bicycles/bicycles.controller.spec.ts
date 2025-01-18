@@ -28,11 +28,11 @@ describe('BicyclesController', () => {
     findByLocation: jest.fn(() => Promise.resolve(mockBicycleResponse)),
     findByCityAndLocation: jest.fn(() => Promise.resolve(mockBicycleResponse)),
     toBicycleResponses: jest.fn((bikes) => bikes),
-    findById: jest.fn((id) => Promise.resolve(mockBicycleResponse[0])),
-    createBike: jest.fn((dto) => Promise.resolve(mockBicycleResponse[0])),
-    createManyBikes: jest.fn((dtos) => Promise.resolve(mockBicycleResponse)),
-    update: jest.fn((id, dto) => Promise.resolve(mockBicycleResponse[0])),
-    updatePositionsParallel: jest.fn(), // Add this mock
+    findById: jest.fn(() => Promise.resolve(mockBicycleResponse[0])),
+    createBike: jest.fn(() => Promise.resolve(mockBicycleResponse[0])),
+    createManyBikes: jest.fn(() => Promise.resolve(mockBicycleResponse)),
+    update: jest.fn(() => Promise.resolve(mockBicycleResponse[0])),
+    updatePositionsParallel: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -119,13 +119,13 @@ describe('BicyclesController', () => {
       const updateDto: BatchUpdateBicyclePositionsDto = {
         updates: [
           { id: '1', latitude: 57.70887, longitude: 11.97456 },
-          { id: '2', latitude: 57.70888, longitude: 11.97457 }
-        ]
+          { id: '2', latitude: 57.70888, longitude: 11.97457 },
+        ],
       };
 
       const mockResults = [
         { id: '1', success: true },
-        { id: '2', success: false, error: 'Bicycle not found' }
+        { id: '2', success: false, error: 'Bicycle not found' },
       ];
 
       mockBicyclesService.updatePositionsParallel.mockResolvedValue(mockResults);
@@ -137,7 +137,7 @@ describe('BicyclesController', () => {
         results: mockResults,
         totalCount: 2,
         successCount: 1,
-        failureCount: 1
+        failureCount: 1,
       });
     });
   });

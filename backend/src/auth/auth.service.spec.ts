@@ -9,23 +9,31 @@ import { ConfigService } from '@nestjs/config';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { of } from 'rxjs';
 
+// Constants to avoid string duplication
+const TEST_CONSTANTS = {
+  GITHUB_ID: 'github-123',
+  GITHUB_ID_INACTIVE: 'github-456',
+  GITHUB_ID_NEW: 'github-999',
+  TEST_EMAIL: 'testuser@example.com',
+  TEST_USERNAME: 'testuser',
+  AVATAR_URL: 'http://avatar.example.com',
+  MOCK_TOKEN: 'mock-token',
+} as const;
+
 describe('AuthService', () => {
   let service: AuthService;
   let userRepository: Repository<User>;
-  let jwtService: JwtService;
-  let httpService: HttpService;
-  let configService: ConfigService;
 
   const mockUsers: User[] = [
     {
-      githubId: 'github-123',
-      username: 'testuser',
-      email: 'testuser@example.com',
+      githubId: TEST_CONSTANTS.GITHUB_ID,
+      username: TEST_CONSTANTS.TEST_USERNAME,
+      email: TEST_CONSTANTS.TEST_EMAIL,
       roles: ['user'],
       hasAcceptedTerms: true,
     } as User,
     {
-      githubId: 'github-456',
+      githubId: TEST_CONSTANTS.GITHUB_ID_INACTIVE,
       username: 'inactiveuser',
       email: 'inactiveuser@example.com',
       roles: ['inactive'],
@@ -57,14 +65,16 @@ describe('AuthService', () => {
         {
           provide: HttpService,
           useValue: {
-            post: jest.fn().mockReturnValue(of({ data: { access_token: 'mock-token' } })),
+            post: jest
+              .fn()
+              .mockReturnValue(of({ data: { access_token: TEST_CONSTANTS.MOCK_TOKEN } })),
             get: jest.fn().mockReturnValue(
               of({
                 data: {
-                  id: 'github-123',
-                  login: 'testuser',
-                  email: 'testuser@example.com',
-                  avatar_url: 'http://avatar.example.com',
+                  id: TEST_CONSTANTS.GITHUB_ID,
+                  login: TEST_CONSTANTS.TEST_USERNAME,
+                  email: TEST_CONSTANTS.TEST_EMAIL,
+                  avatar_url: TEST_CONSTANTS.AVATAR_URL,
                 },
               }),
             ),
@@ -85,15 +95,12 @@ describe('AuthService', () => {
 
     service = module.get<AuthService>(AuthService);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
-    jwtService = module.get<JwtService>(JwtService);
-    httpService = module.get<HttpService>(HttpService);
-    configService = module.get<ConfigService>(ConfigService);
   });
 
   describe('exchangeGithubCode', () => {
     it('should exchange code and return a token and user', async () => {
       const result = await service.exchangeGithubCode('valid-code');
-      expect(result.access_token).toBe('token-for-testuser');
+      expect(result.access_token).toBe(`token-for-${TEST_CONSTANTS.TEST_USERNAME}`);
       expect(result.user).toEqual(mockUsers[0]);
     });
 
@@ -102,11 +109,11 @@ describe('AuthService', () => {
       const result = await service.exchangeGithubCode('new-user-code');
       expect(userRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({
-          githubId: 'github-123',
-          username: 'testuser',
+          githubId: TEST_CONSTANTS.GITHUB_ID,
+          username: TEST_CONSTANTS.TEST_USERNAME,
         }),
       );
-      expect(result.access_token).toBe('token-for-testuser');
+      expect(result.access_token).toBe(`token-for-${TEST_CONSTANTS.TEST_USERNAME}`);
     });
 
     it('should throw an error if the user is inactive', async () => {
@@ -117,7 +124,7 @@ describe('AuthService', () => {
 
   describe('validateUserById', () => {
     it('should return a user if found', async () => {
-      const user = await service.validateUserById('github-123');
+      const user = await service.validateUserById(TEST_CONSTANTS.GITHUB_ID);
       expect(user).toEqual(mockUsers[0]);
     });
 
@@ -128,7 +135,7 @@ describe('AuthService', () => {
     });
 
     it('should return null if the user is inactive', async () => {
-      const user = await service.validateUserById('github-456');
+      const user = await service.validateUserById(TEST_CONSTANTS.GITHUB_ID_INACTIVE);
       expect(user).toBeNull();
     });
   });
@@ -146,50 +153,50 @@ describe('AuthService', () => {
   describe('private methods', () => {
     it('getGithubToken should return a token', async () => {
       const token = await service['getGithubToken']('valid-code');
-      expect(token).toBe('mock-token');
+      expect(token).toBe(TEST_CONSTANTS.MOCK_TOKEN);
     });
 
     it('getGithubUser should return a user', async () => {
-      const githubUser = await service['getGithubUser']('mock-token');
+      const githubUser = await service['getGithubUser'](TEST_CONSTANTS.MOCK_TOKEN);
       expect(githubUser).toEqual({
-        id: 'github-123',
-        login: 'testuser',
-        email: 'testuser@example.com',
-        avatar_url: 'http://avatar.example.com',
+        id: TEST_CONSTANTS.GITHUB_ID,
+        login: TEST_CONSTANTS.TEST_USERNAME,
+        email: TEST_CONSTANTS.TEST_EMAIL,
+        avatar_url: TEST_CONSTANTS.AVATAR_URL,
       });
     });
 
     it('findOrCreateUser should find an existing user', async () => {
       const user = await service['findOrCreateUser']({
-        id: 'github-123',
-        login: 'testuser',
-        email: 'testuser@example.com',
-        avatar_url: 'http://avatar.example.com',
+        id: TEST_CONSTANTS.GITHUB_ID,
+        login: TEST_CONSTANTS.TEST_USERNAME,
+        email: TEST_CONSTANTS.TEST_EMAIL,
+        avatar_url: TEST_CONSTANTS.AVATAR_URL,
       });
       expect(user).toEqual(mockUsers[0]);
     });
 
     it('findOrCreateUser should create a new user if not found', async () => {
-      jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(null); // Simulate no user found
+      jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(null);
       const user = await service['findOrCreateUser']({
-        id: 'github-999',
+        id: TEST_CONSTANTS.GITHUB_ID_NEW,
         login: 'newuser',
         email: 'newuser@example.com',
-        avatar_url: 'http://avatar.example.com',
+        avatar_url: TEST_CONSTANTS.AVATAR_URL,
       });
       expect(userRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({
-          githubId: 'github-999',
+          githubId: TEST_CONSTANTS.GITHUB_ID_NEW,
           username: 'newuser',
         }),
       );
       expect(user).toEqual(
         expect.objectContaining({
-          githubId: 'github-999',
+          githubId: TEST_CONSTANTS.GITHUB_ID_NEW,
           username: 'newuser',
           email: 'newuser@example.com',
-          avatarUrl: 'http://avatar.example.com',
-          roles: ['user'], // Default role for new users
+          avatarUrl: TEST_CONSTANTS.AVATAR_URL,
+          roles: ['user'],
         }),
       );
     });
