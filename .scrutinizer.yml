@@ -41,7 +41,7 @@ checks:
 
 build:
   nodes:
-    analysis:
+    backend:
       root_path: './backend'
       project_setup:
         before:
@@ -49,6 +49,7 @@ build:
           - nvm use 17
         override:
           - npm install
+          - npm install sqlite3
       tests:
         override:
           - js-scrutinizer-run
