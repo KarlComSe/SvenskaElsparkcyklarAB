@@ -51,6 +51,7 @@ build:
           - sudo apt-get install -y python make g++ sqlite3 libsqlite3-dev
         override:
           - npm install
+          - npm install sqlite3 --save
       tests:
         override:
           - js-scrutinizer-run
