@@ -112,12 +112,25 @@ describe('Travel module (e2e)', () => {
         .set('Authorization', `Bearer ${adminToken}`)
         .send({
           status: 'Available',
-          latitude: 57.70887,
-          longitude: 11.97456,
+          latitude: 57.70000,
+          longitude: 11.97000,
           batteryLevel: 100,
         });
-
+  
       secondBikeId = bikeResponse.body.id;
+    });
+
+    beforeEach(async () => {
+      // Reset bikes to Available status before each test
+      await request(app.getHttpServer())
+        .patch(`/v1/bike/${testBikeId}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ status: 'Available' });
+  
+      await request(app.getHttpServer())
+        .patch(`/v1/bike/${secondBikeId}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ status: 'Available' });
     });
 
     it('should handle ending all travels for a customer', async () => {
