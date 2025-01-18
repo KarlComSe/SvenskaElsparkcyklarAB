@@ -39,14 +39,11 @@ jobs:
 
       - name: Generate coverage report
         run: npm run test:full-cov
-
-      - name: Generate coverage report
-        run: npm run test:full-cov
         
       - name: Save coverage report
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
         run: |
-          cp coverage/coverage-summary.json ../coverage-summary.json
+          cp coverage-combined/coverage-final.json ../coverage-final.json
           
       - name: Checkout badges branch
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
@@ -58,7 +55,7 @@ jobs:
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
         uses: jaywcjlove/coverage-badges-cli@main
         with:
-          source: ../coverage-summary.json
+          source: ../coverage-final.json
           output: backend/coverage/badges-${{ github.ref_name }}.svg
           
       - name: Commit and push badges to badges branch
