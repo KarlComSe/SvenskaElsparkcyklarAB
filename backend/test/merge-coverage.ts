@@ -8,8 +8,8 @@ import { createContext } from 'istanbul-lib-report';
 import { createCoverageMap, CoverageMap } from 'istanbul-lib-coverage';
 
 // Define valid reporter types
-type ReporterType = 'clover' | 'json' | 'lcov' | 'text' | 'html';
-const reporters: ReporterType[] = ['clover', 'json', 'lcov', 'text', 'html'];
+type ReporterType = 'clover' | 'json' | 'lcov' | 'text' | 'html' | 'json-summary';
+const reporters: ReporterType[] = ['clover', 'json', 'lcov', 'text', 'html', 'json-summary'];
 
 const coverageMap: CoverageMap = createCoverageMap();
 
