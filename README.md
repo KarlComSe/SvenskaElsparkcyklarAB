@@ -65,3 +65,27 @@ Performance of bike simulator:
 ### Alternative simulator
 
 A Python script also exists. See the /simulation/README.md.
+
+## Code quality
+
+Code quality is achieved in two ways: 
+
+- Code coverage analytics
+- Linting
+- External static code analyzing service
+
+All different parts of the system is linted according to various rules. Some parts of the system is analyzed through Scrutinizer. Most part of the system achieves 100 % compliance with the selected linting standards.
+
+Code quality has primarily been a focus for the backend (incl. API). The reason for this is that it is more difficult to test frontend applications and that these are less critical in case of failure. The backend has a code coverage close to 100 %.
+
+### Scrutinizer data for /backend and /frontend
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/KarlComSe/SvenskaElsparkcyklarAB/badges/quality-score.png?b=development)](https://scrutinizer-ci.com/g/KarlComSe/SvenskaElsparkcyklarAB/?branch=development)
+
+[![Code Coverage](https://scrutinizer-ci.com/g/KarlComSe/SvenskaElsparkcyklarAB/badges/coverage.png?b=development)](https://scrutinizer-ci.com/g/KarlComSe/SvenskaElsparkcyklarAB/?branch=development)
+
+[![Build Status](https://scrutinizer-ci.com/g/KarlComSe/SvenskaElsparkcyklarAB/badges/build.png?b=development)](https://scrutinizer-ci.com/g/KarlComSe/SvenskaElsparkcyklarAB/build-status/development)
+
+# Other remarks
+
+The API doesn't implement fully protected end points. Thus, please don't use it in a production environment. 
