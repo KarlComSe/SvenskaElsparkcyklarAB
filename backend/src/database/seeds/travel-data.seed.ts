@@ -2,6 +2,11 @@ import { DataSource } from 'typeorm';
 import { Travel } from '../../travel/entities/travel.entity';
 import { Bicycle } from '../../bicycles/entities/bicycle.entity';
 import { User } from '../../users/entities/user.entity';
+import { Zone } from 'src/zones/entities/zone';
+import { TravelService } from '../../travel/travel.service';
+import { BicyclesService } from '../../bicycles/bicycles.service';
+import { ZonesService } from '../../zones/zones.service';
+import { City } from 'src/cities/entities/city.entity';
 
 export default class TravelDataSeeder {
   async run(connection: DataSource): Promise<void> {
@@ -10,6 +15,27 @@ export default class TravelDataSeeder {
       const travelRepository = connection.getRepository(Travel);
       const bikeRepository = connection.getRepository(Bicycle);
       const userRepository = connection.getRepository(User);
+      const zoneRepository = connection.getRepository(Zone);
+      const cityRepository = connection.getRepository(City);
+
+      const bicycleService = new BicyclesService(bikeRepository, cityRepository);
+      const zonesService = new ZonesService(zoneRepository, bicycleService);
+      const travelService = new TravelService(travelRepository, bicycleService, zonesService);
+
+      const bikes = await bikeRepository.find({ take: 10 });
+      const users = await userRepository.find({ take: 4 });
+
+      let userIndex = 0;
+
+      try {
+        for (const bike of bikes) {
+          await travelService.startRentingBike(bike.id, users[userIndex].githubId);
+          console.log(`Created ongoing travel for bike ${bike.id}`);
+          userIndex = (userIndex + 1) % users.length;
+        }
+      } catch (error) {
+        console.error('Error creating ongoing travels:', error);
+      }
 
       // Fetch references for existing bikes and customers
 
