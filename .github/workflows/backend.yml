@@ -9,6 +9,9 @@ on:
       - 'backend/**'
   workflow_dispatch: 
 
+permissions:
+  contents: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -50,9 +53,14 @@ jobs:
           
       - name: Commit and push badge to badges branch
         run: |
+          git fetch origin badges || true
+          git checkout badges 2>/dev/null || git checkout -b badges
+          mkdir -p backend/coverage/
+          mv coverage/badge.svg backend/coverage/badge.svg
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          mkdir -p coverage/
-          git add -f coverage/badge.svg
+          git add -f backend/coverage/badge.svg
           git commit -m "Update coverage badge" || echo "No changes to commit"
           git push origin badges
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
