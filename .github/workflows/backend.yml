@@ -36,3 +36,37 @@ jobs:
 
       - name: Run e2e tests
         run: npm run test:e2e
+
+          - name: Generate coverage report
+        run: npm run test:full-cov
+
+      - name: Generate coverage report
+        run: npm run test:full-cov
+        
+      - name: Save coverage report
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
+        run: |
+          cp coverage/coverage-summary.json ../coverage-summary.json
+          
+      - name: Checkout badges branch
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
+        run: |
+          git fetch origin badges || true
+          git checkout badges 2>/dev/null || git checkout -b badges
+          
+      - name: Generate coverage badges
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
+        uses: jaywcjlove/coverage-badges-cli@main
+        with:
+          source: ../coverage-summary.json
+          output: backend/coverage/badges-${{ github.ref_name }}.svg
+          
+      - name: Commit and push badges to badges branch
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          mkdir -p backend/coverage/
+          git add backend/coverage/badges-${{ github.ref_name }}.svg
+          git commit -m "Update coverage badges for ${{ github.ref_name }}" || echo "No changes to commit"
+          git push origin badges
