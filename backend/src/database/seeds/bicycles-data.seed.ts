@@ -5,7 +5,8 @@ import { CityName } from '../../cities/types/city.enum';
 
 export default class BicycleSeeder {
   async run(connection: DataSource): Promise<void> {
-    if (true) {//process.env.NODE_ENV !== 'production') {
+    if (true) {
+      //process.env.NODE_ENV !== 'production') {
       const bicycleRepo = connection.getRepository(Bicycle);
       const cityRepo = connection.getRepository(City);
 

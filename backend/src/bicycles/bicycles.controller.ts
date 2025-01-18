@@ -25,19 +25,10 @@ import { Bicycle } from './entities/bicycle.entity';
 import { BicycleResponse } from './types/bicycle-response.interface';
 import { CreateBicycleDto } from './dto/create-bicycle.dto';
 import { CityName } from 'src/cities/types/city.enum';
-import {
-  BatchUpdateBicyclePositionsDto,
-  BicycleBatchResponseDto,
-  BicyclePositionDto,
-} from './dto/batch-update.dto';
-import { BicycleBatchResponse } from './types/BicycleBatchResponse';
+import { BatchUpdateBicyclePositionsDto, BicycleBatchResponseDto } from './dto/batch-update.dto';
 
 const BIKE_ID = 'b1e77dd3-9fb9-4e6c-a5c6-b6fc58f59464';
-const BIKE_STATUS_AVAILABLE = 'Available';
-const CREATED_AT = '2024-12-01T05:01:01.000Z';
-const UPDATED_AT = '2024-12-07T18:30:30.000Z';
 const UNAUTHORIZED_ERROR_MESSAGE = 'Unauthorized. Authentication required';
-const CITY_ID_GOTHENBURG = '123e4567-e89b-12d3-a456-426614174000';
 
 @ApiTags('Bicycles')
 @Controller({ path: 'bike', version: '1' })

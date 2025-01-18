@@ -6,16 +6,16 @@ import { Repository, UpdateResult } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { City } from '../cities/entities/city.entity';
 import { CityName } from '../cities/types/city.enum';
-import { BicyclePositionDto } from './dto/batch-update.dto';
 
 jest.mock('../utils/geo.utils', () => ({
   getDistance: jest.fn(),
 }));
 
+const mockGeoUtils = jest.requireMock('../utils/geo.utils');
+
 describe('BicyclesService', () => {
   let service: BicyclesService;
   let bicycleRepository: Repository<Bicycle>;
-  let cityRepository: Repository<City>;
 
   const mockCity = {
     id: '1',
@@ -66,7 +66,6 @@ describe('BicyclesService', () => {
 
     service = module.get<BicyclesService>(BicyclesService);
     bicycleRepository = module.get<Repository<Bicycle>>(getRepositoryToken(Bicycle));
-    cityRepository = module.get<Repository<City>>(getRepositoryToken(City));
   });
 
   it('should be defined', () => {
@@ -120,8 +119,7 @@ describe('BicyclesService', () => {
       ];
 
       jest.spyOn(service, 'findByCity').mockResolvedValue(mockBicycles);
-      const getDistanceMock = require('../utils/geo.utils').getDistance;
-      getDistanceMock.mockImplementation((lat1, lon1, lat2, lon2) => 1000);
+      mockGeoUtils.getDistance.mockImplementation(() => 1000);
 
       const result = await service.findByCityAndLocation(cityName, lat, lon, radius);
       expect(result).toHaveLength(1);
@@ -136,13 +134,12 @@ describe('BicyclesService', () => {
       const radius = 3000;
 
       jest.spyOn(service, 'findByCity').mockResolvedValue([]);
-      const getDistanceMock = require('../utils/geo.utils').getDistance;
-      getDistanceMock.mockReset();
+      mockGeoUtils.getDistance.mockReset();
 
       const result = await service.findByCityAndLocation(cityName, lat, lon, radius);
       expect(result).toEqual([]);
       expect(service.findByCity).toHaveBeenCalledWith(cityName);
-      expect(getDistanceMock).not.toHaveBeenCalled();
+      expect(mockGeoUtils.getDistance).not.toHaveBeenCalled();
     });
   });
 });
