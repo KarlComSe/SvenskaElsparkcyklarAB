@@ -1,4 +1,3 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { isGuarded } from './utils';
 import { JwtAuthGuard } from '../src/auth/guards/jwt-auth.guard';
 import { Controller, UseGuards } from '@nestjs/common';

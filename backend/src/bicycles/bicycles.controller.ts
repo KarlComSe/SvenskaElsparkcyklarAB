@@ -101,7 +101,6 @@ export class BicyclesController {
     type: Bicycle,
   })
   async createABike(@Body() createBicycleDto: CreateBicycleDto): Promise<Bicycle> {
-    console.log('skapa cykel');
     return await this.bicyclesService.createBike(createBicycleDto);
   }
 

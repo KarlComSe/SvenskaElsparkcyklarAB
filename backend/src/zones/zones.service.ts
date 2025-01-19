@@ -61,7 +61,6 @@ export class ZonesService {
     }
 
     if (query.lat && query.lon) {
-      console.log(query.lat, query.lon);
       zones.zones = zones.zones.filter((zone) => {
         return (
           getDistance(query.lat, query.lon, zone.polygon[0].lat, zone.polygon[0].lng) <= query.rad

@@ -146,7 +146,6 @@ describe('ZonesService', () => {
   describe('findByCity (Low value test, it only tests TypeOrm, not our logic or code)', () => {
     it('should find zones in Göteborg', async () => {
       const result = await service.findByCity(CityName.Göteborg);
-      console.log(result);
       expect(result.length).toBeGreaterThan(0);
       expect(result.every((zone) => zone.city.name === CityName.Göteborg)).toBeTruthy();
     });

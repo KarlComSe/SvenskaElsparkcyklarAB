@@ -7,7 +7,6 @@ describe('Travel module (e2e)', () => {
   let app: INestApplication;
   let adminToken: string;
   let userToken: string;
-  let adminUser: User;
   let standardUser: User;
   let testBikeId: string;
   let testTravelId: number;
@@ -17,7 +16,6 @@ describe('Travel module (e2e)', () => {
     app = initializedApp;
     adminToken = tokens.adminToken;
     userToken = tokens.userToken;
-    adminUser = tokens.adminUser;
     standardUser = tokens.standardUser;
 
     // Create a test bike first

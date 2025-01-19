@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { initTestApp, generateTestTokens, removeTimestamps } from './utils';
+import { initTestApp } from './utils';
 import * as request from 'supertest';
 import { User } from 'src/users/entities/user.entity';
 
@@ -10,7 +10,6 @@ describe('Users Module Integration', () => {
   let adminUser: User;
   let standardUser: User;
   let fakeUserToken: string;
-  let fakeUser: User;
 
   beforeAll(async () => {
     const { app: initializedApp, tokens } = await initTestApp();
@@ -20,7 +19,6 @@ describe('Users Module Integration', () => {
     adminUser = tokens.adminUser;
     standardUser = tokens.standardUser;
     fakeUserToken = tokens.fakeUserToken;
-    fakeUser = tokens.fakeUser;
   });
 
   afterAll(async () => {

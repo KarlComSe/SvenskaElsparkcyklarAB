@@ -3,28 +3,14 @@ import { initTestApp, generateTestTokens } from './utils';
 import * as request from 'supertest';
 import { CityName } from '../src/cities/types/city.enum';
 import { User } from '../src/users/entities/user.entity';
-import { Bicycle } from 'src/bicycles/entities/bicycle.entity';
-import { BatchUpdateBicyclePositionsDto } from 'src/bicycles/dto/batch-update.dto';
 
 describe('Bicycles module (e2e)', () => {
   describe('Bicycles Module Integration', () => {
     let app: INestApplication;
-    let adminToken: string;
-    let userToken: string;
-    let adminUser: User;
-    let standardUser: User;
-    let fakeUserToken: string;
-    let fakeUser: User;
 
     beforeAll(async () => {
-      const { app: initializedApp, tokens } = await initTestApp();
+      const { app: initializedApp } = await initTestApp();
       app = initializedApp;
-      adminToken = tokens.adminToken;
-      userToken = tokens.userToken;
-      adminUser = tokens.adminUser;
-      standardUser = tokens.standardUser;
-      fakeUserToken = tokens.fakeUserToken;
-      fakeUser = tokens.fakeUser;
     });
 
     afterAll(async () => {

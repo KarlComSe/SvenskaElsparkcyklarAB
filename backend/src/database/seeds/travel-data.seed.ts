@@ -30,11 +30,12 @@ export default class TravelDataSeeder {
       try {
         for (const bike of bikes) {
           await travelService.startRentingBike(bike.id, users[userIndex].githubId);
-          console.log(`Created ongoing travel for bike ${bike.id}`);
+          // console.log(`Created ongoing travel for bike ${bike.id}`);
           userIndex = (userIndex + 1) % users.length;
         }
       } catch (error) {
-        console.error('Error creating ongoing travels:', error);
+        // silently ignore errors, as expected
+        // console.error('Error creating ongoing travels:', error);
       }
 
       // Fetch references for existing bikes and customers
