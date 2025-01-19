@@ -36,7 +36,7 @@ docker compose -f docker-compose-demo.yml build
 
 Start containers:
 ```
-docker compose -f docker-compose-demo.yml up'
+docker compose -f docker-compose-demo.yml up
 ```
 
 ## Demo the app

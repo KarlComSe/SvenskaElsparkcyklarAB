@@ -85,6 +85,35 @@ export class ZonesService {
     return zones;
   }
 
+  async getZoneTypesForPosition(lat: number, lon: number): Promise<string[]> {
+    const parkingZones = (await this.findAll()).filter((zone) => {
+      return zone.type === 'parking';
+    });
+    const chargingZones = (await this.findAll()).filter((zone) => {
+      return zone.type === 'charging';
+    });
+
+    const parking = parkingZones.some((zone) => {
+      return positionInsidePolygon(lat, lon, zone.polygon);
+    });
+
+    const charging = chargingZones.some((zone) => {
+      return positionInsidePolygon(lat, lon, zone.polygon);
+    });
+
+    const types = [];
+
+    if (parking) {
+      types.push('Parking');
+    }
+
+    if (charging) {
+      types.push('Charging');
+    }
+
+    return types;
+  }
+
   async pointInParkingZone(lat: number, lon: number): Promise<boolean> {
     const zones = (await this.findAll()).filter((zone) => {
       return zone.type === 'parking';
