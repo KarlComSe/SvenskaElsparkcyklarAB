@@ -1,7 +1,6 @@
 import { CanActivate, ValidationPipe, VersioningType } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
-import { JwtPayload } from 'src/auth/types/jwt-payload.interface';
 import { AppModule } from './../src/app.module';
 import ZoneSeeder from 'src/database/seeds/zones-data.seed';
 import BicycleSeeder from 'src/database/seeds/bicycles-data.seed';
@@ -148,6 +147,7 @@ async function initTestApp() {
 }
 
 function removeTimestamps(users: any[]) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return users.map(({ createdAt, updatedAt, ...rest }) => rest);
 }
 

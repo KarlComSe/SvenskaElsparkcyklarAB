@@ -3,7 +3,7 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { UpdateTermsDto } from './dto/update-terms.dto/update-terms.dto';
 import { User } from './entities/user.entity';
-import { BadRequestException, CanActivate, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { isGuarded } from '../../test/utils';
 

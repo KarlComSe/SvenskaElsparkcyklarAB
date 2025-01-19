@@ -59,7 +59,7 @@ export default class ZoneSeeder {
         {
           polygon: [
             { lat: 57.7066, lng: 11.9384 },
-            { lat: 57.7088, lng: 11.9289 },    
+            { lat: 57.7088, lng: 11.9289 },
             { lat: 57.7069, lng: 11.9289 },
             { lat: 57.7037, lng: 11.9396 },
             { lat: 57.7057, lng: 11.9396 },

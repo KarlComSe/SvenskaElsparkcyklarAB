@@ -1,12 +1,39 @@
-import { BadRequestException, Controller, Param, ForbiddenException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Param,
+  ForbiddenException,
+  Patch,
+  Get,
+  Body,
+  Req,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { Patch, Get, Body, Req, Post, UseGuards, Request } from '@nestjs/common';
 import { UpdateTermsDto } from './dto/update-terms.dto/update-terms.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto/update-user.dto';
 import { AdjustFundsDto } from './dto/update-user.dto/adjust-funds.dto';
 import { AdminGuard } from '../auth/guards/admin.guard';
+import { HTTP_STATUS } from '../constants/HTTP_responses';
+import {
+  ApiAuthResponses,
+  ApiAdminResponses,
+  ApiBadRequestResponse,
+} from 'src/decorators/api-responses.decorator';
+
+export const CustomerExample = {
+  githubId: '169550',
+  username: 'three-musketeers',
+  email: 'dasthreemusketörs@student.bth.se',
+  roles: ['user'],
+  hasAcceptedTerms: false,
+  avatarUrl: 'https://avatars.githubusercontent.com/u/169550?v=4',
+  createdAt: '2024-12-01T05:01:01.000Z',
+  updatedAt: '2024-12-07T18:30:30.000Z',
+} as const;
 
 @Controller({ path: 'users', version: '1' })
 export class UsersController {
@@ -21,7 +48,7 @@ export class UsersController {
     type: UpdateTermsDto,
   })
   @ApiResponse({
-    status: 200,
+    status: HTTP_STATUS.OK,
     description: 'Terms acceptance status updated successfully',
     examples: {
       'application/json': {
@@ -33,14 +60,8 @@ export class UsersController {
       },
     },
   })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid input',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized. Authentication required',
-  })
+  @ApiBadRequestResponse()
+  @ApiAuthResponses()
   async updateTerms(@Req() req, @Body() updateTermsDto: UpdateTermsDto) {
     if (typeof updateTermsDto.hasAcceptedTerms !== 'boolean') {
       throw new BadRequestException('Invalid input');
@@ -53,44 +74,17 @@ export class UsersController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all customers (Only for admin)' })
   @ApiResponse({
-    status: 200,
+    status: HTTP_STATUS.OK,
     description: 'List of customers',
     examples: {
       'application/json': {
         summary: 'Example of a list of customers',
-        value: [
-          {
-            githubId: '169550',
-            username: 'three-musketeers',
-            email: 'dasthreemusketörs@student.bth.se',
-            roles: ['user'],
-            hasAcceptedTerms: false,
-            avatarUrl: 'https://avatars.githubusercontent.com/u/169550?v=4',
-            createdAt: '2024-12-01T05:01:01.000Z',
-            updatedAt: '2024-12-07T18:30:30.000Z',
-          },
-          {
-            githubId: '169550',
-            username: 'three-musketeers',
-            email: 'dasthreemusketörs@student.bth.se',
-            roles: ['user'],
-            hasAcceptedTerms: false,
-            avatarUrl: 'https://avatars.githubusercontent.com/u/169550?v=4',
-            createdAt: '2024-12-01T05:01:01.000Z',
-            updatedAt: '2024-12-07T18:30:30.000Z',
-          },
-        ],
+        value: [CustomerExample],
       },
     },
   })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized. Authentication required',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden. Admin access required',
-  })
+  @ApiAuthResponses()
+  @ApiAdminResponses()
   async getAllCustomers() {
     // return {userid: "hej1"};
     return await this.usersService.findAll();
@@ -101,36 +95,21 @@ export class UsersController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get customer by id (Only for admin)' })
   @ApiResponse({
-    status: 200,
+    status: HTTP_STATUS.OK,
     description: 'Customer details returned by id',
     examples: {
       'application/json': {
         summary: 'Example of a customer',
-        value: {
-          githubId: '169550',
-          username: 'three-musketeers',
-          email: 'dasthreemusketörs@student.bth.se',
-          roles: ['user'],
-          hasAcceptedTerms: false,
-          avatarUrl: 'https://avatars.githubusercontent.com/u/169550?v=4',
-          createdAt: '2024-12-01T05:01:01.000Z',
-          updatedAt: '2024-12-07T18:30:30.000Z',
-        },
+        value: CustomerExample,
       },
     },
   })
   @ApiResponse({
-    status: 404,
+    status: HTTP_STATUS.NOT_FOUND,
     description: 'Customer not found',
   })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized. Authentication required',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden. Admin access required',
-  })
+  @ApiAdminResponses()
+  @ApiAuthResponses()
   async getCustomerById(@Param('githubId') githubId: string) {
     return await this.usersService.findById(githubId);
   }
@@ -149,7 +128,7 @@ export class UsersController {
     type: UpdateUserDto,
   })
   @ApiResponse({
-    status: 200,
+    status: HTTP_STATUS.OK,
     description: 'Customer updated successfully',
     examples: {
       'application/json': {
@@ -164,21 +143,15 @@ export class UsersController {
     },
   })
   @ApiResponse({
-    status: 400,
+    status: HTTP_STATUS.BAD_REQUEST,
     description: 'Invalid input with error message',
   })
   @ApiResponse({
-    status: 404,
+    status: HTTP_STATUS.NOT_FOUND,
     description: 'Customer not found',
   })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized. Authentication required',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden. Admin access required',
-  })
+  @ApiAdminResponses()
+  @ApiAuthResponses()
   async updateCustomer(@Param('githubId') githubId: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(githubId, updateUserDto);
   }
@@ -191,7 +164,7 @@ export class UsersController {
     description: 'Returns the users balance and accumulated monthly payment cost.',
   })
   @ApiResponse({
-    status: 200,
+    status: HTTP_STATUS.OK,
     description: 'Account details retrieved successfully.',
   })
   async getAccountDetails(@Param('githubId') githubId: string, @Request() req: any) {
@@ -217,17 +190,14 @@ export class UsersController {
     description: 'Set a new balance for the user and optionally toggle monthly payment mode.',
   })
   @ApiResponse({
-    status: 200,
+    status: HTTP_STATUS.OK,
     description: 'User balance adjusted successfully',
   })
   @ApiResponse({
-    status: 404,
+    status: HTTP_STATUS.NOT_FOUND,
     description: 'User not found',
   })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden. You cannot adjust other users unless you are an admin.',
-  })
+  @ApiAdminResponses()
   async adjustFunds(
     @Param('githubId') githubId: string,
     @Body() adjustFundsDto: AdjustFundsDto,
@@ -248,17 +218,14 @@ export class UsersController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Soft delete a user (Only for admin - set user role to inactive)' })
   @ApiResponse({
-    status: 200,
+    status: HTTP_STATUS.OK,
     description: 'User soft-deleted successfully',
   })
   @ApiResponse({
-    status: 404,
+    status: HTTP_STATUS.NOT_FOUND,
     description: 'User not found',
   })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden. Admin access required',
-  })
+  @ApiAdminResponses()
   async softDeleteUser(@Param('githubId') githubId: string) {
     return await this.usersService.softDeleteUser(githubId);
   }
