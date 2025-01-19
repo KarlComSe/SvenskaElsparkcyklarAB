@@ -168,8 +168,8 @@ export class TravelService {
     const costPerMinute = 1;
 
     const cost =
-      (endZoneTypes.includes("Parking") ? 0 : parkingFee) +
-      (startZoneType === 'Free' && endZoneTypes.includes("Parking") ? startFee / 2 : startFee) +
+      (endZoneTypes.includes('Parking') ? 0 : parkingFee) +
+      (startZoneType === 'Free' && endZoneTypes.includes('Parking') ? startFee / 2 : startFee) +
       timeDiffInMinutes * costPerMinute;
 
     return cost;

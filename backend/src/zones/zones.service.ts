@@ -112,7 +112,6 @@ export class ZonesService {
     }
 
     return types;
-
   }
 
   async pointInParkingZone(lat: number, lon: number): Promise<boolean> {
