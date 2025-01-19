@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Req, Param, Get } from '@nestjs/common';
+import { Controller, Post, UseGuards, Req, Param, Get } from '@nestjs/common';
 import { TokensService } from './tokens.service';
 import { TokenResponseDto } from './dto/token-response.dto/token-response.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';

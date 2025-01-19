@@ -10,6 +10,7 @@ describe('Users Module Integration', () => {
   let adminUser: User;
   let standardUser: User;
   let fakeUserToken: string;
+  const BASE_API_PATH = '/v1/users';
 
   beforeAll(async () => {
     const { app: initializedApp, tokens } = await initTestApp();
@@ -28,7 +29,7 @@ describe('Users Module Integration', () => {
   describe('User Payment Management', () => {
     it('should allow checking account balance and payment mode', async () => {
       const response = await request(app.getHttpServer())
-        .get(`/v1/users/${standardUser.githubId}/account`)
+        .get(`${BASE_API_PATH}/${standardUser.githubId}/account`)
         .set('Authorization', `Bearer ${userToken}`)
         .expect(200);
 
@@ -40,14 +41,14 @@ describe('Users Module Integration', () => {
     it('should allow users to add funds to their account', async () => {
       const initialBalance = 100;
       await request(app.getHttpServer())
-        .patch(`/v1/users/${standardUser.githubId}/adjust-funds`)
+        .patch(`${BASE_API_PATH}/${standardUser.githubId}/adjust-funds`)
         .set('Authorization', `Bearer ${userToken}`)
         .send({ balance: initialBalance })
         .expect(200);
 
       // Verify the new balance
       const response = await request(app.getHttpServer())
-        .get(`/v1/users/${standardUser.githubId}/account`)
+        .get(`${BASE_API_PATH}/${standardUser.githubId}/account`)
         .set('Authorization', `Bearer ${userToken}`)
         .expect(200);
 
@@ -56,13 +57,13 @@ describe('Users Module Integration', () => {
 
     it('should allow switching between payment methods', async () => {
       await request(app.getHttpServer())
-        .patch(`/v1/users/${standardUser.githubId}/adjust-funds`)
+        .patch(`${BASE_API_PATH}/${standardUser.githubId}/adjust-funds`)
         .set('Authorization', `Bearer ${userToken}`)
         .send({ isMonthlyPayment: true })
         .expect(200);
 
       const response = await request(app.getHttpServer())
-        .get(`/v1/users/${standardUser.githubId}/account`)
+        .get(`${BASE_API_PATH}/${standardUser.githubId}/account`)
         .set('Authorization', `Bearer ${userToken}`)
         .expect(200);
 
@@ -71,7 +72,7 @@ describe('Users Module Integration', () => {
 
     it('should not allow update of non-existent users', async () => {
       await request(app.getHttpServer())
-        .patch(`/v1/users/fakeuser/adjust-funds`)
+        .patch(`${BASE_API_PATH}/fakeuser/adjust-funds`)
         .set('Authorization', `Bearer ${adminToken}`)
         .send({ balance: 1000 })
         .expect(404);
@@ -80,7 +81,7 @@ describe('Users Module Integration', () => {
     describe('Terms Management', () => {
       it('should track terms acceptance status', async () => {
         await request(app.getHttpServer())
-          .patch('/v1/users/terms')
+          .patch(`${BASE_API_PATH}/terms`)
           .set('Authorization', `Bearer ${userToken}`)
           .send({ hasAcceptedTerms: true })
           .expect(200)
@@ -91,7 +92,7 @@ describe('Users Module Integration', () => {
 
       it('should reject invalid terms acceptance data', async () => {
         await request(app.getHttpServer())
-          .patch('/v1/users/terms')
+          .patch(`${BASE_API_PATH}/terms`)
           .set('Authorization', `Bearer ${userToken}`)
           .send({ hasAcceptedTerms: 'invalid' })
           .expect(400);
@@ -99,7 +100,7 @@ describe('Users Module Integration', () => {
 
       it('should reject terms update for invalid users', async () => {
         await request(app.getHttpServer())
-          .patch('/v1/users/terms')
+          .patch(`${BASE_API_PATH}/terms`)
           .set('Authorization', `Bearer ${fakeUserToken}`)
           .send({ hasAcceptedTerms: true })
           .expect(401);
@@ -109,7 +110,7 @@ describe('Users Module Integration', () => {
     describe('Admin Operations', () => {
       it('should allow admins to view all users', async () => {
         const response = await request(app.getHttpServer())
-          .get('/v1/users')
+          .get(BASE_API_PATH)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200);
 
@@ -121,7 +122,7 @@ describe('Users Module Integration', () => {
 
       it('should allow admins to manage user roles', async () => {
         await request(app.getHttpServer())
-          .patch(`/v1/users/${standardUser.githubId}`)
+          .patch(`${BASE_API_PATH}/${standardUser.githubId}`)
           .set('Authorization', `Bearer ${adminToken}`)
           .send({
             roles: ['user', 'support'],
@@ -136,7 +137,7 @@ describe('Users Module Integration', () => {
       it('should allow admins to adjust any user funds', async () => {
         const newBalance = 500;
         await request(app.getHttpServer())
-          .patch(`/v1/users/${standardUser.githubId}/adjust-funds`)
+          .patch(`${BASE_API_PATH}/${standardUser.githubId}/adjust-funds`)
           .set('Authorization', `Bearer ${adminToken}`)
           .send({ balance: newBalance })
           .expect(200)
@@ -147,7 +148,7 @@ describe('Users Module Integration', () => {
 
       it('should allow admins to get account details for any user', async () => {
         const response = await request(app.getHttpServer())
-          .get(`/v1/users/${standardUser.githubId}`)
+          .get(`${BASE_API_PATH}/${standardUser.githubId}`)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200);
 
@@ -158,7 +159,7 @@ describe('Users Module Integration', () => {
 
       it('should not find non-existent users', async () => {
         await request(app.getHttpServer())
-          .get('/v1/users/fakeuser')
+          .get(`${BASE_API_PATH}/fakeuser`)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(404);
       });
@@ -167,14 +168,14 @@ describe('Users Module Integration', () => {
     describe('Security Boundaries', () => {
       it('should prevent users from accessing other accounts', async () => {
         await request(app.getHttpServer())
-          .get(`/v1/users/${adminUser.githubId}/account`)
+          .get(`${BASE_API_PATH}/${adminUser.githubId}/account`)
           .set('Authorization', `Bearer ${userToken}`)
           .expect(403);
       });
 
       it('should prevent users from modifying other accounts', async () => {
         await request(app.getHttpServer())
-          .patch(`/v1/users/${adminUser.githubId}/adjust-funds`)
+          .patch(`${BASE_API_PATH}/${adminUser.githubId}/adjust-funds`)
           .set('Authorization', `Bearer ${userToken}`)
           .send({ balance: 1000 })
           .expect(403);
@@ -182,18 +183,18 @@ describe('Users Module Integration', () => {
 
       it('should prevent non-admins from accessing admin endpoints', async () => {
         await request(app.getHttpServer())
-          .get('/v1/users')
+          .get(BASE_API_PATH)
           .set('Authorization', `Bearer ${userToken}`)
           .expect(403);
 
         await request(app.getHttpServer())
-          .patch(`/v1/users/${standardUser.githubId}`)
+          .patch(`${BASE_API_PATH}/${standardUser.githubId}`)
           .set('Authorization', `Bearer ${userToken}`)
           .send({ roles: ['admin'] })
           .expect(403);
 
         await request(app.getHttpServer())
-          .get(`/v1/users/${standardUser.githubId}`)
+          .get(`${BASE_API_PATH}/${standardUser.githubId}`)
           .set('Authorization', `Bearer ${userToken}`)
           .expect(403);
       });
@@ -203,7 +204,7 @@ describe('Users Module Integration', () => {
       it('should allow admins to soft delete a user', async () => {
         // First verify the user exists and is active
         const initialResponse = await request(app.getHttpServer())
-          .get(`/v1/users/${standardUser.githubId}`)
+          .get(`${BASE_API_PATH}/${standardUser.githubId}`)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200);
 
@@ -211,7 +212,7 @@ describe('Users Module Integration', () => {
 
         // Perform soft delete
         const deleteResponse = await request(app.getHttpServer())
-          .patch(`/v1/users/${standardUser.githubId}/soft-delete`)
+          .patch(`${BASE_API_PATH}/${standardUser.githubId}/soft-delete`)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200);
 
@@ -219,7 +220,7 @@ describe('Users Module Integration', () => {
 
         // Verify the user is now marked as inactive
         const finalResponse = await request(app.getHttpServer())
-          .get(`/v1/users/${standardUser.githubId}`)
+          .get(`${BASE_API_PATH}/${standardUser.githubId}`)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200);
 
@@ -228,7 +229,7 @@ describe('Users Module Integration', () => {
 
       it('should return 404 when trying to soft delete non-existent user', async () => {
         await request(app.getHttpServer())
-          .patch('/v1/users/nonexistentuser/soft-delete')
+          .patch(`${BASE_API_PATH}/nonexistentuser/soft-delete`)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(404);
       });
@@ -236,13 +237,13 @@ describe('Users Module Integration', () => {
       it('should prevent soft-deleted users from accessing protected routes', async () => {
         // First soft delete the user
         await request(app.getHttpServer())
-          .patch(`/v1/users/${standardUser.githubId}/soft-delete`)
+          .patch(`${BASE_API_PATH}/${standardUser.githubId}/soft-delete`)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200);
 
         // Try to access a protected route
         await request(app.getHttpServer())
-          .get(`/v1/users/${standardUser.githubId}/account`)
+          .get(`${BASE_API_PATH}/${standardUser.githubId}/account`)
           .set('Authorization', `Bearer ${userToken}`)
           .expect(401);
       });

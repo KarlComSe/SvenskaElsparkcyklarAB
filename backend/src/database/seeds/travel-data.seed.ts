@@ -33,7 +33,7 @@ export default class TravelDataSeeder {
           // console.log(`Created ongoing travel for bike ${bike.id}`);
           userIndex = (userIndex + 1) % users.length;
         }
-      } catch (error) {
+      } catch {
         // silently ignore errors, as expected
         // console.error('Error creating ongoing travels:', error);
       }

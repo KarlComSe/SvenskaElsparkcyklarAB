@@ -3,7 +3,6 @@ import { TokensController } from './tokens.controller';
 import { TokensService } from './tokens.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { TokenGuard } from './guards/token.guard';
-import { UnauthorizedException } from '@nestjs/common';
 
 describe('TokensController', () => {
   let controller: TokensController;

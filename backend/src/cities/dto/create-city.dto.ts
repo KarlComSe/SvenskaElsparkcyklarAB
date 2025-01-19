@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsNumber, IsEnum } from 'class-validator';
-import { City } from '../entities/city.entity';
 import { CityName } from '../types/city.enum';
 
 export class CreateCityDto {

@@ -2,7 +2,6 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CitiesService } from './cities.service';
 import { CreateCityDto } from './dto/create-city.dto';
-import { CityName } from './types/city.enum';
 import { City } from './entities/city.entity';
 
 @ApiTags('Cities')
