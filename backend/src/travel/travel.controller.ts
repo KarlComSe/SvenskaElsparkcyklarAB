@@ -1,9 +1,8 @@
-import { Controller, Get, Param, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Param, Post, UseGuards, Req } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { TravelService } from './travel.service';
-import { StartRentingDto, TravelResponseDto, EndTravelDto } from './dto/renting.dto';
-import { Travel } from './entities/travel.entity';
+import { TravelResponseDto } from './dto/renting.dto';
 
 @ApiTags('Bike Rentals')
 @Controller({ path: 'rental', version: '1' })

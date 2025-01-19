@@ -1,8 +1,7 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException, ExecutionContext } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TokenGuard } from './token.guard';
 import { TokensService } from '../tokens.service';
-import { ExecutionContext } from '@nestjs/common';
 
 describe('TokenGuard', () => {
   let guard: TokenGuard;

@@ -14,7 +14,6 @@ describe('TravelService', () => {
   let travelRepository: jest.Mocked<Repository<Travel>>;
   let bicyclesService: jest.Mocked<BicyclesService>;
   let zonesService: jest.Mocked<ZonesService>;
-  let usersService: jest.Mocked<UsersService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,7 +28,7 @@ describe('TravelService', () => {
             create: jest.fn(),
             manager: {
               getRepository: jest.fn().mockReturnValue({
-                save: jest.fn(), // Mock the save method of User repository
+                save: jest.fn(),
               }),
             },
           },
@@ -46,12 +45,13 @@ describe('TravelService', () => {
           provide: ZonesService,
           useValue: {
             pointInParkingZone: jest.fn(),
+            getZoneTypesForPosition: jest.fn().mockResolvedValue(['Parking']),
           },
         },
         {
-          provide: UsersService, // Mock UsersService correctly
+          provide: UsersService,
           useValue: {
-            save: jest.fn(), // Explicitly mock the save method
+            save: jest.fn(),
           },
         },
       ],
@@ -61,7 +61,6 @@ describe('TravelService', () => {
     travelRepository = module.get(getRepositoryToken(Travel));
     bicyclesService = module.get(BicyclesService);
     zonesService = module.get(ZonesService);
-    usersService = module.get(UsersService); // Get the UsersService mock
   });
 
   it('should be defined', () => {
@@ -105,7 +104,7 @@ describe('TravelService', () => {
         longitude: 50,
       } as any);
 
-      zonesService.pointInParkingZone.mockResolvedValue(true); // Use mockResolvedValue
+      zonesService.pointInParkingZone.mockResolvedValue(true);
 
       travelRepository.create.mockReturnValue({
         id: 1,
@@ -164,7 +163,7 @@ describe('TravelService', () => {
       expect(result.stopTime).toBeDefined();
 
       // Ensure bicycle status is updated
-      expect(bicyclesService.update).toHaveBeenCalledWith(mockBike.id, { status: 'Service' });
+      expect(bicyclesService.update).toHaveBeenCalledWith(mockBike.id, { status: 'Available' });
 
       // Ensure the travel record is saved
       expect(travelRepository.save).toHaveBeenCalledWith(

@@ -21,7 +21,7 @@ describe('CitiesController', () => {
 
   const mockCitiesService = {
     findAll: jest.fn(() => Promise.resolve(mockCityResponse)),
-    createCity: jest.fn((dto) => Promise.resolve(mockCityResponse[0])),
+    createCity: jest.fn(() => Promise.resolve(mockCityResponse[0])),
   };
 
   beforeEach(async () => {

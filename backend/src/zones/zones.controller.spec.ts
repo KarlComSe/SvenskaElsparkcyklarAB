@@ -34,18 +34,6 @@ describe('ZonesController', () => {
     },
   };
 
-  const mockZoneResponse = {
-    filters: {
-      lat: 59.3293,
-      lon: 18.0686,
-      type: ['speed'],
-      includes: [],
-      city: ['Jönköping'],
-      rad: 3,
-    },
-    zones: [mockZone],
-  };
-
   const query: ZoneFilterQueryDto = {
     lat: 59.3293,
     lon: 18.0686,
