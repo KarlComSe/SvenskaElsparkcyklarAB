@@ -90,24 +90,22 @@ export class TravelService {
     const bike = await this.bicyclesService.findById(travel.bike.id);
 
     // Get the end zone type
-    const endZoneType = this.zonesService.pointInParkingZone(bike.latitude, bike.longitude)
-      ? 'Parking'
-      : 'Free';
+    const endZones = await this.zonesService.getZoneTypesForPosition(bike.latitude, bike.longitude);
 
     // Set end time to current server time
     const endTime = new Date();
 
     // Calculate cost
-    const cost = this.calculateCost(travel.startTime, endTime, travel.startZoneType, endZoneType);
+    const cost = this.calculateCost(travel.startTime, endTime, travel.startZoneType, endZones);
 
     // Update travel record
     travel.stopTime = endTime;
     travel.latStop = bike.latitude;
     travel.longStop = bike.longitude;
-    travel.endZoneType = endZoneType;
+    travel.endZoneType = endZones.includes('Parking') ? 'Parking' : 'Free';
     travel.cost = cost;
 
-    const newStatus = endZoneType === 'Parking' ? 'Service' : 'Available';
+    const newStatus = endZones.includes('Charging') ? 'Service' : 'Available';
     await this.bicyclesService.update(bike.id, { status: newStatus });
 
     // Update user account
@@ -160,7 +158,7 @@ export class TravelService {
     startTime: Date,
     endTime: Date,
     startZoneType: string,
-    endZoneType: string,
+    endZoneTypes: string[],
   ): number {
     const timeDiff = endTime.getTime() - startTime.getTime();
     const timeDiffInMinutes = timeDiff / 1000 / 60;
@@ -170,8 +168,8 @@ export class TravelService {
     const costPerMinute = 1;
 
     const cost =
-      (endZoneType === 'Parking' ? 0 : parkingFee) +
-      (startZoneType === 'Free' && endZoneType === 'Parking' ? startFee / 2 : startFee) +
+      (endZoneTypes.includes("Parking") ? 0 : parkingFee) +
+      (startZoneType === 'Free' && endZoneTypes.includes("Parking") ? startFee / 2 : startFee) +
       timeDiffInMinutes * costPerMinute;
 
     return cost;
